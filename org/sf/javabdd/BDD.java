@@ -25,7 +25,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.30 2004/07/24 01:15:35 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.31 2004/08/02 20:32:59 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -990,7 +990,7 @@ public abstract class BDD {
         return sb.toString();
     }
     
-    static class OutputBuffer {
+    private static class OutputBuffer {
         BDDToString ts;
         StringBuffer sb;
         int domain;

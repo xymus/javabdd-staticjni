@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.25 2004/07/29 03:43:21 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.26 2004/08/02 20:32:59 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -455,7 +455,7 @@ public abstract class BDDFactory {
         return tokenizer.nextToken();
     }
     
-    static class LoadHash {
+    private static class LoadHash {
         int key;
         BDD data;
         int first;
