@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.11 2003/11/14 09:35:43 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.12 2003/12/11 21:43:08 gback Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -942,7 +942,7 @@ public class TypedBDDFactory extends BDDFactory {
          */
         public double satCount(BDD set) {
             TypedBDD bdd1 = (TypedBDD) set;
-            if (!bdd1.dom.equals(dom)) {
+            if (!bdd.isZero() && !bdd1.dom.equals(dom)) {
                 out.println("Warning! satCount on the wrong domains: "+domainNames(dom)+" != "+domainNames(bdd1.dom));
                 new Exception().printStackTrace();
             }
