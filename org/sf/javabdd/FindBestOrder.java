@@ -17,7 +17,7 @@ import java.math.BigInteger;
  * FindBestOrder
  * 
  * @author jwhaley
- * @version $Id: FindBestOrder.java,v 1.7 2004/07/15 07:08:47 cs343 Exp $
+ * @version $Id: FindBestOrder.java,v 1.8 2004/07/27 23:20:03 joewhaley Exp $
  */
 public class FindBestOrder {
 
@@ -149,7 +149,7 @@ public class FindBestOrder {
         public void run() {
             long total = System.currentTimeMillis();
             if (bdd == null) {
-                bdd = JavaFactory.init(nodeTableSize, cacheSize);
+                bdd = JFactory.init(nodeTableSize, cacheSize);
                 bdd.setMaxIncrease(maxIncrease);
                 readBDDConfig(bdd);
             }
