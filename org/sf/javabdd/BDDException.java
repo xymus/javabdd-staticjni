@@ -4,9 +4,9 @@ package org.sf.javabdd;
  * An exception caused by an invalid BDD operation.
  * 
  * @author John Whaley
- * @version $Id: BDDException.java,v 1.2 2003/01/30 06:22:18 joewhaley Exp $
+ * @version $Id: BDDException.java,v 1.3 2003/07/01 00:10:19 joewhaley Exp $
  */
-public class BDDException extends Exception {
+public class BDDException extends RuntimeException {
     public BDDException() {
         super();
     }
