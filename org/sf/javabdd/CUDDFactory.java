@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.4 2003/07/01 00:10:19 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -29,7 +29,16 @@ public class CUDDFactory extends BDDFactory {
     private static CUDDFactory INSTANCE;
     
     static {
-        System.loadLibrary("cudd");
+        String libname = "cudd";
+        try {
+            System.loadLibrary(libname);
+        } catch (java.lang.UnsatisfiedLinkError x) {
+            // Cannot find library, try loading it from the current directory...
+            libname = System.mapLibraryName(libname);
+            String currentdir = System.getProperty("user.dir");
+            String sep = System.getProperty("file.separator");
+            System.load(currentdir+sep+libname);
+        }
         registerNatives();
     }
     
@@ -469,7 +478,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.4 2003/07/01 00:10:19 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
      */
     public static class CUDDBDD extends BDD {
 
@@ -792,7 +801,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.4 2003/07/01 00:10:19 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
      */
     public static class CUDDBDDDomain extends BDDDomain {
 
@@ -871,7 +880,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDPairing
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.4 2003/07/01 00:10:19 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
      */
     public static class CUDDBDDPairing extends BDDPairing {
 
