@@ -8,7 +8,7 @@ import java.util.Collection;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.3 2003/01/31 09:32:51 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.4 2003/01/31 10:15:24 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -415,8 +415,30 @@ public abstract class BDDFactory {
 
     // TODO: bdd_cachestats, bdd_stats
     
+    
+    /**
+     * Compare to bdd_newpair.
+     */
+    public abstract BDDPairing makePair();
 
+    public BDDPairing makePair(int oldvar, int newvar) {
+        BDDPairing p = makePair();
+        p.set(oldvar, newvar);
+        return p;
+    }
 
+    public BDDPairing makePair(BDD oldvar, BDD newvar) {
+        BDDPairing p = makePair();
+        p.set(oldvar, newvar);
+        return p;
+    }
+    
+    public BDDPairing makePair(BDDDomain oldvar, BDDDomain newvar) {
+        BDDPairing p = makePair();
+        p.set(oldvar, newvar);
+        return p;
+    }
+    
     /**
      * Compare to bdd_swapvar.
      */

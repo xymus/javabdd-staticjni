@@ -17,7 +17,7 @@ import java.util.Iterator;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.4 2003/01/31 09:32:51 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.5 2003/01/31 10:15:25 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -144,6 +144,11 @@ public class BuDDyFactory extends BDDFactory {
      */
     public native void swapVar(int v1, int v2);
 
+    /**
+     * @see org.sf.javabdd.BDDFactory#makePair()
+     */
+    public native BDDPairing makePair();
+    
     /**
      * @see org.sf.javabdd.BDDFactory#printAll()
      */
