@@ -23,12 +23,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.4 2004/10/19 04:34:48 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.3 $";
+    public static final String REVISION = "$Revision: 1.4 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -2462,7 +2462,11 @@ public class JFactory extends BDDFactory {
     }
 
     void gbc_handler(boolean pre, GCStats s) {
-        bdd_default_gbchandler(pre, s);
+        if (gc_callbacks == null) {
+            bdd_default_gbchandler(pre, s);
+        } else {
+            doCallbacks(gc_callbacks, pre?1:0);
+        }
     }
 
     void bdd_default_gbchandler(boolean pre, GCStats s) {
@@ -4211,6 +4215,11 @@ public class JFactory extends BDDFactory {
     }
 
     void reorder_handler(boolean b) {
+        if (reorder_callbacks == null) {
+            bdd_default_reohandler(b?1:0);
+        } else {
+            doCallbacks(reorder_callbacks, b?1:0);
+        }
     }
 
     int bdd_reorder_gain() {

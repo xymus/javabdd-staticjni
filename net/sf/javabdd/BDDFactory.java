@@ -27,7 +27,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.3 2004/10/19 04:34:48 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -995,7 +995,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.3 2004/10/19 04:34:48 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1043,7 +1043,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.3 2004/10/19 04:34:48 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
@@ -1592,7 +1592,7 @@ public abstract class BDDFactory {
                 Object o = cb[0];
                 Method m = (Method) cb[1];
                 try {
-                    m.invoke(o, new Object[] { Integer.valueOf(val) } );
+                    m.invoke(o, new Object[] { new Integer(val) } );
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
