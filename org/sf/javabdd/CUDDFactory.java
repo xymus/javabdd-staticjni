@@ -35,7 +35,7 @@ import java.util.List;
  * @see org.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.18 2004/10/12 20:41:33 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.19 2004/10/14 19:47:36 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -657,9 +657,9 @@ public class CUDDFactory extends BDDFactory {
         }
 
         /* (non-Javadoc)
-         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, org.sf.javabdd.BDD)
+         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, boolean)
          */
-        public BDD satOne(BDD var, BDD pol) {
+        public BDD satOne(BDD var, boolean pol) {
             // TODO Implement this.
             throw new UnsupportedOperationException();
         }

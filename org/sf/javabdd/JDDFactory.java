@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.7 2004/10/12 20:41:33 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.8 2004/10/14 19:47:36 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -398,10 +398,11 @@ public class JDDFactory extends BDDFactory {
         }
 
         /* (non-Javadoc)
-         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, org.sf.javabdd.BDD)
+         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, boolean)
          */
-        public BDD satOne(BDD var, BDD pol) {
-            throw new BDDException();
+        public BDD satOne(BDD var, boolean pol) {
+            // TODO Implement this.
+            throw new UnsupportedOperationException();
         }
 
         /* (non-Javadoc)

@@ -26,7 +26,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.36 2004/10/12 20:41:33 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.37 2004/10/14 19:47:36 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -763,12 +763,11 @@ public class BuDDyFactory extends BDDFactory {
         private static native int fullSatOne0(int b);
         
         /* (non-Javadoc)
-         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, org.sf.javabdd.BDD)
+         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, boolean)
          */
-        public BDD satOne(BDD var, BDD pol) {
+        public BDD satOne(BDD var, boolean pol) {
             BuDDyBDD c = (BuDDyBDD) var;
-            BuDDyBDD d = (BuDDyBDD) pol;
-            int b = satOne1(_id, c._id, d._id);
+            int b = satOne1(_id, c._id, pol?1:0);
             return makeBDD(b);
         }
         private static native int satOne1(int b, int c, int d);

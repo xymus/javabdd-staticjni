@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.29 2004/10/12 20:37:19 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.30 2004/10/14 19:47:36 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -902,7 +902,7 @@ public abstract class BDDFactory {
         }
 
         d = domain[fdvarnum];
-        d.realsize = d1.realsize * d2.realsize;
+        d.realsize = d1.realsize.multiply(d2.realsize);
         d.ivar = new int[d1.varNum() + d2.varNum()];
 
         for (n = 0; n < d1.varNum(); n++)

@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigInteger;
 
 /**
  * <p>This is a 100% Java implementation of the BDD factory.  It is based on
@@ -23,7 +24,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.10 2004/10/12 20:41:33 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.11 2004/10/14 19:47:36 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
@@ -301,12 +302,12 @@ public class JFactory extends BDDFactory {
         }
 
         /* (non-Javadoc)
-         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, org.sf.javabdd.BDD)
+         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, boolean)
          */
-        public BDD satOne(BDD var, BDD pol) {
+        public BDD satOne(BDD var, boolean pol) {
             int x = _index;
             int y = ((bdd) var)._index;
-            int z = ((bdd) pol)._index;
+            int z = pol ? 1 : 0;
             return new bdd(bdd_satoneset(x, y, z));
         }
 
@@ -5934,12 +5935,15 @@ public class JFactory extends BDDFactory {
      * @see org.sf.javabdd.BDDFactory#createDomain(int, long)
      */
     protected BDDDomain createDomain(int a, long b) {
+        return createDomain(a, BigInteger.valueOf(b));
+    }
+    protected BDDDomain createDomain(int a, BigInteger b) {
         return new bddDomain(a, b);
     }
 
     class bddDomain extends BDDDomain {
 
-        bddDomain(int a, long b) {
+        bddDomain(int a, BigInteger b) {
             super(a, b);
         }
 
