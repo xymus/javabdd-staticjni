@@ -12,7 +12,7 @@ import java.util.List;
  * TestBDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.1 2003/08/03 11:45:35 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.2 2003/08/03 12:09:19 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
@@ -276,16 +276,8 @@ public class TestBDDFactory extends BDDFactory {
         public void applyWith(BDD that, BDDOp opr) {
             BDD c1 = ((TestBDD)that).b1;
             BDD c2 = ((TestBDD)that).b2;
-            BDD test1 = null, test2 = null;
-            if (opr == diff) {
-                test1 = b1.and(c1.not());
-                test2 = b2.and(c2.not());
-            }
             b1.applyWith(c1, opr);
             b2.applyWith(c2, opr);
-            if (opr == diff) assertSame(b1, test1, "diff1");
-            if (opr == diff) assertSame(b2, test2, "diff2");
-            if (opr == diff) assertSame(test1, test2, "diff3");
             assertSame(b1, b2, "applyWith "+opr);
         }
 
@@ -383,7 +375,6 @@ public class TestBDDFactory extends BDDFactory {
         public BDD replace(BDDPairing pair) {
             BDDPairing c1 = ((TestBDDPairing)pair).b1;
             BDDPairing c2 = ((TestBDDPairing)pair).b2;
-            assertSame(b1.veccompose(c1), b1.replace(c1), "veccompose vs. replace");
             BDD r1 = b1.replace(c1);
             BDD r2 = b2.replace(c2);
             return new TestBDD(r1, r2);
