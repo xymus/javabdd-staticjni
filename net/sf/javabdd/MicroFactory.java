@@ -28,7 +28,7 @@ import java.math.BigInteger;
  * 20% less memory.</p>
  * 
  * @author jwhaley
- * @version $Id: MicroFactory.java,v 1.4 2005/01/31 10:34:18 joewhaley Exp $
+ * @version $Id: MicroFactory.java,v 1.5 2005/01/31 12:04:45 joewhaley Exp $
  */
 public class MicroFactory extends BDDFactory {
 
@@ -2135,9 +2135,10 @@ public class MicroFactory extends BDDFactory {
             return BDDZERO;
         }
 
-        if (ISCONST(l) && ISCONST(r))
+        if (ISCONST(l) && ISCONST(r)) {
             res = oprres[appexop][(l << 1) | r];
-        else if (ISCONST(var)) {
+            return res;
+        } else if (ISCONST(var)) {
             int oldop = applyop;
             applyop = appexop;
             switch (applyop) {
@@ -6503,7 +6504,7 @@ public class MicroFactory extends BDDFactory {
         return cachestats;
     }
     
-    public static final String REVISION = "$Revision: 1.4 $";
+    public static final String REVISION = "$Revision: 1.5 $";
     
     public String getVersion() {
         return "MicroFactory "+REVISION.substring(11, REVISION.length()-2);
