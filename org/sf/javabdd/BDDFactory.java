@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -14,7 +15,7 @@ import java.util.StringTokenizer;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.15 2003/10/21 01:39:49 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.16 2003/11/01 00:45:43 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -151,7 +152,7 @@ public abstract class BDDFactory {
      * 
      * Compare to bdd_buildcube.
      */
-    public BDD buildCube(int value, Collection/*BDD*/ variables) {
+    public BDD buildCube(int value, List/*BDD*/ variables) {
         BDD result = one();
         Iterator i = variables.iterator();
         int z=0;
