@@ -14,8 +14,8 @@ import java.util.Iterator;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.14 2003/11/19 07:42:05 gback Exp $
- * @see BDDFactory#extDomain(int[])
+ * @version $Id: BDDDomain.java,v 1.15 2004/04/28 17:42:03 joewhaley Exp $
+ * @see org.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
 
