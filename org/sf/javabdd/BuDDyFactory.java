@@ -25,7 +25,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.29 2003/09/14 23:50:04 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.30 2003/09/18 11:58:46 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -591,6 +591,7 @@ public class BuDDyFactory extends BDDFactory {
         /**
          * @see java.lang.Object#finalize()
          */
+        /*
         protected void finalize() throws Throwable {
             super.finalize();
             if (USE_FINALIZER) {
@@ -600,6 +601,7 @@ public class BuDDyFactory extends BDDFactory {
                 this.free();
             }
         }
+        */
         
         /**
          * @see org.sf.javabdd.BDD#free()
@@ -713,10 +715,12 @@ public class BuDDyFactory extends BDDFactory {
         /**
          * @see java.lang.Object#finalize()
          */
+        /*
         protected void finalize() throws Throwable {
             super.finalize();
             this.free();
         }
+        */
 
         /**
          * Free the memory allocated for this pair.

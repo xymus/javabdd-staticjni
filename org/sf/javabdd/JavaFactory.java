@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
  * collection.
  * 
  * @author John Whaley
- * @version $Id: JavaFactory.java,v 1.6 2003/09/14 23:50:31 joewhaley Exp $
+ * @version $Id: JavaFactory.java,v 1.7 2003/09/18 11:59:02 joewhaley Exp $
  */
 public class JavaFactory extends BDDFactory {
 
@@ -397,6 +397,7 @@ public class JavaFactory extends BDDFactory {
         /**
          * @see java.lang.Object#finalize()
          */
+        /*
         protected void finalize() throws Throwable {
             super.finalize();
             if (USE_FINALIZER) {
@@ -406,6 +407,7 @@ public class JavaFactory extends BDDFactory {
                 this.free();
             }
         }
+        */
         
         /**
          * @see org.sf.javabdd.BDD#free()

@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.13 2003/09/18 11:58:57 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -354,7 +354,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.13 2003/09/18 11:58:57 joewhaley Exp $
      */
     static class CUDDBDD extends BDD {
 
@@ -617,6 +617,7 @@ public class CUDDFactory extends BDDFactory {
         /* (non-Javadoc)
          * @see java.lang.Object#finalize()
          */
+         /*
         protected void finalize() throws Throwable {
             super.finalize();
             if (USE_FINALIZER) {
@@ -626,6 +627,7 @@ public class CUDDFactory extends BDDFactory {
                 this.free();
             }
         }
+        */
         
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#free()
@@ -640,7 +642,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.13 2003/09/18 11:58:57 joewhaley Exp $
      */
     static class CUDDBDDDomain extends BDDDomain {
 
@@ -661,7 +663,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDPairing
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.13 2003/09/18 11:58:57 joewhaley Exp $
      */
     static class CUDDBDDPairing extends BDDPairing {
 
