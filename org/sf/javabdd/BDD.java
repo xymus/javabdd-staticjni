@@ -25,7 +25,7 @@ import java.util.List;
  * @see BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.24 2003/11/11 03:38:14 gback Exp $
+ * @version $Id: BDD.java,v 1.25 2003/11/11 19:49:25 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -816,7 +816,9 @@ public abstract class BDD {
     
     /**
      * <p>Calculates the number of satisfying variable assignments to the variables
-     * in the given varset.</p>
+     * in the given varset.  ASSUMES THAT THE BDD DOES NOT HAVE ANY ASSIGNMENTS TO
+     * VARIABLES THAT ARE NOT IN VARSET.  You will need to quantify out the other
+     * variables first.</p>
      * 
      * <p>Compare to bdd_satcountset.</p>
      * 
@@ -991,7 +993,10 @@ public abstract class BDD {
         StringBuffer finish() {
             if (lastHigh != -2L) {
                 if (done) sb.append('/');
-                sb.append(ts.elementNames(domain, lastLow, lastHigh));
+                if (lastLow == lastHigh)
+                    sb.append(ts.elementName(domain, lastHigh));
+                else
+                    sb.append(ts.elementNames(domain, lastLow, lastHigh));
                 lastHigh = -2L;
             }
             done = true;
