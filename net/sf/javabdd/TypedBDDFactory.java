@@ -23,7 +23,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.5 2004/10/19 21:47:05 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -119,7 +119,7 @@ public class TypedBDDFactory extends BDDFactory {
     }
     
     /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#setMinFreeNodes(int)
+     * @see net.sf.javabdd.BDDFactory#setMinFreeNodes(double)
      */
     public double setMinFreeNodes(double x) {
         return factory.setMinFreeNodes(x);
@@ -466,7 +466,7 @@ public class TypedBDDFactory extends BDDFactory {
      * A BDD with types (domains) attached to it.
      * 
      * @author jwhaley
-     * @version $Id: TypedBDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
+     * @version $Id: TypedBDDFactory.java,v 1.5 2004/10/19 21:47:05 joewhaley Exp $
      */
     public class TypedBDD extends BDD {
         
@@ -1171,7 +1171,7 @@ public class TypedBDDFactory extends BDDFactory {
         
     }
     
-    public static final String REVISION = "$Revision: 1.4 $";
+    public static final String REVISION = "$Revision: 1.5 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
