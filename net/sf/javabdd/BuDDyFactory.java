@@ -30,7 +30,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.4 2004/10/19 09:13:59 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -1077,7 +1077,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.3 $";
+    public static final String REVISION = "$Revision: 1.4 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
@@ -1087,4 +1087,15 @@ public class BuDDyFactory extends BDDFactory {
     }
     private static native String getVersion0();
     
+    private static void gc_callback(int i) {
+        INSTANCE.doCallbacks(INSTANCE.gc_callbacks, i);
+    }
+    
+    private static void reorder_callback(int i) {
+        INSTANCE.doCallbacks(INSTANCE.reorder_callbacks, i);
+    }
+    
+    private static void resize_callback(int i, int j) {
+        INSTANCE.doCallbacks(INSTANCE.resize_callbacks, i);
+    }
 }
