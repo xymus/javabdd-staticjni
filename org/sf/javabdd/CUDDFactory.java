@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -354,9 +354,9 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
      */
-    public static class CUDDBDD extends BDD {
+    static class CUDDBDD extends BDD {
 
         private long _ddnode_ptr;
         
@@ -612,9 +612,9 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
      */
-    public static class CUDDBDDDomain extends BDDDomain {
+    static class CUDDBDDDomain extends BDDDomain {
 
         private CUDDBDDDomain(int index, long range) {
             super(index, range);
@@ -633,9 +633,9 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDPairing
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
      */
-    public static class CUDDBDDPairing extends BDDPairing {
+    static class CUDDBDDPairing extends BDDPairing {
 
         long _ptr;
 
@@ -706,7 +706,7 @@ public class CUDDFactory extends BDDFactory {
     /**
      * An implementation of a BDDDomain, used by the BuDDy interface.
      */
-    public static class CUDDBDDBitVector extends BDDBitVector {
+    static class CUDDBDDBitVector extends BDDBitVector {
 
         private CUDDBDDBitVector(int a) {
             super(a);
