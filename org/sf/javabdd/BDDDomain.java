@@ -14,7 +14,7 @@ import java.util.Iterator;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.15 2004/04/28 17:42:03 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.16 2004/06/24 08:58:56 joewhaley Exp $
  * @see org.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
@@ -323,7 +323,7 @@ public abstract class BDDDomain {
      * @see #ithVar(long)
      */
     public long [] getVarIndices(BDD bdd, int max) {
-	BDD myvarset = set();	// can't use var here, must respect subclass a factory may provide
+        BDD myvarset = set(); // can't use var here, must respect subclass a factory may provide
         int n = (int)bdd.satCount(myvarset);
         if (max != -1 && n > max)
             n = max;
@@ -333,7 +333,7 @@ public abstract class BDDDomain {
             BDD bi = (BDD) it.next();
             res[i] = bi.scanVar(this);
         }
-	myvarset.free();
+        myvarset.free();
         return res;
     }
 }
