@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.14 2003/10/17 10:01:32 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.15 2003/10/21 01:39:49 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -52,6 +52,8 @@ public abstract class BDDFactory {
                 return JavaFactory.init(nodenum, cachesize);
             if (bddpackage.equals("test"))
                 return TestBDDFactory.init(nodenum, cachesize);
+            if (bddpackage.equals("typed"))
+                return TypedBDDFactory.init(nodenum, cachesize);
         } catch (LinkageError _) {
             System.out.println("Could not load BDD package "+bddpackage);
         }
