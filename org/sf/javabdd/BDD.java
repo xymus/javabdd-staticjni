@@ -12,7 +12,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.7 2003/02/04 08:25:41 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.8 2003/04/13 07:28:47 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -415,15 +415,15 @@ public abstract class BDD {
     public abstract int[] scanSetDomains();
     
     /**
-     * Finds one satisfying assignment of the FDD variable var in this BDD and
-     * returns that value.
+     * Finds one satisfying assignment of the domain d in this BDD and returns
+     * that value.
      * 
      * Compare to fdd_scanvar.
      * 
-     * @param var
+     * @param d
      * @return int
      */
-    public abstract int scanVar(int var);
+    public abstract int scanVar(BDDDomain d);
     
     /**
      * Finds one satisfying assignment in this BDD of all the defined FDD

@@ -8,7 +8,7 @@ import java.util.Collection;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.5 2003/02/02 00:52:10 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.6 2003/04/13 07:28:47 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -540,6 +540,12 @@ public abstract class BDDFactory {
      * Compare to fdd_domainnum.
      */
     public abstract int numberOfDomains();
+    
+    /**
+     * Returns the ith finite domain block, as defined by calls to
+     * extDomain().
+     */
+    public abstract BDDDomain getDomain(int i);
     
     // TODO: fdd_file_hook, fdd_strm_hook
     
