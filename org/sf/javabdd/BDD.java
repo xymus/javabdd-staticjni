@@ -12,9 +12,16 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.9 2003/04/21 09:00:50 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.10 2003/06/18 08:58:48 joewhaley Exp $
  */
 public abstract class BDD {
+
+    /**
+     * Returns the factory that created this BDD.
+     * 
+     * @return factory that created this BDD
+     */
+    public abstract BDDFactory getFactory();
 
     /**
      * Returns true if this BDD is the zero (false) BDD.

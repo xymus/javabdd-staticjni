@@ -8,7 +8,7 @@ import java.util.Collection;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.6 2003/04/13 07:28:47 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.7 2003/06/18 08:58:48 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -140,6 +140,7 @@ public abstract class BDDFactory {
      * Set the maximum available number of BDD nodes.
      * 
      * Compare to bdd_setmaxnodenum.
+     * @param size
      */
     public abstract int setMaxNodeNum(int size);
 
@@ -270,7 +271,7 @@ public abstract class BDDFactory {
     /**
      * Compare to bdd_var2level.
      */
-    public abstract int var2level(int var);
+    public abstract int var2Level(int var);
     
     
     /**** REORDERING ****/

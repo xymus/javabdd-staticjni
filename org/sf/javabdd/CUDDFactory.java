@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.1 2003/06/16 16:31:03 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.2 2003/06/18 08:58:48 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -22,7 +22,7 @@ public class CUDDFactory extends BDDFactory {
             throw new InternalError("Error: CUDDFactory already initialized.");
         }
         INSTANCE = new CUDDFactory();
-        INSTANCE.initialize(nodenum, cachesize);
+        INSTANCE.initialize(nodenum/8, cachesize);
         return INSTANCE;
     }
     
@@ -149,8 +149,9 @@ public class CUDDFactory extends BDDFactory {
      * @see org.sf.javabdd.BDDFactory#nithVar(int)
      */
     public BDD nithVar(int var) {
-        // TODO Auto-generated method stub
-        return null;
+        BDD b = ithVar(var);
+        BDD c = b.not(); b.free();
+        return c;
     }
 
     /* (non-Javadoc)
@@ -188,18 +189,12 @@ public class CUDDFactory extends BDDFactory {
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#level2Var(int)
      */
-    public int level2Var(int level) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    public native int level2Var(int level);
 
     /* (non-Javadoc)
-     * @see org.sf.javabdd.BDDFactory#var2level(int)
+     * @see org.sf.javabdd.BDDFactory#var2Level(int)
      */
-    public int var2level(int var) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    public native int var2Level(int var);
 
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#reorder(org.sf.javabdd.BDDFactory.ReorderMethod)
@@ -421,7 +416,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.1 2003/06/16 16:31:03 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.2 2003/06/18 08:58:48 joewhaley Exp $
      */
     public static class CUDDBDD extends BDD {
 
@@ -430,6 +425,13 @@ public class CUDDFactory extends BDDFactory {
         private CUDDBDD(long ddnode) {
             this._ddnode_ptr = ddnode;
             this.addRef();
+        }
+
+        /* (non-Javadoc)
+         * @see org.sf.javabdd.BDD#getFactory()
+         */
+        public BDDFactory getFactory() {
+            return INSTANCE;
         }
 
         /* (non-Javadoc)
@@ -482,10 +484,7 @@ public class CUDDFactory extends BDDFactory {
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#compose(org.sf.javabdd.BDD, int)
          */
-        public BDD compose(BDD that, int var) {
-            // TODO Auto-generated method stub
-            return null;
-        }
+        public native BDD compose(BDD that, int var);
 
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#veccompose(org.sf.javabdd.BDDPairing)
@@ -543,10 +542,7 @@ public class CUDDFactory extends BDDFactory {
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#support()
          */
-        public BDD support() {
-            // TODO Auto-generated method stub
-            return null;
-        }
+        public native BDD support();
 
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#apply(org.sf.javabdd.BDD, org.sf.javabdd.BDDFactory.BDDOp)
@@ -585,10 +581,7 @@ public class CUDDFactory extends BDDFactory {
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#satOne()
          */
-        public BDD satOne() {
-            // TODO Auto-generated method stub
-            return null;
-        }
+        public native BDD satOne();
 
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#fullSatOne()
@@ -666,8 +659,41 @@ public class CUDDFactory extends BDDFactory {
          * @see org.sf.javabdd.BDD#printSet()
          */
         public void printSet() {
-            // TODO Auto-generated method stub
-            
+            BDDFactory f = this.getFactory();
+            int[] set = new int[f.varNum()];
+            bdd_printset_rec(f, this, set);
+        }
+        
+        static void bdd_printset_rec(BDDFactory f, BDD r, int[] set) {
+            int n;
+            boolean first;
+
+            if (r.isZero())
+                return;
+            else if (r.isOne()) {
+                System.out.print('<');
+                first = true;
+
+                for (n = 0; n < set.length; n++) {
+                    if (set[n] > 0) {
+                        if (!first)
+                            System.out.print(", ");
+                        first = false;
+                        System.out.print(f.level2Var(n));
+                        System.out.print(':');
+                        System.out.print((set[n] == 2 ? 1 : 0));
+                    }
+                }
+                System.out.print('>');
+            } else {
+                set[f.var2Level(r.var())] = 1;
+                bdd_printset_rec(f, r.low(), set);
+
+                set[f.var2Level(r.var())] = 2;
+                bdd_printset_rec(f, r.high(), set);
+
+                set[f.var2Level(r.var())] = 0;
+            }
         }
 
         /* (non-Javadoc)
@@ -689,10 +715,7 @@ public class CUDDFactory extends BDDFactory {
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#nodeCount()
          */
-        public int nodeCount() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
+        public native int nodeCount();
 
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#pathCount()
@@ -766,7 +789,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.1 2003/06/16 16:31:03 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.2 2003/06/18 08:58:48 joewhaley Exp $
      */
     public static class CUDDBDDDomain extends BDDDomain {
 
@@ -838,8 +861,8 @@ public class CUDDFactory extends BDDFactory {
     /**
      * CUDDBDDPairing
      * 
-     * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.1 2003/06/16 16:31:03 joewhaley Exp $
+     * @author John Whaley
+     * @version $Id: CUDDFactory.java,v 1.2 2003/06/18 08:58:48 joewhaley Exp $
      */
     public static class CUDDBDDPairing extends BDDPairing {
 
