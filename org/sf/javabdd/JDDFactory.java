@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.3 2004/08/02 20:20:53 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.4 2004/09/14 23:54:10 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -531,7 +531,7 @@ public class JDDFactory extends BDDFactory {
      * @see org.sf.javabdd.BDDFactory#done()
      */
     public void done() {
-        // TODO Auto-generated method stub
+        bdd.cleanup();
     }
 
     /* (non-Javadoc)
