@@ -14,7 +14,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.17 2003/09/11 06:16:29 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.18 2003/09/14 23:49:19 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -1134,9 +1134,7 @@ public abstract class BDD {
     /**
      * <p>Frees this BDD.  Further use of this BDD will result in an exception being thrown.</p>
      */
-    public void free() {
-        this.delRef();
-    }
+    public abstract void free();
     
     /**
      * <p>Protected constructor.</p>
