@@ -23,12 +23,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.6 2004/11/01 05:01:32 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.7 2004/11/16 02:00:45 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.6 $";
+    public static final String REVISION = "$Revision: 1.7 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -3225,12 +3225,12 @@ public class JFactory extends BDDFactory {
             quantvarset = null;
         }
 
-        BddCache_done(applycache);
-        BddCache_done(itecache);
-        BddCache_done(quantcache);
-        BddCache_done(appexcache);
-        BddCache_done(replacecache);
-        BddCache_done(misccache);
+        BddCache_done(applycache); applycache = null;
+        BddCache_done(itecache); itecache = null;
+        BddCache_done(quantcache); quantcache = null;
+        BddCache_done(appexcache); appexcache = null;
+        BddCache_done(replacecache); replacecache = null;
+        BddCache_done(misccache); misccache = null;
 
         if (supportSet != null) {
             free(supportSet);
