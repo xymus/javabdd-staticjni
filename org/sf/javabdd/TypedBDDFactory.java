@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.14 2004/03/07 23:04:24 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.15 2004/03/16 06:27:33 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -978,8 +978,8 @@ public class TypedBDDFactory extends BDDFactory {
 
         public Iterator iterator(BDD var) {
             TypedBDD bdd1 = (TypedBDD) var;
-            if (!dom.containsAll(bdd1.dom)) {
-                out.println("Warning! iterator on non-existent domain(s): "+domainNames(dom)+" != "+domainNames(bdd1.dom));
+            if (!dom.equals(bdd1.dom)) {
+                out.println("Warning! iterator on the wrong domain(s): "+domainNames(dom)+" != "+domainNames(bdd1.dom));
             }
             return super.iterator(var);
         }
