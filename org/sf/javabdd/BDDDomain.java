@@ -5,7 +5,7 @@ package org.sf.javabdd;
  * machines, among other things.
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.5 2003/07/01 00:10:19 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.6 2003/07/14 19:37:46 joewhaley Exp $
  */
 public abstract class BDDDomain {
 
@@ -113,6 +113,42 @@ public abstract class BDDDomain {
         }
 
         return v;
+    }
+    
+    /**
+     * Returns the BDD that defines the given range of values, inclusive,
+     * for this finite domain block.
+     * 
+     * @return BDD
+     */
+    public BDD varRange(int lo, int hi) {
+        if (lo < 0 || hi >= this.size() || lo > hi) {
+            throw new BDDException("range <"+lo+", "+hi+"> is invalid");
+        }
+
+        BDDFactory factory = getFactory();
+        BDD result = factory.zero();
+        int[] ivar = this.vars();
+        while (lo <= hi) {
+            int bitmask = 1 << (ivar.length - 1);
+            BDD v = factory.one();
+            for (int n = ivar.length - 1; ; n--) {
+                int bit = lo & bitmask;
+                if (bit != 0) {
+                    v.andWith(factory.ithVar(ivar[n]));
+                } else {
+                    v.andWith(factory.nithVar(ivar[n]));
+                }
+                int mask = bitmask - 1;
+                if ((lo & mask) == 0 && (lo | mask) <= hi) {
+                    lo = (lo | mask) + 1;
+                    break;
+                }
+                bitmask >>= 1;
+            }
+            result.orWith(v);
+        }
+        return result;
     }
     
     /**
