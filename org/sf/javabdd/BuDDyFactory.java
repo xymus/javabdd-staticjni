@@ -26,7 +26,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.34 2004/08/02 20:20:53 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.35 2004/09/14 23:53:30 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -42,7 +42,7 @@ public class BuDDyFactory extends BDDFactory {
     private static BuDDyFactory INSTANCE;
     
     static {
-        String libname = "buddy";
+        String libname = System.getProperty("buddylib", "buddy");
         try {
             System.loadLibrary(libname);
         } catch (java.lang.UnsatisfiedLinkError x) {
