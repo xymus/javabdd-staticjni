@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.24 2003/08/03 12:12:41 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.25 2003/08/05 00:59:52 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -716,4 +716,36 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
+    public static void main(String[] args) {
+        BDDFactory bdd = init(1000000, 100000);
+        
+        BDDDomain[] doms = bdd.extDomain(new int[] {50, 10, 15, 20, 15});
+        
+        BDD b = bdd.one();
+        for (int i=0; i<doms.length-1; ++i) {
+            b.andWith(doms[i].ithVar(i));
+        }
+        
+        for (int i=0; i<bdd.numberOfDomains(); ++i) {
+            BDDDomain d = bdd.getDomain(i);
+            int[] ivar = d.vars();
+            System.out.print("Domain #"+i+":");
+            for (int j=0; j<ivar.length; ++j) {
+                System.out.print(' ');
+                System.out.print(j);
+                System.out.print(':');
+                System.out.print(ivar[j]);
+            }
+            System.out.println();
+        }
+        
+        BDDPairing p = bdd.makePair(doms[2], doms[doms.length-1]);
+        System.out.println("Pairing: "+p);
+        
+        System.out.println("Before replace(): "+b);
+        BDD c = b.replace(p);
+        System.out.println("After replace(): "+c);
+        
+        bdd.printTable(c);
+    }
 }

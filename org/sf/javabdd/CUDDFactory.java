@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.8 2003/08/03 12:09:56 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -354,7 +354,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.8 2003/08/03 12:09:56 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
      */
     public static class CUDDBDD extends BDD {
 
@@ -375,12 +375,16 @@ public class CUDDFactory extends BDDFactory {
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#isZero()
          */
-        public native boolean isZero();
+        public boolean isZero() {
+            return this._ddnode_ptr == INSTANCE.zero;
+        }
 
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#isOne()
          */
-        public native boolean isOne();
+        public boolean isOne() {
+            return this._ddnode_ptr == INSTANCE.one;
+        }
 
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#var()
@@ -556,14 +560,6 @@ public class CUDDFactory extends BDDFactory {
         }
 
         /* (non-Javadoc)
-         * @see org.sf.javabdd.BDD#printDot()
-         */
-        public void printDot() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException();
-        }
-
-        /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#nodeCount()
          */
         public native int nodeCount();
@@ -616,7 +612,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.8 2003/08/03 12:09:56 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
      */
     public static class CUDDBDDDomain extends BDDDomain {
 
@@ -637,7 +633,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDPairing
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.8 2003/08/03 12:09:56 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.9 2003/08/05 00:59:53 joewhaley Exp $
      */
     public static class CUDDBDDPairing extends BDDPairing {
 
@@ -669,6 +665,9 @@ public class CUDDFactory extends BDDFactory {
     public static void main(String[] args) {
         BDDFactory bdd = init(1000000, 100000);
         
+        System.out.println("One: "+((CUDDFactory)bdd).one);
+        System.out.println("Zero: "+((CUDDFactory)bdd).zero);
+        
         BDDDomain[] doms = bdd.extDomain(new int[] {50, 10, 15, 20, 15});
         
         BDD b = bdd.one();
@@ -695,6 +694,8 @@ public class CUDDFactory extends BDDFactory {
         System.out.println("Before replace(): "+b);
         BDD c = b.replace(p);
         System.out.println("After replace(): "+c);
+        
+        c.printDot();
     }
 
     
