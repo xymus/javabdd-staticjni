@@ -30,7 +30,7 @@ import java.io.PrintStream;
  * @see org.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.36 2004/08/12 23:26:03 jzhuang Exp $
+ * @version $Id: BDD.java,v 1.37 2004/10/12 20:40:17 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -1140,7 +1140,8 @@ public abstract class BDD {
      * position stores the number of times the i'th printing variable
      * occurred in the BDD.</p>
      * 
-     * <p>Compare to bdd_varprofile.</p>     */
+     * <p>Compare to bdd_varprofile.</p>
+     */
     public abstract int[] varProfile();
     
     /**
