@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.9 2003/11/04 09:36:02 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.10 2003/11/11 19:50:04 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -36,7 +36,12 @@ public class TypedBDDFactory extends BDDFactory {
     }
     
     public static BDDFactory init(int nodenum, int cachesize) {
-        BDDFactory a = BuDDyFactory.init(nodenum, cachesize);
+        BDDFactory a;
+        String factoryName = System.getProperty("bdd");
+        if (factoryName != null && factoryName.equals("typed"))
+            a = BuDDyFactory.init(nodenum, cachesize);
+        else
+            a = BDDFactory.init(nodenum, cachesize);
         return new TypedBDDFactory(a);
     }
     
@@ -1075,7 +1080,8 @@ public class TypedBDDFactory extends BDDFactory {
          * @see org.sf.javabdd.BDDPairing#set(int, int)
          */
         public void set(int oldvar, int newvar) {
-            throw new BDDException();
+            pairing.set(oldvar, newvar);
+            //throw new BDDException();
         }
 
         /* (non-Javadoc)
