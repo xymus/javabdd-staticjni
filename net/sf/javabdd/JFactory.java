@@ -23,12 +23,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.8 2005/01/27 03:48:59 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.9 2005/01/28 03:27:13 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.8 $";
+    public static final String REVISION = "$Revision: 1.9 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -1488,8 +1488,10 @@ public class JFactory extends BDDFactory {
             quantvarsetID = 1;
         }
 
+        quantlast = -1;
         for (n = r; n > 1; n = HIGH(n)) {
             quantvarset[LEVEL(n)] = quantvarsetID;
+            if (VERIFY_ASSERTIONS) _assert(quantlast < LEVEL(n));
             quantlast = LEVEL(n);
         }
 
@@ -1512,6 +1514,7 @@ public class JFactory extends BDDFactory {
             quantvarsetID = 1;
         }
 
+        quantlast = 0;
         for (n = r; !ISCONST(n);) {
             if (ISZERO(LOW(n))) {
                 quantvarset[LEVEL(n)] = quantvarsetID;
@@ -1520,6 +1523,7 @@ public class JFactory extends BDDFactory {
                 quantvarset[LEVEL(n)] = -quantvarsetID;
                 n = LOW(n);
             }
+            if (VERIFY_ASSERTIONS) _assert(quantlast < LEVEL(n));
             quantlast = LEVEL(n);
         }
 
@@ -5337,7 +5341,7 @@ public class JFactory extends BDDFactory {
         if (r < 2)
             return;
 
-        if (!HASREF(r)) {
+        if (!HASREF(r) || MARKED(r)) {
             bddfreenum--;
 
             /* Detect variable dependencies for the interaction matrix */
