@@ -5,7 +5,7 @@ package org.sf.javabdd;
  * BDD.
  * 
  * @author John Whaley
- * @version $Id: BDDPairing.java,v 1.3 2003/07/01 00:10:19 joewhaley Exp $
+ * @version $Id: BDDPairing.java,v 1.4 2004/06/21 16:38:51 joewhaley Exp $
  */
 public abstract class BDDPairing {
 
@@ -61,14 +61,9 @@ public abstract class BDDPairing {
      * Compare to fdd_setpair.
      */
     public void set(BDDDomain p1, BDDDomain p2) {
-        if (p1.varNum() != p2.varNum())
-            throw new BDDException();
-
         int[] ivar1 = p1.vars();
         int[] ivar2 = p2.vars();
-        for (int n = 0; n < ivar1.length; n++) {
-            this.set(ivar1[n], ivar2[n]);
-        }
+        this.set(ivar1, ivar2);
     }
 
     /**
