@@ -8,8 +8,12 @@ package org.sf.javabdd;
  * of the buddy documentation.   A BDDDomain is a block of BDD variables 
  * that can represent integer values as opposed to only true and false.</p>
  * 
+ * <p>Use <tt>BDDFactory.extDomain()</tt> to create one or more domains with 
+ * a specified list of sizes.</p>
+ * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.12 2003/11/10 23:08:27 gback Exp $
+ * @version $Id: BDDDomain.java,v 1.13 2003/11/10 23:24:53 gback Exp $
+ * @see BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
 
