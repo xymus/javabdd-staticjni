@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.1 2004/10/16 02:58:57 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
  * @see net.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
@@ -41,8 +41,6 @@ public abstract class BDDDomain {
      * @param index  index of this domain
      * @param range  size of this domain
      */
-    protected BDDDomain(int index, long range) {
-    }
     protected BDDDomain(int index, BigInteger range) {
         BigInteger calcsize = BigInteger.valueOf(2L);
         if (range.signum() <= 0)
