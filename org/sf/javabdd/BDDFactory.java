@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.27 2004/09/14 04:25:09 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.28 2004/09/15 19:35:25 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -65,8 +65,8 @@ public abstract class BDDFactory {
                 return TestBDDFactory.init(nodenum, cachesize);
             if (bddpackage.equals("typed"))
                 return TypedBDDFactory.init(nodenum, cachesize);
-        } catch (LinkageError _) {
-            System.out.println("Could not load BDD package "+bddpackage);
+        } catch (LinkageError e) {
+            System.out.println("Could not load BDD package "+bddpackage+": "+e.getLocalizedMessage());
         }
         try {
             Class c = Class.forName(bddpackage);
