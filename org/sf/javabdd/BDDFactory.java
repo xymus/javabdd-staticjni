@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.23 2004/07/20 21:50:24 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.24 2004/07/28 09:36:57 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -59,10 +59,8 @@ public abstract class BDDFactory {
                 return CUDDFactory.init(nodenum, cachesize);
             if (bddpackage.equals("cal"))
                 return CALFactory.init(nodenum, cachesize);
-            if (bddpackage.equals("j"))
+            if (bddpackage.equals("j") || bddpackage.equals("java"))
                 return JFactory.init(nodenum, cachesize);
-            if (bddpackage.equals("java"))
-                return JavaFactory.init(nodenum, cachesize);
             if (bddpackage.equals("jdd"))
                 return JDDFactory.init(nodenum, cachesize);
             if (bddpackage.equals("test"))
