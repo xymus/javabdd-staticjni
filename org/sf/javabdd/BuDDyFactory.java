@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.9 2003/02/04 08:25:41 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.10 2003/02/21 09:37:02 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -559,7 +559,12 @@ public class BuDDyFactory extends BDDFactory {
         private BuDDyBDDDomain(int id) {
             this._id = id;
         }
-            
+        
+        /**
+         * @see org.sf.javabdd.BDDDomain#getIndex()
+         */
+        public int getIndex() { return _id; }
+        
         /**
          * @see org.sf.javabdd.BDDDomain#domain()
          */
@@ -642,6 +647,19 @@ public class BuDDyFactory extends BDDFactory {
          * @see org.sf.javabdd.BDDPairing#reset()
          */
         public native void reset();
+        
+        /**
+         * @see java.lang.Object#finalize()
+         */
+        protected void finalize() throws Throwable {
+            super.finalize();
+            this.free();
+        }
+
+        /**
+         * Free the memory allocated for this pair.
+         */
+        private native void free();
         
     }
     
