@@ -33,17 +33,14 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
     public static BDDFactory init(int nodenum, int cachesize) {
-        if (INSTANCE != null) {
-            throw new InternalError("Error: CUDDFactory already initialized.");
-        }
-        INSTANCE = new CUDDFactory();
-        INSTANCE.initialize(nodenum/256, cachesize);
-        return INSTANCE;
+        CUDDFactory f = new CUDDFactory();
+        f.initialize(nodenum/256, cachesize);
+        return f;
     }
     
     private static CUDDFactory INSTANCE;
@@ -87,6 +84,10 @@ public class CUDDFactory extends BDDFactory {
      * @see net.sf.javabdd.BDDFactory#initialize(int, int)
      */
     protected void initialize(int nodenum, int cachesize) {
+        if (INSTANCE != null) {
+            throw new InternalError("Error: CUDDFactory already initialized.");
+        }
+        INSTANCE = this;
         initialize0(nodenum, cachesize);
     }
     private static native void initialize0(int nodenum, int cachesize);
@@ -402,6 +403,14 @@ public class CUDDFactory extends BDDFactory {
     }
     private static native int getNodeNum0();
 
+    /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#getCacheSize()
+     */
+    public int getCacheSize() {
+        // TODO Implement this.
+        throw new UnsupportedOperationException();
+    }
+    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#reorderGain()
      */
@@ -929,7 +938,7 @@ public class CUDDFactory extends BDDFactory {
         c.printDot();
     }
 
-    public static final String REVISION = "$Revision: 1.3 $";
+    public static final String REVISION = "$Revision: 1.4 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

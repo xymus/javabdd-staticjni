@@ -33,17 +33,14 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CALFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
+ * @version $Id: CALFactory.java,v 1.4 2004/10/19 11:11:34 joewhaley Exp $
  */
 public class CALFactory extends BDDFactory {
 
     public static BDDFactory init(int nodenum, int cachesize) {
-        if (INSTANCE != null) {
-            throw new InternalError("Error: CALFactory already initialized.");
-        }
-        INSTANCE = new CALFactory();
-        INSTANCE.initialize(nodenum/256, cachesize);
-        return INSTANCE;
+        CALFactory f = new CALFactory();
+        f.initialize(nodenum/256, cachesize);
+        return f;
     }
     
     private static CALFactory INSTANCE;
@@ -87,6 +84,10 @@ public class CALFactory extends BDDFactory {
      * @see net.sf.javabdd.BDDFactory#initialize(int, int)
      */
     protected void initialize(int nodenum, int cachesize) {
+        if (INSTANCE != null) {
+            throw new InternalError("Error: CALFactory already initialized.");
+        }
+        INSTANCE = this;
         initialize0(nodenum, cachesize);
     }
     private static native void initialize0(int nodenum, int cachesize);
@@ -367,6 +368,14 @@ public class CALFactory extends BDDFactory {
         throw new UnsupportedOperationException();
     }
 
+    /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#getCacheSize()
+     */
+    public int getCacheSize() {
+        // TODO Implement this.
+        throw new UnsupportedOperationException();
+    }
+    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getNodeNum()
      */
@@ -887,7 +896,7 @@ public class CALFactory extends BDDFactory {
         return 0;
     }
 
-    public static final String REVISION = "$Revision: 1.3 $";
+    public static final String REVISION = "$Revision: 1.4 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

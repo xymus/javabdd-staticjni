@@ -23,7 +23,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -363,6 +363,13 @@ public class TypedBDDFactory extends BDDFactory {
     }
 
     /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#getCacheSize()
+     */
+    public int getCacheSize() {
+        return factory.getCacheSize();
+    }
+    
+    /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#reorderGain()
      */
     public int reorderGain() {
@@ -459,7 +466,7 @@ public class TypedBDDFactory extends BDDFactory {
      * A BDD with types (domains) attached to it.
      * 
      * @author jwhaley
-     * @version $Id: TypedBDDFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
+     * @version $Id: TypedBDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
      */
     public class TypedBDD extends BDD {
         
@@ -1164,7 +1171,7 @@ public class TypedBDDFactory extends BDDFactory {
         
     }
     
-    public static final String REVISION = "$Revision: 1.3 $";
+    public static final String REVISION = "$Revision: 1.4 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

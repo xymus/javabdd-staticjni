@@ -11,7 +11,7 @@ import java.math.BigInteger;
  * JDDFactory
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.3 2004/10/18 09:38:18 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -30,8 +30,8 @@ public class JDDFactory extends BDDFactory {
      * @see net.sf.javabdd.BDDFactory#init(int, int)
      */
     public static BDDFactory init(int nodenum, int cachesize) {
-        BDDFactory INSTANCE = new JDDFactory(nodenum, cachesize);
-        return INSTANCE;
+        BDDFactory f = new JDDFactory(nodenum, cachesize);
+        return f;
     }
 
     /**
@@ -604,6 +604,14 @@ public class JDDFactory extends BDDFactory {
     }
     
     /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#getCacheSize()
+     */
+    public int getCacheSize() {
+        // TODO Implement this.
+        throw new UnsupportedOperationException();
+    }
+    
+    /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#setCacheRatio(int)
      */
     public double setCacheRatio(double x) {
@@ -920,7 +928,7 @@ public class JDDFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.3 $";
+    public static final String REVISION = "$Revision: 1.4 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
