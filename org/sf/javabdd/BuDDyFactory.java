@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.19 2003/07/13 07:48:43 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.20 2003/07/13 07:57:20 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -38,7 +38,10 @@ public class BuDDyFactory extends BDDFactory {
             System.loadLibrary("buddy");
         } catch (java.lang.UnsatisfiedLinkError x) {
             // No "buddy" library, try loading it from the current directory...
-            System.load("libbuddy.so");
+            String libname = System.mapLibraryName("buddy");
+            String currentdir = System.getProperty("user.dir");
+            String sep = System.getProperty("file.separator");
+            System.load(currentdir+sep+libname);
         }
         registerNatives();
     }
