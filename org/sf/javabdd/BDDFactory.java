@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.26 2004/08/02 20:32:59 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.27 2004/09/14 04:25:09 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -510,7 +510,7 @@ public abstract class BDDFactory {
         
         for (Iterator it = visited.keySet().iterator(); it.hasNext(); ) {
             BDD b = (BDD) it.next();
-            b.free();
+            if (b != r) b.free();
         }
     }
 
