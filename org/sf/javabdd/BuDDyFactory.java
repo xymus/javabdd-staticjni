@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.15 2003/06/18 08:58:48 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.16 2003/06/18 22:50:48 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -313,7 +313,7 @@ public class BuDDyFactory extends BDDFactory {
     public native int numberOfDomains();
 
     /**
-     * @see org.sf.javabdd.BDDFactory#getDomain()
+     * @see org.sf.javabdd.BDDFactory#getDomain(int)
      */
     public BDDDomain getDomain(int i) {
         if (i < 0 || i >= numberOfDomains())
@@ -719,7 +719,7 @@ public class BuDDyFactory extends BDDFactory {
         public native int[] vars();
         
         /**
-         * @see java.lang.Object#equals()
+         * @see java.lang.Object#equals(java.lang.Object)
          */
         public boolean equals(Object o) {
             try {
