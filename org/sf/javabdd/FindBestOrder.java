@@ -17,7 +17,7 @@ import java.math.BigInteger;
  * FindBestOrder
  * 
  * @author jwhaley
- * @version $Id: FindBestOrder.java,v 1.3 2004/04/04 18:34:14 joewhaley Exp $
+ * @version $Id: FindBestOrder.java,v 1.4 2004/05/07 08:09:56 joewhaley Exp $
  */
 public class FindBestOrder {
 
@@ -66,12 +66,16 @@ public class FindBestOrder {
     }
     
     public void writeBDDConfig(BDDFactory bdd, String fileName) throws IOException {
-        DataOutputStream dos = new DataOutputStream(new FileOutputStream(fileName));
-        for (int i = 0; i < bdd.numberOfDomains(); ++i) {
-            BDDDomain d = bdd.getDomain(i);
-            dos.writeBytes(d.getName()+" "+d.size()+"\n");
+        DataOutputStream dos = null;
+        try {
+            dos = new DataOutputStream(new FileOutputStream(fileName));
+            for (int i = 0; i < bdd.numberOfDomains(); ++i) {
+                BDDDomain d = bdd.getDomain(i);
+                dos.writeBytes(d.getName()+" "+d.size()+"\n");
+            }
+        } finally {
+            if (dos != null) dos.close();
         }
-        dos.close();
     }
     
     public long tryOrder(boolean reverse, String varOrder) {
@@ -134,8 +138,9 @@ public class FindBestOrder {
         }
         
         public void readBDDConfig(BDDFactory bdd) {
+            BufferedReader in = null;
             try {
-                BufferedReader in = new BufferedReader(new FileReader(filename0));
+                in = new BufferedReader(new FileReader(filename0));
                 for (;;) {
                     String s = in.readLine();
                     if (s == null || s.equals("")) break;
@@ -144,8 +149,9 @@ public class FindBestOrder {
                     long size = Long.parseLong(st.nextToken())-1;
                     makeDomain(bdd, name, BigInteger.valueOf(size).bitLength());
                 }
-                in.close();
             } catch (IOException x) {
+            } finally {
+                if (in != null) try { in.close(); } catch (IOException _) { }
             }
         }
         
