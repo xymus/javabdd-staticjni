@@ -17,7 +17,7 @@ import java.math.BigInteger;
  * FindBestOrder
  * 
  * @author jwhaley
- * @version $Id: FindBestOrder.java,v 1.4 2004/05/07 08:09:56 joewhaley Exp $
+ * @version $Id: FindBestOrder.java,v 1.5 2004/05/07 11:00:56 joewhaley Exp $
  */
 public class FindBestOrder {
 
@@ -38,12 +38,14 @@ public class FindBestOrder {
     int maxIncrease;
 
     public FindBestOrder(BDD b1, BDD b2, BDD dom, BDDFactory.BDDOp op,
+                         int nodeTableSize,
                          int cacheSize, int maxIncrease, long bestTime, long delayTime)
         throws IOException {
         this.op = op;
         this.bestCalcTime = bestTime;
         this.bestTotalTime = Long.MAX_VALUE;
-        this.nodeTableSize = b1.getFactory().getAllocNum();
+        //this.nodeTableSize = b1.getFactory().getAllocNum();
+        this.nodeTableSize = nodeTableSize;
         this.cacheSize = cacheSize;
         this.maxIncrease = maxIncrease;
         this.DELAY_TIME = delayTime;
