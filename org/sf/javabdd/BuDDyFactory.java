@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.23 2003/07/24 21:15:14 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.24 2003/08/03 12:12:41 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -60,11 +60,6 @@ public class BuDDyFactory extends BDDFactory {
      * @see org.sf.javabdd.BDDFactory#one()
      */
     public BDD one() { return new BuDDyBDD(1); }
-    
-    protected BDD makeNode(int level, BDD low, BDD high) {
-        return makeNode0(level, (BuDDyBDD) low, (BuDDyBDD) high);
-    }
-    protected native BuDDyBDD makeNode0(int level, BuDDyBDD low, BuDDyBDD high);
     
     /**
      * @see org.sf.javabdd.BDDFactory#buildCube(int, java.util.Collection)
