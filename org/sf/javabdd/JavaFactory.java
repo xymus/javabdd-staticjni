@@ -23,7 +23,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JavaFactory.java,v 1.14 2004/06/23 03:24:00 joewhaley Exp $
+ * @version $Id: JavaFactory.java,v 1.15 2004/06/30 21:43:05 joewhaley Exp $
  */
 public class JavaFactory extends BDDFactory {
 
@@ -2718,7 +2718,7 @@ public class JavaFactory extends BDDFactory {
         bdd_unmark_upto(node.high, level);
     }
 
-    static final boolean CACHESTATS = false;
+    public static final boolean CACHESTATS = false;
 
     int bdd_makenode(int level, int low, int high) {
         BddNode node;
@@ -2896,14 +2896,9 @@ public class JavaFactory extends BDDFactory {
 
         bdderrorcond = 0;
 
-        bddcachestats = new bddCacheStat();
-        bddcachestats.uniqueAccess = 0;
-        bddcachestats.uniqueChain = 0;
-        bddcachestats.uniqueHit = 0;
-        bddcachestats.uniqueMiss = 0;
-        bddcachestats.opHit = 0;
-        bddcachestats.opMiss = 0;
-        bddcachestats.swapCount = 0;
+        if (CACHESTATS) {
+            bddcachestats = new bddCacheStat();
+        }
 
         //bdd_gbc_hook(bdd_default_gbchandler);
         //bdd_error_hook(bdd_default_errhandler);
