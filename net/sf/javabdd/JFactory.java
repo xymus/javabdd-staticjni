@@ -23,15 +23,15 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    static final String VERSION = "JFactory $Revision: 1.2 $";
+    public static final String REVISION = "$Revision: 1.3 $";
     
     public String getVersion() {
-        return VERSION;
+        return "JFactory "+REVISION.substring(11, REVISION.length()-2);
     }
     
     private JFactory() { }

@@ -33,7 +33,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CALFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+ * @version $Id: CALFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
  */
 public class CALFactory extends BDDFactory {
 
@@ -887,11 +887,13 @@ public class CALFactory extends BDDFactory {
         return 0;
     }
 
+    public static final String REVISION = "$Revision: 1.3 $";
+    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
      */
     public String getVersion() {
-        return "CAL r$Revision: 1.2 $";
+        return "CAL "+REVISION.substring(11, REVISION.length()-2);
     }
     
 }

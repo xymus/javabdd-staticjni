@@ -30,7 +30,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -469,14 +469,6 @@ public class BuDDyFactory extends BDDFactory {
     }
     private static native void printOrder0();
 
-    /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#getVersion()
-     */
-    public String getVersion() {
-        return getVersion0();
-    }
-    private static native String getVersion0();
-    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#nodeCount(java.util.Collection)
      */
@@ -1084,5 +1076,15 @@ public class BuDDyFactory extends BDDFactory {
         public BDDFactory getFactory() { return INSTANCE; }
 
     }
+    
+    public static final String REVISION = "$Revision: 1.3 $";
+    
+    /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#getVersion()
+     */
+    public String getVersion() {
+        return getVersion0()+" rev"+REVISION.substring(11, REVISION.length()-2);
+    }
+    private static native String getVersion0();
     
 }

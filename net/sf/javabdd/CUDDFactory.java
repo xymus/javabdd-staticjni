@@ -33,7 +33,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -929,11 +929,13 @@ public class CUDDFactory extends BDDFactory {
         c.printDot();
     }
 
+    public static final String REVISION = "$Revision: 1.3 $";
+    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
      */
     public String getVersion() {
-        return "CUDD r$Revision: 1.2 $";
+        return "CUDD "+REVISION.substring(11, REVISION.length()-2);
     }
     
 }

@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.3 2004/10/18 09:45:43 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
@@ -974,11 +974,13 @@ public class TestBDDFactory extends BDDFactory {
         
     }
     
+    public static final String REVISION = "$Revision: 1.3 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
      */
     public String getVersion() {
-        return "TestBDD $Revision: 1.2 $ of ("+f1.getVersion()+","+f1.getVersion()+")";
+        return "TestBDD "+REVISION.substring(11, REVISION.length()-2)+
+               " of ("+f1.getVersion()+","+f1.getVersion()+")";
     }
 }
