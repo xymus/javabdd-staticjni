@@ -23,7 +23,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JavaFactory.java,v 1.13 2004/06/21 16:38:51 joewhaley Exp $
+ * @version $Id: JavaFactory.java,v 1.14 2004/06/23 03:24:00 joewhaley Exp $
  */
 public class JavaFactory extends BDDFactory {
 
@@ -4278,7 +4278,7 @@ public class JavaFactory extends BDDFactory {
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#save(java.io.DataOutput, org.sf.javabdd.BDD)
      */
-    public void save_(DataOutput out, BDD b) throws IOException {
+    public void save(DataOutput out, BDD b) throws IOException {
         int x = ((bdd) b)._index;
         bdd_save(out, x);
     }
