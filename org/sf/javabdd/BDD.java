@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.4 2003/01/31 09:32:51 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.5 2003/02/02 00:00:21 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -515,6 +515,15 @@ public abstract class BDD {
      */
     public abstract double logSatCount(BDD varset);
     
+    public abstract boolean equals(BDD that);
+    
+    public boolean equals(Object o) {
+        if (!(o instanceof BDD)) return false;
+        return this.equals((BDD) o);
+    }
+    
+    public abstract int hashCode();
+    
     /**
      * Increases the reference count on a node.  Reference counting is done on
      * externally-referenced nodes only.
@@ -530,6 +539,10 @@ public abstract class BDD {
      * Compare to bdd_delref.
      */
     protected abstract void delRef();
+    
+    public void free() {
+        this.delRef();
+    }
     
     protected BDD() { }
     

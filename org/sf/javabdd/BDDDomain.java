@@ -2,7 +2,7 @@ package org.sf.javabdd;
 
 /**
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.1 2003/01/31 09:32:51 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.2 2003/02/02 00:00:22 joewhaley Exp $
  */
 public abstract class BDDDomain {
 
@@ -19,7 +19,7 @@ public abstract class BDDDomain {
      * Returns the size of the domain for this finite domain block.
      * 
      * Compare to fdd_domainsize.
-     */ 
+     */
     public abstract int size();
     
     /**

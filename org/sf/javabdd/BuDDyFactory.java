@@ -17,7 +17,7 @@ import java.util.Iterator;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.5 2003/01/31 10:15:25 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.6 2003/02/02 00:00:21 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -521,6 +521,20 @@ public class BuDDyFactory extends BDDFactory {
          * @see org.sf.javabdd.BDD#printSetWithDomains()
          */
         public native void printSetWithDomains();
+        
+        /**
+         * @see org.sf.javabdd.BDD#equals(org.sf.javabdd.BDD)
+         */
+        public boolean equals(BDD that) {
+            return this._id == ((BuDDyBDD) that)._id;
+        }
+        
+        /**
+         * @see org.sf.javabdd.BDD#hashCode()
+         */
+        public int hashCode() {
+            return this._id;
+        }
 
     }
     
