@@ -23,7 +23,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.2 2004/07/22 20:03:59 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.3 2004/07/23 01:04:03 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
@@ -539,6 +539,9 @@ public class JFactory extends BDDFactory {
         int res;
         BddCacheData copy() {
             BddCacheDataI that = new BddCacheDataI();
+            that.a = this.a;
+            that.b = this.b;
+            that.c = this.c;
             that.res = this.res;
             return that;
         }
@@ -548,6 +551,9 @@ public class JFactory extends BDDFactory {
         double dres;
         BddCacheData copy() {
             BddCacheDataD that = new BddCacheDataD();
+            that.a = this.a;
+            that.b = this.b;
+            that.c = this.c;
             that.dres = this.dres;
             return that;
         }
