@@ -35,7 +35,7 @@ import java.util.List;
  * @see org.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CALFactory.java,v 1.3 2004/07/22 20:03:59 joewhaley Exp $
+ * @version $Id: CALFactory.java,v 1.4 2004/07/28 03:39:55 joewhaley Exp $
  */
 public class CALFactory extends BDDFactory {
 
@@ -676,6 +676,7 @@ public class CALFactory extends BDDFactory {
         public double satCount() {
             return satCount0(_ddnode_ptr);
         }
+        // TODO: debug CAL satCount.
         private static native double satCount0(long b);
         
         /* (non-Javadoc)
