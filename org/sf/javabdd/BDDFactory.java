@@ -1,13 +1,14 @@
 package org.sf.javabdd;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Interface for the creation and manipulation of BDDs.
@@ -15,7 +16,7 @@ import java.util.StringTokenizer;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.17 2003/12/01 04:07:10 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.18 2004/04/03 07:50:57 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
