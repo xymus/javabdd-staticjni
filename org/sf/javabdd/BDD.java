@@ -25,7 +25,7 @@ import java.util.List;
  * @see BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.26 2003/11/14 01:51:05 gback Exp $
+ * @version $Id: BDD.java,v 1.27 2004/03/03 08:52:24 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -979,6 +979,7 @@ public abstract class BDD {
             this.ts = ts;
             this.sb = sb;
             this.lastHigh = -2L;
+            this.domain = domain;
         }
         
         void append(long low, long high) {
