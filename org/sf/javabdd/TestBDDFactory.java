@@ -17,7 +17,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.6 2003/11/01 00:45:43 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.7 2003/11/01 06:19:07 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
@@ -897,7 +897,7 @@ public class TestBDDFactory extends BDDFactory {
         
     }
         
-    public class TestBDDDomain extends BDDDomain {
+    class TestBDDDomain extends BDDDomain {
 
         TestBDDDomain(int a, long b) {
             super(a, b);
@@ -912,7 +912,7 @@ public class TestBDDFactory extends BDDFactory {
         
     }
 
-    public class TestBDDBitVector extends BDDBitVector {
+    class TestBDDBitVector extends BDDBitVector {
 
         TestBDDBitVector(int a) {
             super(a);

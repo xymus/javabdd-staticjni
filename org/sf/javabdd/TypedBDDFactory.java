@@ -21,7 +21,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.5 2003/11/01 00:45:43 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.6 2003/11/01 06:19:07 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -924,7 +924,7 @@ public class TypedBDDFactory extends BDDFactory {
         
     }
     
-    public class TypedBDDDomain extends BDDDomain {
+    class TypedBDDDomain extends BDDDomain {
 
         BDDDomain domain;
         
@@ -1004,7 +1004,7 @@ public class TypedBDDFactory extends BDDFactory {
 
     }
     
-    public class TypedBDDPairing extends BDDPairing {
+    class TypedBDDPairing extends BDDPairing {
 
         final Map domMap;
         final BDDPairing pairing;
