@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.17 2003/07/01 00:10:19 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.18 2003/07/13 07:33:03 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -34,6 +34,10 @@ public class BuDDyFactory extends BDDFactory {
     private static BuDDyFactory INSTANCE;
     
     static {
+        String libpath = System.getProperty("java.library.path", "");
+        libpath += System.getProperty("path.separator");
+        libpath += ".";
+        System.setProperty("java.library.path", libpath);
         System.loadLibrary("buddy");
         registerNatives();
     }
