@@ -1,5 +1,7 @@
 package org.sf.javabdd;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -9,9 +11,36 @@ import java.util.Iterator;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.9 2003/07/24 21:15:14 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.10 2003/08/03 12:12:21 joewhaley Exp $
  */
 public abstract class BDDFactory {
+
+    public static BDDFactory init(int nodenum, int cachesize) {
+        String bddpackage = System.getProperty("bdd", "buddy");
+        try {
+            if (bddpackage.equals("buddy"))
+                return BuDDyFactory.init(nodenum, cachesize);
+            if (bddpackage.equals("cudd"))
+                return CUDDFactory.init(nodenum, cachesize);
+            if (bddpackage.equals("java"))
+                return JavaFactory.init(nodenum, cachesize);
+            if (bddpackage.equals("test"))
+                return TestBDDFactory.init(nodenum, cachesize);
+        } catch (LinkageError _) {
+            System.out.println("Could not load BDD package "+bddpackage);
+        }
+        try {
+            Class c = Class.forName(bddpackage);
+            Method m = c.getMethod("init", new Class[] { int.class, int.class });
+            return (BDDFactory) m.invoke(null, new Object[] { new Integer(nodenum), new Integer(cachesize) });
+        }
+        catch (ClassNotFoundException _) {}
+        catch (NoSuchMethodException _) {}
+        catch (IllegalAccessException _) {}
+        catch (InvocationTargetException _) {}
+        // falling back to default java implementation.
+        return JavaFactory.init(nodenum, cachesize);
+    }
 
     /**
      * Logical 'and'.
@@ -69,6 +98,12 @@ public abstract class BDDFactory {
         }
     }
     
+    protected BDDFactory() {
+        String s = this.getClass().toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        System.out.println("Using BDD package: "+s);
+    }
+    
     /**
      * Get the constant false BDD.
      * 
@@ -82,8 +117,6 @@ public abstract class BDDFactory {
      * Compare to bdd_true.
      */
     public abstract BDD one();
-    
-    protected abstract BDD makeNode(int level, BDD low, BDD high);
     
     /**
      * Build a cube from an array of variables.
