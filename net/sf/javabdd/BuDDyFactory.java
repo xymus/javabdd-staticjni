@@ -34,7 +34,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.5 2004/10/19 11:11:35 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.6 2004/10/19 21:45:19 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -234,7 +234,7 @@ public class BuDDyFactory extends BDDFactory {
     private static native int setMaxNodeNum0(int size);
 
     /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#setMinFreeNodes(int)
+     * @see net.sf.javabdd.BDDFactory#setMinFreeNodes(double)
      */
     public double setMinFreeNodes(double x) {
         return setMinFreeNodes0((int)(x * 100.)) / 100.;
@@ -1131,7 +1131,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.5 $";
+    public static final String REVISION = "$Revision: 1.6 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
