@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.18 2004/08/02 20:20:53 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.19 2004/08/12 21:18:27 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -423,7 +423,7 @@ public class TypedBDDFactory extends BDDFactory {
      * A BDD with types (domains) attached to it.
      * 
      * @author jwhaley
-     * @version $Id: TypedBDDFactory.java,v 1.18 2004/08/02 20:20:53 joewhaley Exp $
+     * @version $Id: TypedBDDFactory.java,v 1.19 2004/08/12 21:18:27 joewhaley Exp $
      */
     public class TypedBDD extends BDD {
         
@@ -982,7 +982,7 @@ public class TypedBDDFactory extends BDDFactory {
             return bdd.hashCode();
         }
 
-        public Iterator iterator(BDD var) {
+        public BDDIterator iterator(BDD var) {
             TypedBDD bdd1 = (TypedBDD) var;
             if (!dom.equals(bdd1.dom)) {
                 out.println("Warning! iterator on the wrong domain(s): "+domainNames(dom)+" != "+domainNames(bdd1.dom));
@@ -990,7 +990,7 @@ public class TypedBDDFactory extends BDDFactory {
             return super.iterator(var);
         }
         
-        public Iterator iterator() {
+        public BDDIterator iterator() {
             Set newDom = makeSet();
             newDom.addAll(dom);
             return super.iterator(new TypedBDD(getDomains(), newDom));
