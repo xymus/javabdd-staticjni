@@ -14,7 +14,7 @@ import java.util.Iterator;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.17 2004/07/30 21:04:40 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.18 2004/08/09 21:48:42 joewhaley Exp $
  * @see org.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
@@ -113,7 +113,7 @@ public abstract class BDDDomain {
     public BDD buildAdd(BDDDomain that, int bits, long value) {
         if (bits > this.varNum() ||
             bits > that.varNum())
-            throw new BDDException();
+            throw new BDDException("Number of bits requested ("+bits+") is larger than domain sizes "+this.varNum()+","+that.varNum());
         
         BDDFactory bdd = getFactory();
         

@@ -29,7 +29,7 @@ import java.io.PrintStream;
  * @see org.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.32 2004/08/09 21:31:19 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.33 2004/08/09 21:48:42 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -1405,17 +1405,26 @@ public abstract class BDD {
             BDD var = d.set();
             Iterator i1 = b.iterator(var);
             Iterator i2 = b.iterator2(var);
-            var.free(); b.free();
+            b.free();
             Set s1 = new HashSet();
             Set s2 = new HashSet();
             while (i1.hasNext()) {
                 BDD b1 = (BDD) i1.next();
+                double sc = b1.satCount(var); 
+                if (sc != 1.) {
+                    System.out.println("Error, iterator() returned BDD with satcount "+sc+" : "+b1);
+                }
                 s1.add(b1);
             }
             while (i2.hasNext()) {
                 BDD b2 = (BDD) i2.next();
+                double sc = b2.satCount(var); 
+                if (sc != 1.) {
+                    System.out.println("Error, iterator2() returned BDD with satcount "+sc+" : "+b2);
+                }
                 s2.add(b2);
             }
+            var.free();
             if (!s1.equals(s2)) {
                 Set s1_minus_s2 = new HashSet(s1);
                 s1_minus_s2.removeAll(s2);
