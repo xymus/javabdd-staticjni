@@ -28,7 +28,7 @@ import java.math.BigInteger;
  * 20% less memory.</p>
  * 
  * @author jwhaley
- * @version $Id: MicroFactory.java,v 1.5 2005/01/31 12:04:45 joewhaley Exp $
+ * @version $Id: MicroFactory.java,v 1.6 2005/02/03 02:12:27 joewhaley Exp $
  */
 public class MicroFactory extends BDDFactory {
 
@@ -717,6 +717,7 @@ public class MicroFactory extends BDDFactory {
                 return equals((PairOfInts) o);
             return false;
         }
+        public int hashCode() { return a ^ b; }
     }
     
     public static class TripleOfInts {
@@ -730,6 +731,7 @@ public class MicroFactory extends BDDFactory {
                 return equals((TripleOfInts) o);
             return false;
         }
+        public int hashCode() { return a ^ b ^ c; }
     }
     
     private class OpCache1 extends OpCache {
@@ -6504,7 +6506,7 @@ public class MicroFactory extends BDDFactory {
         return cachestats;
     }
     
-    public static final String REVISION = "$Revision: 1.5 $";
+    public static final String REVISION = "$Revision: 1.6 $";
     
     public String getVersion() {
         return "MicroFactory "+REVISION.substring(11, REVISION.length()-2);
