@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -354,11 +354,12 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
      */
     static class CUDDBDD extends BDD {
 
         private long _ddnode_ptr;
+        static final long INVALID_BDD = -1;
         
         private CUDDBDD(long ddnode) {
             this._ddnode_ptr = ddnode;
@@ -611,16 +612,27 @@ public class CUDDFactory extends BDDFactory {
          */
         protected native void delRef();
 
-        static final boolean USE_FINALIZER = true;
+        static final boolean USE_FINALIZER = false;
         
+        /* (non-Javadoc)
+         * @see java.lang.Object#finalize()
+         */
         protected void finalize() throws Throwable {
             super.finalize();
             if (USE_FINALIZER) {
                 if (false && _ddnode_ptr >= 0) {
                     System.out.println("BDD not freed! "+System.identityHashCode(this));
                 }
-                this.delRef();
+                this.free();
             }
+        }
+        
+        /* (non-Javadoc)
+         * @see org.sf.javabdd.BDD#free()
+         */
+        public void free() {
+            delRef();
+            _ddnode_ptr = INVALID_BDD;
         }
     }
     
@@ -628,7 +640,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
      */
     static class CUDDBDDDomain extends BDDDomain {
 
@@ -649,7 +661,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDPairing
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.12 2003/09/14 23:50:16 joewhaley Exp $
      */
     static class CUDDBDDPairing extends BDDPairing {
 

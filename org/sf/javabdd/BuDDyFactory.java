@@ -25,7 +25,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.28 2003/09/11 06:21:19 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.29 2003/09/14 23:50:04 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -310,6 +310,7 @@ public class BuDDyFactory extends BDDFactory {
     static class BuDDyBDD extends BDD {
     
         private int _id;
+        static final int INVALID_BDD = -1;
         
         private BuDDyBDD(int id) {
             this._id = id;
@@ -585,7 +586,8 @@ public class BuDDyFactory extends BDDFactory {
          */
         protected native void delRef();
         
-        static final boolean USE_FINALIZER = true;
+        static final boolean USE_FINALIZER = false;
+        
         /**
          * @see java.lang.Object#finalize()
          */
@@ -595,8 +597,16 @@ public class BuDDyFactory extends BDDFactory {
                 if (false && _id >= 0) {
                     System.out.println("BDD not freed! "+System.identityHashCode(this));
                 }
-                this.delRef();
+                this.free();
             }
+        }
+        
+        /**
+         * @see org.sf.javabdd.BDD#free()
+         */
+        public void free() {
+            delRef();
+            _id = INVALID_BDD;
         }
         
         /**
