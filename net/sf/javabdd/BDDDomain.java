@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.3 2004/10/27 22:31:14 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.4 2004/11/01 09:41:50 joewhaley Exp $
  * @see net.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
@@ -178,7 +178,7 @@ public abstract class BDDDomain {
      */
     public BDD buildEquals(BDDDomain that) {
         if (!this.size().equals(that.size())) {
-            throw new BDDException();
+            throw new BDDException("Size of "+this+" != size of that "+that+"( "+this.size()+" vs "+that.size()+")");
         }
 
         BDDFactory factory = getFactory();
