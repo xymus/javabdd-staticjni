@@ -30,7 +30,7 @@ import java.io.PrintStream;
  * @see org.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.34 2004/08/12 21:18:27 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.35 2004/08/12 21:23:40 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -857,8 +857,8 @@ public abstract class BDD {
                 throw new BDDException(); 
             int level = factory.var2Level(var);
             int i = Arrays.binarySearch(levels, level);
-            if (i == -1)
-                throw new BDDException(); 
+            if (i < 0)
+                throw new BDDException("var "+var+" not in iteration set"); 
             return nodes[i] == null;
         }
         
@@ -875,7 +875,7 @@ public abstract class BDD {
                 throw new BDDException(); 
             int level = factory.var2Level(var);
             int i = Arrays.binarySearch(levels, level);
-            if (i == -1)
+            if (i < 0)
                 throw new BDDException(); 
             if (nodes[i] != null)
                 throw new BDDException();
