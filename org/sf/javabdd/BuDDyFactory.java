@@ -26,7 +26,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.31 2003/11/01 00:45:43 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.32 2003/11/01 05:16:33 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -829,7 +829,7 @@ public class BuDDyFactory extends BDDFactory {
          * Also, the existence of any finalize() method hurts performance
          * considerably.
          */
-        /**
+        /* (non-Javadoc)
          * @see java.lang.Object#finalize()
          */
         /*
@@ -900,7 +900,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    /**
+    /* (non-Javadoc)
      * An implementation of a BDDDomain, used by the BuDDy interface.
      */
     static class BuDDyBDDDomain extends BDDDomain {
@@ -916,7 +916,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    /**
+    /* (non-Javadoc)
      * An implementation of a BDDPairing, used by the BuDDy interface.
      */
     static class BuDDyBDDPairing extends BDDPairing {
@@ -993,8 +993,8 @@ public class BuDDyFactory extends BDDFactory {
         return new BuDDyBDDBitVector(a);
     }
     
-    /**
-     * An implementation of a BDDDomain, used by the BuDDy interface.
+    /* (non-Javadoc)
+     * An implementation of a BDDBitVector, used by the BuDDy interface.
      */
     static class BuDDyBDDBitVector extends BDDBitVector {
 
