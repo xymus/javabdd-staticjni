@@ -27,7 +27,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.5 2005/01/29 11:37:20 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -67,6 +67,8 @@ public abstract class BDDFactory {
                 return CALFactory.init(nodenum, cachesize);
             if (bddpackage.equals("j") || bddpackage.equals("java"))
                 return JFactory.init(nodenum, cachesize);
+            if (bddpackage.equals("u") || bddpackage.equals("micro"))
+                return MicroFactory.init(nodenum, cachesize);
             if (bddpackage.equals("jdd"))
                 return JDDFactory.init(nodenum, cachesize);
             if (bddpackage.equals("test"))
@@ -1017,7 +1019,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.5 2005/01/29 11:37:20 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1068,7 +1070,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.5 2005/01/29 11:37:20 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1117,7 +1119,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.5 2005/01/29 11:37:20 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
