@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.2 2004/07/12 07:08:58 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.3 2004/08/02 20:20:53 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -34,7 +34,7 @@ public class JDDFactory extends BDDFactory {
     /**
      * Wrapper for the BDD index number used internally in the representation.
      */
-    class bdd extends BDD {
+    private class bdd extends BDD {
         int _index;
 
         static final int INVALID_BDD = -1;
