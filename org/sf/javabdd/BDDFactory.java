@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.18 2004/04/03 07:50:57 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.19 2004/04/28 03:54:23 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -836,7 +836,7 @@ public abstract class BDDFactory {
         
         for (int i=0; i<doms.length; ++i) {
             if (!done[i]) {
-                throw new BDDException("missing domain #"+i);
+                throw new BDDException("missing domain #"+i+": "+getDomain(i));
             }
             doms[i] = getDomain(i);
         }
