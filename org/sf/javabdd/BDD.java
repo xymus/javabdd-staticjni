@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.5 2003/02/02 00:00:21 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.6 2003/02/02 00:52:10 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -514,6 +514,15 @@ public abstract class BDD {
      * @return the log. number of satisfying variable assignments
      */
     public abstract double logSatCount(BDD varset);
+    
+    /**
+     * Counts the number of times each variable occurs in this BDD.  The
+     * result is stored and returned in an integer array where the i'th
+     * position stores the number of times the i'th printing variable
+     * occurred in the BDD.
+     * 
+     * Compare to bdd_varprofile.     */
+    public abstract int[] varProfile();
     
     public abstract boolean equals(BDD that);
     
