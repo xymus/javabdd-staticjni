@@ -14,7 +14,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.16 2003/09/10 01:29:11 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.17 2003/09/11 06:16:29 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -337,6 +337,18 @@ public abstract class BDD {
      * @return the result of the restrict operation
      */
     public abstract BDD restrict(BDD var);
+
+    /**
+     * <p>Mutates this BDD to restrict a set of variables to constant values.
+     * Restricts the variables in this BDD to constant true if they are included
+     * in their positive form in var, and constant false if they are included in
+     * their negative form.  The "that" BDD is consumed, and can no longer be used.</p>
+     * 
+     * <p>Compare to bdd_restrict and bdd_delref.</p>
+     * 
+     * @param var BDD containing the variables to be restricted
+     */
+    public abstract void restrictWith(BDD var);
 
     /**
      * <p>Coudert and Madre's restrict function.  Tries to simplify the BDD f by
