@@ -23,7 +23,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.7 2004/08/02 20:20:53 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.8 2004/08/09 21:31:11 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
@@ -301,7 +301,7 @@ public class JFactory extends BDDFactory {
         }
 
         /* (non-Javadoc)
-         * @see org.sf.javabdd.BDD#satOneSet(org.sf.javabdd.BDD, org.sf.javabdd.BDD)
+         * @see org.sf.javabdd.BDD#satOne(org.sf.javabdd.BDD, org.sf.javabdd.BDD)
          */
         public BDD satOne(BDD var, BDD pol) {
             int x = _index;
