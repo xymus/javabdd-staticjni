@@ -25,7 +25,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.29 2004/04/28 17:41:56 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.30 2004/07/24 01:15:35 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -863,23 +863,23 @@ public abstract class BDD {
     }
     
     /**
-     * <p>Calculates the log. number of satisfying variable assignments.</p>
+     * <p>Calculates the logarithm of the number of satisfying variable assignments.</p>
      * 
      * <p>Compare to bdd_satcount.</p>
      * 
-     * @return the log. number of satisfying variable assignments
+     * @return the logarithm of the number of satisfying variable assignments
      */
     public double logSatCount() {
         return Math.log(satCount());
     }
     
     /**
-     * <p>Calculates the log. number of satisfying variable assignments to the
+     * <p>Calculates the logarithm of the number of satisfying variable assignments to the
      * variables in the given varset.</p>
      * 
      * <p>Compare to bdd_satcountset.</p>
      * 
-     * @return the log. number of satisfying variable assignments
+     * @return the logarithm of the number of satisfying variable assignments
      */
     public double logSatCount(BDD varset) {
         return Math.log(satCount(varset));
