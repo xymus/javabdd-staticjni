@@ -2,9 +2,14 @@ package org.sf.javabdd;
 
 /**
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.2 2003/02/02 00:00:22 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.3 2003/02/21 09:35:25 joewhaley Exp $
  */
 public abstract class BDDDomain {
+
+    /**
+     * Returns the index of this domain.
+     */ 
+    public abstract int getIndex();
 
     /**
      * Returns what corresponds to a disjunction of all possible values of this
