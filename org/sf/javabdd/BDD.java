@@ -14,7 +14,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.14 2003/08/05 00:59:53 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.15 2003/08/05 07:04:08 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -258,7 +258,7 @@ public abstract class BDD {
      * 
      * <p>Compare to bdd_compose.</p>
      * 
-     * @param that the function to use to replace
+     * @param g the function to use to replace
      * @param var the variable number to replace
      * @return the result of the functional composition
      */
@@ -346,7 +346,7 @@ public abstract class BDD {
      * 
      * <p>Compare to bdd_simplify.</p>
      * 
-     * @param var BDD containing the variables in the domain
+     * @param d BDD containing the variables in the domain
      * @return the result of the simplify operation
      */
     public abstract BDD simplify(BDD d);
@@ -882,7 +882,7 @@ public abstract class BDD {
      * <p>Returns a string representation of this BDD on the defined domains,
      * using the given BDDToString converter.</p>
      * 
-     * @see org.sf.javabdd.BDDFactory.BDDToString
+     * @see org.sf.javabdd.BDD.BDDToString
      * 
      * @return string representation of this BDD using the given BDDToString converter
      */

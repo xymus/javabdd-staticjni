@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.25 2003/08/05 00:59:52 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.26 2003/08/05 07:04:08 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -70,7 +70,7 @@ public class BuDDyFactory extends BDDFactory {
     protected native BuDDyBDD buildCube0(int value, BuDDyBDD[] var);
 
     /**
-     * @see org.sf.javabdd.BDDFactory#buildCube(int, int, int[])
+     * @see org.sf.javabdd.BDDFactory#buildCube(int, int[])
      */
     public BDD buildCube(int value, int[] var) {
         return buildCube1(value, var);
@@ -664,7 +664,7 @@ public class BuDDyFactory extends BDDFactory {
         protected native void set1(int[] oldvar, int[] newvar);
         
         /**
-         * @see org.sf.javabdd.BDDPairing#set(org.sf.javabdd.BDD, org.sf.javabdd.BDD)
+         * @see org.sf.javabdd.BDDPairing#set(int, org.sf.javabdd.BDD)
          */
         public void set(int oldvar, BDD newvar) {
             set2(oldvar, (BuDDyBDD) newvar);
@@ -672,7 +672,7 @@ public class BuDDyFactory extends BDDFactory {
         protected native void set2(int oldvar, BuDDyBDD newvar);
         
         /**
-         * @see org.sf.javabdd.BDDPairing#set(org.sf.javabdd.BDD[], org.sf.javabdd.BDD[])
+         * @see org.sf.javabdd.BDDPairing#set(int[], org.sf.javabdd.BDD[])
          */
         public void set(int[] oldvar, BDD[] newvar) {
             set3(oldvar, newvar);
