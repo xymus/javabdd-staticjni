@@ -23,7 +23,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.5 2004/07/29 03:43:21 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.6 2004/08/02 19:57:30 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
@@ -4768,7 +4768,7 @@ public class JFactory extends BDDFactory {
         }
     }
 
-    public static boolean SWAPCOUNT = false;
+    public static final boolean SWAPCOUNT = false;
 
     int reorder_downSimple(int var0) {
         int toBeProcessed = 0;
