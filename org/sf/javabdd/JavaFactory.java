@@ -23,11 +23,13 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JavaFactory.java,v 1.16 2004/07/09 02:14:03 joewhaley Exp $
+ * @version $Id: JavaFactory.java,v 1.17 2004/07/11 11:47:14 joewhaley Exp $
  */
 public class JavaFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
+    
+    private JavaFactory() { }
     
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#init(int, int)

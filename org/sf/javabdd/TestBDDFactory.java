@@ -17,13 +17,13 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.7 2003/11/01 06:19:07 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.8 2004/07/11 11:47:14 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
     BDDFactory f1, f2;
 
-    TestBDDFactory(BDDFactory a, BDDFactory b) {
+    public TestBDDFactory(BDDFactory a, BDDFactory b) {
         f1 = a; f2 = b;
     }
 

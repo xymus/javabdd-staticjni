@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.15 2004/03/16 06:27:33 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.16 2004/07/11 11:47:14 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -31,7 +31,7 @@ public class TypedBDDFactory extends BDDFactory {
     
     BDDFactory factory;
     
-    TypedBDDFactory(BDDFactory f) {
+    public TypedBDDFactory(BDDFactory f) {
         this.factory = f;
     }
     

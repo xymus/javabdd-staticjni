@@ -35,7 +35,7 @@ import java.util.List;
  * @see org.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CALFactory.java,v 1.1 2003/12/01 04:07:10 joewhaley Exp $
+ * @version $Id: CALFactory.java,v 1.2 2004/07/11 11:47:14 joewhaley Exp $
  */
 public class CALFactory extends BDDFactory {
 
