@@ -23,12 +23,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.15 2005/02/26 21:18:20 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.16 2005/02/26 21:32:40 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.15 $";
+    public static final String REVISION = "$Revision: 1.16 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -591,7 +591,12 @@ public class JFactory extends BDDFactory {
         
         BddCache copy() {
             BddCache that = new BddCache();
-            that.table = new BddCacheData[this.table.length];
+            boolean is_d = this.table instanceof BddCacheDataD[];
+            if (is_d) {
+                that.table = new BddCacheDataD[this.table.length];
+            } else {
+                that.table = new BddCacheDataI[this.table.length];
+            }
             that.tablesize = this.tablesize;
             for (int i = 0; i < table.length; ++i) {
                 that.table[i] = this.table[i].copy();
