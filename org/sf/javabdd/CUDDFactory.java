@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -354,7 +354,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
      */
     static class CUDDBDD extends BDD {
 
@@ -470,6 +470,11 @@ public class CUDDFactory extends BDDFactory {
          */
         public native BDD restrict(BDD var);
 
+        /* (non-Javadoc)
+         * @see org.sf.javabdd.BDD#restrictWith(org.sf.javabdd.BDD)
+         */
+        public native void restrictWith(BDD var);
+        
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#simplify(org.sf.javabdd.BDD)
          */
@@ -606,13 +611,24 @@ public class CUDDFactory extends BDDFactory {
          */
         protected native void delRef();
 
+        static final boolean USE_FINALIZER = true;
+        
+        protected void finalize() throws Throwable {
+            super.finalize();
+            if (USE_FINALIZER) {
+                if (false && _ddnode_ptr >= 0) {
+                    System.out.println("BDD not freed! "+System.identityHashCode(this));
+                }
+                this.delRef();
+            }
+        }
     }
     
     /**
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
      */
     static class CUDDBDDDomain extends BDDDomain {
 
@@ -633,7 +649,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDPairing
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.10 2003/09/10 01:30:15 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.11 2003/09/11 06:21:25 joewhaley Exp $
      */
     static class CUDDBDDPairing extends BDDPairing {
 

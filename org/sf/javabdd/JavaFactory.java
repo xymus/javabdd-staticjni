@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
  * collection.
  * 
  * @author John Whaley
- * @version $Id: JavaFactory.java,v 1.4 2003/09/10 01:30:54 joewhaley Exp $
+ * @version $Id: JavaFactory.java,v 1.5 2003/09/11 06:21:37 joewhaley Exp $
  */
 public class JavaFactory extends BDDFactory {
 
@@ -189,6 +189,20 @@ public class JavaFactory extends BDDFactory {
             return new bdd(bdd_restrict(x, y));
         }
 
+        /* (non-Javadoc)
+         * @see org.sf.javabdd.BDD#restrictWith(org.sf.javabdd.BDD)
+         */
+        public void restrictWith(BDD that) {
+            int x = _index;
+            int y = ((bdd) that)._index;
+            int a = bdd_restrict(x, y);
+            bdd_delref(x);
+            if (this != that)
+                bdd_delref(y);
+            bdd_addref(a);
+            this._index = a;
+        }
+        
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDD#simplify(org.sf.javabdd.BDD)
          */
@@ -375,6 +389,22 @@ public class JavaFactory extends BDDFactory {
         protected void delRef() {
             bdd_delref(_index);
         }
+        
+        static final boolean USE_FINALIZER = true;
+        
+        /**
+         * @see java.lang.Object#finalize()
+         */
+        protected void finalize() throws Throwable {
+            super.finalize();
+            if (USE_FINALIZER) {
+                if (false && _index >= 0) {
+                    System.out.println("BDD not freed! "+System.identityHashCode(this));
+                }
+                this.delRef();
+            }
+        }
+        
     }
 
     /**
