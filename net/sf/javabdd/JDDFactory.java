@@ -11,7 +11,7 @@ import java.math.BigInteger;
  * JDDFactory
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.2 2004/10/18 09:35:20 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.3 2004/10/18 09:38:18 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -920,11 +920,12 @@ public class JDDFactory extends BDDFactory {
 
     }
     
-
+    public static final String REVISION = "$Revision: 1.3 $";
+    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
      */
     public String getVersion() {
-        return "JDD r$Revision: 1.2 $";
+        return "JDD "+REVISION.substring(11, REVISION.length()-2);
     }
 }
