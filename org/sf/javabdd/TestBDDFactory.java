@@ -13,7 +13,7 @@ import java.util.List;
  * TestBDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.4 2003/09/11 06:21:48 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.5 2003/09/14 23:50:44 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
@@ -491,6 +491,13 @@ public class TestBDDFactory extends BDDFactory {
             b2.delRef();
         }
         
+        /* (non-Javadoc)
+         * @see org.sf.javabdd.BDD#free()
+         */
+        public void free() {
+            b1.free();
+            b2.free();
+        }
     }
 
     /* (non-Javadoc)
