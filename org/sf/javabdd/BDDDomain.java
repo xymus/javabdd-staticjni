@@ -5,7 +5,7 @@ package org.sf.javabdd;
  * machines, among other things.
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.10 2003/10/17 10:01:33 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.11 2003/10/23 16:18:47 joewhaley Exp $
  */
 public abstract class BDDDomain {
 
@@ -202,7 +202,7 @@ public abstract class BDDDomain {
     }
     public BDD ithVar(long val) {
         if (val < 0L || val >= this.size()) {
-            throw new BDDException();
+            throw new BDDException(val+" is out of range");
         }
 
         BDDFactory factory = getFactory();
