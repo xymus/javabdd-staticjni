@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.16 2004/07/11 11:47:14 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.17 2004/08/02 20:01:45 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -419,7 +419,7 @@ public class TypedBDDFactory extends BDDFactory {
         
     };
     
-    public class TypedBDD extends BDD {
+    class TypedBDD extends BDD {
         
         final BDD bdd;
         final Set dom;
@@ -1080,7 +1080,7 @@ public class TypedBDDFactory extends BDDFactory {
 
     }
     
-    class TypedBDDPairing extends BDDPairing {
+    static class TypedBDDPairing extends BDDPairing {
 
         final Map domMap;
         final BDDPairing pairing;
