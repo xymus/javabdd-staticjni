@@ -3,8 +3,12 @@ package org.sf.javabdd;
 import java.util.Collection;
 
 /**
+ * Interface for the creation and manipulation of BDDs.
+ * 
+ * @see org.sf.javabdd.BDD
+ * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.1 2003/01/29 23:55:59 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.2 2003/01/30 06:22:19 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
