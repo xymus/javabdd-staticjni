@@ -5,10 +5,12 @@ package org.sf.javabdd;
  * machines, among other things.
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.9 2003/09/19 06:49:12 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.10 2003/10/17 10:01:33 joewhaley Exp $
  */
 public abstract class BDDDomain {
 
+    /* The name of this domain. */
+    protected String name;
     /* The index of this domain. */
     protected int index;
 
@@ -23,6 +25,7 @@ public abstract class BDDDomain {
         long calcsize = 2L;
         if (range <= 0L  || range > Long.MAX_VALUE/2)
             throw new BDDException();
+        this.name = Integer.toString(index);
         this.index = index;
         this.realsize = range;
         int binsize = 1;
@@ -33,8 +36,25 @@ public abstract class BDDDomain {
         this.ivar = new int[binsize];
     }
 
+    /**
+     * Returns the factory that created this domain.
+     */
     public abstract BDDFactory getFactory();
 
+    /**
+     * Sets the name of this domain.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * Gets the name of this domain.
+     */
+    public String getName() {
+        return name;
+    }
+    
     /**
      * Returns the index of this domain.
      */ 
@@ -256,6 +276,13 @@ public abstract class BDDDomain {
      */
     public int[] vars() {
         return this.ivar;
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return getName();
     }
     
 }

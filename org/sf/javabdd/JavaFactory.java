@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
  * collection.
  * 
  * @author John Whaley
- * @version $Id: JavaFactory.java,v 1.8 2003/09/25 07:45:42 joewhaley Exp $
+ * @version $Id: JavaFactory.java,v 1.9 2003/10/17 10:01:32 joewhaley Exp $
  */
 public class JavaFactory extends BDDFactory {
 
@@ -2872,7 +2872,7 @@ public class JavaFactory extends BDDFactory {
      * @see org.sf.javabdd.BDDFactory#initialize(int, int)
      */
     protected void initialize(int initnodesize, int cs) {
-        int n, err;
+        int n;
 
         if (bddrunning)
             throw new JavaBDDException(BDD_RUNNING);
@@ -5091,7 +5091,7 @@ public class JavaFactory extends BDDFactory {
 
     imatrix imatrixNew(int size) {
         imatrix mtx = new imatrix();
-        int n, m;
+        int n;
 
         mtx.rows = new byte[size][];
 
@@ -5215,7 +5215,7 @@ public class JavaFactory extends BDDFactory {
      * @see org.sf.javabdd.BDDFactory#addVarBlock(org.sf.javabdd.BDD, boolean)
      */
     public void addVarBlock(BDD var, boolean fixed) {
-        int x = ((bdd) var)._index;
+        //int x = ((bdd) var)._index;
         int[] set = var.scanSet();
         bdd_addvarblock(set, fixed);
     }
@@ -5545,7 +5545,6 @@ public class JavaFactory extends BDDFactory {
 
     void bdd_save_rec(DataOutput out, int root) throws IOException {
         BddNode node = bddnodes[root];
-        int err;
 
         if (root < 2)
             return;

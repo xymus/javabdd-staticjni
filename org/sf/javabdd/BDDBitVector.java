@@ -7,7 +7,7 @@ package org.sf.javabdd;
  * BDDBitVector
  * 
  * @author John Whaley
- * @version $Id: BDDBitVector.java,v 1.1 2003/07/24 21:15:14 joewhaley Exp $
+ * @version $Id: BDDBitVector.java,v 1.2 2003/10/17 10:01:32 joewhaley Exp $
  */
 public abstract class BDDBitVector {
 
@@ -236,7 +236,6 @@ public abstract class BDDBitVector {
     }
 
     public void replaceWith(BDDBitVector that) {
-        BDDFactory bdd = getFactory();
         if (bitvec.length != that.bitvec.length)
             throw new BDDException();
         free();
