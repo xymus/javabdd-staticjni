@@ -18,7 +18,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.21 2003/07/13 08:04:26 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.22 2003/07/15 03:20:11 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -718,6 +718,11 @@ public class BuDDyFactory extends BDDFactory {
             return buildEquals0((BuDDyBDDDomain) that);
         }
         protected native BuDDyBDD buildEquals0(BuDDyBDDDomain that);
+        
+        public BDD buildAdd(BDDDomain that, int value) {
+            return buildAdd0((BuDDyBDDDomain) that, value);
+        }
+        protected native BuDDyBDD buildAdd0(BuDDyBDDDomain that, int value);
         
         /**
          * @see org.sf.javabdd.BDDDomain#set()

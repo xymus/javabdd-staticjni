@@ -13,7 +13,7 @@ import java.util.List;
  * CUDDFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.6 2003/07/15 03:20:11 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -478,7 +478,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDD
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.6 2003/07/15 03:20:11 joewhaley Exp $
      */
     public static class CUDDBDD extends BDD {
 
@@ -801,7 +801,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDDomain
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.6 2003/07/15 03:20:11 joewhaley Exp $
      */
     public static class CUDDBDDDomain extends BDDDomain {
 
@@ -854,6 +854,10 @@ public class CUDDFactory extends BDDFactory {
             return this.realsize;
         }
 
+        public BDD buildAdd(BDDDomain that, int value) {
+            throw new BDDException("not implemented");
+        }
+        
         /* (non-Javadoc)
          * @see org.sf.javabdd.BDDDomain#set()
          */
@@ -880,7 +884,7 @@ public class CUDDFactory extends BDDFactory {
      * CUDDBDDPairing
      * 
      * @author SUIF User
-     * @version $Id: CUDDFactory.java,v 1.5 2003/07/13 08:05:05 joewhaley Exp $
+     * @version $Id: CUDDFactory.java,v 1.6 2003/07/15 03:20:11 joewhaley Exp $
      */
     public static class CUDDBDDPairing extends BDDPairing {
 

@@ -5,7 +5,7 @@ package org.sf.javabdd;
  * machines, among other things.
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.6 2003/07/14 19:37:46 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.7 2003/07/15 03:20:11 joewhaley Exp $
  */
 public abstract class BDDDomain {
 
@@ -46,6 +46,8 @@ public abstract class BDDDomain {
      * Compare to fdd_domainsize.
      */
     public abstract int size();
+    
+    public abstract BDD buildAdd(BDDDomain that, int value);
     
     /**
      * Builds a BDD which is true for all the possible assignments to the
