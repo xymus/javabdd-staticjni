@@ -23,7 +23,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.9 2004/09/15 00:02:07 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.10 2004/10/12 20:41:33 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
@@ -4244,6 +4244,20 @@ public class JFactory extends BDDFactory {
         //resize_handler = null;
     }
 
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#setError(int)
+     */
+    public void setError(int code) {
+        bdderrorcond = code;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#clearError()
+     */
+    public void clearError() {
+        bdderrorcond = 0;
+    }
+   
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#setMaxNodeNum(int)
      */

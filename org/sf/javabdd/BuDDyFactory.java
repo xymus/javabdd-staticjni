@@ -26,7 +26,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.35 2004/09/14 23:53:30 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.36 2004/10/12 20:41:33 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -159,6 +159,22 @@ public class BuDDyFactory extends BDDFactory {
     }
     private static native void done0();
 
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#setError(int)
+     */
+    public void setError(int code) {
+        setError0(code);
+    }
+    private static native void setError0(int code);
+    
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#clearError()
+     */
+    public void clearError() {
+        clearError0();
+    }
+    private static native void clearError0();
+    
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#setMaxNodeNum(int)
      */

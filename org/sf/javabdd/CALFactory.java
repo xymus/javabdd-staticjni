@@ -35,7 +35,7 @@ import java.util.List;
  * @see org.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CALFactory.java,v 1.5 2004/08/02 20:20:53 joewhaley Exp $
+ * @version $Id: CALFactory.java,v 1.6 2004/10/12 20:41:33 joewhaley Exp $
  */
 public class CALFactory extends BDDFactory {
 
@@ -110,6 +110,20 @@ public class CALFactory extends BDDFactory {
     }
     private static native void done0();
 
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#setError(int)
+     */
+    public void setError(int code) {
+        // TODO Implement this.
+    }
+    
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#clearError()
+     */
+    public void clearError() {
+        // TODO Implement this.
+    }
+    
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#setMaxNodeNum(int)
      */

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.6 2004/09/15 03:03:39 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.7 2004/10/12 20:41:33 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -535,6 +535,20 @@ public class JDDFactory extends BDDFactory {
         bdd.cleanup();
     }
 
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#setError(int)
+     */
+    public void setError(int code) {
+        // TODO Implement this.
+    }
+    
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#clearError()
+     */
+    public void clearError() {
+        // TODO Implement this.
+    }
+    
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#setMaxNodeNum(int)
      */

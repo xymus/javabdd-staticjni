@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.19 2004/08/12 21:18:27 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.20 2004/10/12 20:41:33 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -82,6 +82,20 @@ public class TypedBDDFactory extends BDDFactory {
         factory.done();
     }
 
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#setError(int)
+     */
+    public void setError(int code) {
+        factory.setError(code);
+    }
+    
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#clearError()
+     */
+    public void clearError() {
+        factory.clearError();
+    }
+    
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#setMaxNodeNum(int)
      */
@@ -423,7 +437,7 @@ public class TypedBDDFactory extends BDDFactory {
      * A BDD with types (domains) attached to it.
      * 
      * @author jwhaley
-     * @version $Id: TypedBDDFactory.java,v 1.19 2004/08/12 21:18:27 joewhaley Exp $
+     * @version $Id: TypedBDDFactory.java,v 1.20 2004/10/12 20:41:33 joewhaley Exp $
      */
     public class TypedBDD extends BDD {
         

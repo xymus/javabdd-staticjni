@@ -17,7 +17,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.12 2004/09/15 03:02:53 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.13 2004/10/12 20:41:33 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
@@ -531,6 +531,22 @@ public class TestBDDFactory extends BDDFactory {
         f2.done();
     }
 
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#setError(int)
+     */
+    public void setError(int code) {
+        f1.setError(code);
+        f2.setError(code);
+    }
+    
+    /* (non-Javadoc)
+     * @see org.sf.javabdd.BDDFactory#clearError()
+     */
+    public void clearError() {
+        f1.clearError();
+        f2.clearError();
+    }
+    
     /* (non-Javadoc)
      * @see org.sf.javabdd.BDDFactory#setMaxNodeNum(int)
      */
