@@ -26,7 +26,7 @@ import java.util.List;
  * @see org.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.37 2004/10/14 19:47:36 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.38 2004/10/14 22:58:05 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -89,8 +89,8 @@ public class BuDDyFactory extends BDDFactory {
      * Converts collection of BuDDyBDD's into an int array, for passing to
      * native code.
      * 
-     * @param c
-     * @return
+     * @param c  collection of BuDDyBDD's
+     * @return  int array of indices
      */
     private static int[] toBuDDyArray(Collection c) {
         int[] a = new int[c.size()];
