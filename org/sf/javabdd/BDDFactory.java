@@ -11,12 +11,16 @@ import java.util.Iterator;
  * @see org.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.10 2003/08/03 12:12:21 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.11 2003/08/04 08:09:52 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
     public static BDDFactory init(int nodenum, int cachesize) {
         String bddpackage = System.getProperty("bdd", "buddy");
+        return init(bddpackage, nodenum, cachesize);
+    }
+
+    public static BDDFactory init(String bddpackage, int nodenum, int cachesize) {
         try {
             if (bddpackage.equals("buddy"))
                 return BuDDyFactory.init(nodenum, cachesize);
