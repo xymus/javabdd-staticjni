@@ -35,7 +35,7 @@ import java.util.List;
  * @see org.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CALFactory.java,v 1.2 2004/07/11 11:47:14 joewhaley Exp $
+ * @version $Id: CALFactory.java,v 1.3 2004/07/22 20:03:59 joewhaley Exp $
  */
 public class CALFactory extends BDDFactory {
 
@@ -206,22 +206,6 @@ public class CALFactory extends BDDFactory {
      * @see org.sf.javabdd.BDDFactory#printTable(org.sf.javabdd.BDD)
      */
     public void printTable(BDD b) {
-        // TODO Implement this.
-        throw new UnsupportedOperationException();
-    }
-
-    /* (non-Javadoc)
-     * @see org.sf.javabdd.BDDFactory#load(java.lang.String)
-     */
-    public BDD load(String filename) {
-        // TODO Implement this.
-        throw new UnsupportedOperationException();
-    }
-
-    /* (non-Javadoc)
-     * @see org.sf.javabdd.BDDFactory#save(java.lang.String, org.sf.javabdd.BDD)
-     */
-    public void save(String filename, BDD var) {
         // TODO Implement this.
         throw new UnsupportedOperationException();
     }

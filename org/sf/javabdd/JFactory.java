@@ -23,7 +23,7 @@ import java.io.PrintStream;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.1 2004/07/20 21:48:28 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.2 2004/07/22 20:03:59 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
@@ -2004,7 +2004,7 @@ public class JFactory extends BDDFactory {
         CHECKa(r, bddfalse);
 
         if (r < 2)
-            return bddfalse;
+            return bddtrue;
 
         /* On-demand allocation of support set */
         if (supportSize < bddvarnum) {
