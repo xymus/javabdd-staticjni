@@ -30,7 +30,7 @@ import java.io.PrintStream;
  * @see org.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.35 2004/08/12 21:23:40 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.36 2004/08/12 23:26:03 jzhuang Exp $
  */
 public abstract class BDD {
 
@@ -853,6 +853,7 @@ public abstract class BDD {
         }
         
         public boolean isDontCare(int var) {
+            if (nodes == null) return false;
             if (levels == null)
                 throw new BDDException(); 
             int level = factory.var2Level(var);
@@ -863,6 +864,7 @@ public abstract class BDD {
         }
         
         public boolean isDontCare(BDDDomain d) {
+            if (nodes == null) return false;
             int[] vars = d.vars();
             for (int i = 0; i < vars.length; ++i) {
                 if (!isDontCare(vars[i])) return false;
