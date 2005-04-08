@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.5 2005/01/31 00:08:05 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.6 2005/04/08 05:27:52 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
@@ -639,6 +639,16 @@ public class TestBDDFactory extends BDDFactory {
     }
 
     /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#duplicateVar(int)
+     */
+    public int duplicateVar(int var) {
+        int r1 = f1.duplicateVar(var);
+        int r2 = f2.duplicateVar(var);
+        assertSame(r1 == r2, "duplicateVar");
+        return r1;
+    }
+    
+    /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#ithVar(int)
      */
     public BDD ithVar(int var) {
@@ -986,7 +996,7 @@ public class TestBDDFactory extends BDDFactory {
         
     }
     
-    public static final String REVISION = "$Revision: 1.5 $";
+    public static final String REVISION = "$Revision: 1.6 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

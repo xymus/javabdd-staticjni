@@ -33,7 +33,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CALFactory.java,v 1.4 2004/10/19 11:11:34 joewhaley Exp $
+ * @version $Id: CALFactory.java,v 1.5 2005/04/08 05:27:52 joewhaley Exp $
  */
 public class CALFactory extends BDDFactory {
 
@@ -175,6 +175,14 @@ public class CALFactory extends BDDFactory {
     }
     private static native int setVarNum0(int num);
 
+    /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#duplicateVar(int)
+     */
+    public int duplicateVar(int var) {
+        // TODO Implement this.
+        throw new UnsupportedOperationException();
+    }
+    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#ithVar(int)
      */
@@ -896,7 +904,7 @@ public class CALFactory extends BDDFactory {
         return 0;
     }
 
-    public static final String REVISION = "$Revision: 1.4 $";
+    public static final String REVISION = "$Revision: 1.5 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

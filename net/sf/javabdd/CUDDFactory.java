@@ -33,7 +33,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.5 2005/04/08 05:27:52 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -202,6 +202,14 @@ public class CUDDFactory extends BDDFactory {
     }
     private static native int setVarNum0(int num);
 
+    /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#duplicateVar(int)
+     */
+    public int duplicateVar(int var) {
+        // TODO Implement this.
+        throw new UnsupportedOperationException();
+    }
+    
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#ithVar(int)
      */
@@ -938,7 +946,7 @@ public class CUDDFactory extends BDDFactory {
         c.printDot();
     }
 
-    public static final String REVISION = "$Revision: 1.4 $";
+    public static final String REVISION = "$Revision: 1.5 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

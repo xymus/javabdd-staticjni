@@ -27,7 +27,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -896,7 +896,13 @@ public abstract class BDDFactory {
      */
     public abstract void swapVar(int v1, int v2);
     
-    
+    /**
+     * Duplicate a BDD variable.
+     * 
+     * @param var  var to duplicate
+     * @return  index of new variable
+     */
+    public abstract int duplicateVar(int var);
     
     /**** VARIABLE BLOCKS ****/
     
@@ -1019,7 +1025,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1070,7 +1076,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1119,7 +1125,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.6 2005/01/30 14:42:23 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;

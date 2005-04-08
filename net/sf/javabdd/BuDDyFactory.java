@@ -34,7 +34,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.7 2005/01/29 11:37:20 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.8 2005/04/08 05:27:52 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -296,6 +296,14 @@ public class BuDDyFactory extends BDDFactory {
         return setVarNum0(num);
     }
     private static native int setVarNum0(int num);
+    
+    /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#duplicateVar(int)
+     */
+    public int duplicateVar(int var) {
+        return duplicateVar0(var);
+    }
+    private static native int duplicateVar0(int var);
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#extVarNum(int)
@@ -1131,7 +1139,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.7 $";
+    public static final String REVISION = "$Revision: 1.8 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

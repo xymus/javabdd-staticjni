@@ -11,7 +11,7 @@ import java.math.BigInteger;
  * JDDFactory
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.4 2004/10/19 11:11:35 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.5 2005/04/08 05:27:52 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -666,6 +666,14 @@ public class JDDFactory extends BDDFactory {
     }
 
     /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#duplicateVar(int)
+     */
+    public int duplicateVar(int var) {
+        // TODO Implement this.
+        throw new UnsupportedOperationException();
+    }
+    
+    /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#ithVar(int)
      */
     public BDD ithVar(int var) {
@@ -928,7 +936,7 @@ public class JDDFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.4 $";
+    public static final String REVISION = "$Revision: 1.5 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

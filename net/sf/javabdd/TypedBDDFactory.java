@@ -23,7 +23,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.5 2004/10/19 21:47:05 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.6 2005/04/08 05:27:52 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -160,6 +160,13 @@ public class TypedBDDFactory extends BDDFactory {
         return factory.setVarNum(num);
     }
 
+    /* (non-Javadoc)
+     * @see net.sf.javabdd.BDDFactory#duplicateVar(int)
+     */
+    public int duplicateVar(int var) {
+        return factory.duplicateVar(var);
+    }
+    
     public BDDDomain whichDomain(int var) {
         for (int i = 0; i < numberOfDomains(); ++i) {
             int[] vars = getDomain(i).vars();
@@ -466,7 +473,7 @@ public class TypedBDDFactory extends BDDFactory {
      * A BDD with types (domains) attached to it.
      * 
      * @author jwhaley
-     * @version $Id: TypedBDDFactory.java,v 1.5 2004/10/19 21:47:05 joewhaley Exp $
+     * @version $Id: TypedBDDFactory.java,v 1.6 2005/04/08 05:27:52 joewhaley Exp $
      */
     public class TypedBDD extends BDD {
         
@@ -1171,7 +1178,7 @@ public class TypedBDDFactory extends BDDFactory {
         
     }
     
-    public static final String REVISION = "$Revision: 1.5 $";
+    public static final String REVISION = "$Revision: 1.6 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
