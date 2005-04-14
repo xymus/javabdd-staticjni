@@ -27,7 +27,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.8 2005/04/14 23:58:41 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -1025,7 +1025,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.8 2005/04/14 23:58:41 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1076,7 +1076,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.8 2005/04/14 23:58:41 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1125,7 +1125,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.7 2005/04/08 05:27:52 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.8 2005/04/14 23:58:41 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
@@ -1524,6 +1524,12 @@ public abstract class BDDFactory {
                 if (bitNumber < d.varNum()) {
                     int di = d.getIndex();
                     int local = localOrders[di][bitNumber];
+                    if (local >= d.vars().length) {
+                        System.out.println("bug!");
+                    }
+                    if (bitIndex >= varorder.length) {
+                        System.out.println("bug2!");
+                    }
                     varorder[bitIndex++] = d.vars()[local];
                 }
             }

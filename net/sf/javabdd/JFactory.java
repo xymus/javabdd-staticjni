@@ -23,12 +23,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.18 2005/04/08 05:27:52 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.19 2005/04/14 23:58:41 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.18 $";
+    public static final String REVISION = "$Revision: 1.19 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -3570,7 +3570,7 @@ public class JFactory extends BDDFactory {
         int n;
 
         for (n = 0; n < bddvarnum; n++)
-            p.result[n] = bdd_ithvar(n);
+            p.result[n] = bdd_ithvar(bddlevel2var[n]);
         p.last = 0;
     }
 
@@ -3602,9 +3602,11 @@ public class JFactory extends BDDFactory {
         public String toString() {
             StringBuffer sb = new StringBuffer();
             sb.append('{');
+            boolean any = false;
             for (int i = 0; i < result.length; ++i) {
                 if (result[i] != bdd_ithvar(bddlevel2var[i])) {
-                    if (i > 0) sb.append(", ");
+                    if (any) sb.append(", ");
+                    any = true;
                     sb.append(bddlevel2var[i]);
                     sb.append('=');
                     bdd b = new bdd(result[i]);
