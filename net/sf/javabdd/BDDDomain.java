@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.6 2005/04/14 23:58:41 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.7 2005/04/17 10:21:46 joewhaley Exp $
  * @see net.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
@@ -319,17 +319,21 @@ public abstract class BDDDomain {
         System.arraycopy(ivar, 0, new_ivar, 0, ivar.length);
         BDDFactory factory = getFactory();
         for (int i = ivar.length; i < new_ivar.length; ++i) {
+            //System.out.println("Domain "+this+" Duplicating var#"+new_ivar[i-1]);
             int newVar = factory.duplicateVar(new_ivar[i-1]);
             factory.firstbddvar++;
             new_ivar[i] = newVar;
+            //System.out.println("Domain "+this+" var#"+i+" = "+newVar);
         }
         this.ivar = new_ivar;
+        //System.out.println("Domain "+this+" old var = "+var);
         this.var.free();
         BDD nvar = factory.one();
         for (int i = 0; i < ivar.length; ++i) {
             nvar.andWith(factory.ithVar(ivar[i]));
         }
         this.var = nvar;
+        //System.out.println("Domain "+this+" new var = "+var);
         return binsize;
     }
     
