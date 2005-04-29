@@ -33,7 +33,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.5 2005/04/08 05:27:52 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.6 2005/04/29 02:25:28 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -52,8 +52,8 @@ public class CUDDFactory extends BDDFactory {
         } catch (java.lang.UnsatisfiedLinkError x) {
             // Cannot find library, try loading it from the current directory...
             libname = System.mapLibraryName(libname);
-            String currentdir = System.getProperty("user.dir");
-            String sep = System.getProperty("file.separator");
+            String currentdir = getProperty("user.dir", ".");
+            String sep = getProperty("file.separator", "/");
             System.load(currentdir+sep+libname);
         }
         registerNatives();
@@ -946,7 +946,7 @@ public class CUDDFactory extends BDDFactory {
         c.printDot();
     }
 
-    public static final String REVISION = "$Revision: 1.5 $";
+    public static final String REVISION = "$Revision: 1.6 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

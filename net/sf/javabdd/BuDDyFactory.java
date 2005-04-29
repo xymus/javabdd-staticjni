@@ -34,7 +34,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.8 2005/04/08 05:27:52 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.9 2005/04/29 02:25:28 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -50,14 +50,14 @@ public class BuDDyFactory extends BDDFactory {
     private static BuDDyFactory INSTANCE;
     
     static {
-        String libname = System.getProperty("buddylib", "buddy");
+        String libname = getProperty("buddylib", "buddy");
         try {
             System.loadLibrary(libname);
         } catch (java.lang.UnsatisfiedLinkError x) {
             // Cannot find library, try loading it from the current directory...
             libname = System.mapLibraryName(libname);
-            String currentdir = System.getProperty("user.dir");
-            String sep = System.getProperty("file.separator");
+            String currentdir = getProperty("user.dir", ".");
+            String sep = getProperty("file.separator", "/");
             String filename = currentdir+sep+libname;
             try {
                 System.load(filename);
@@ -1139,7 +1139,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.8 $";
+    public static final String REVISION = "$Revision: 1.9 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

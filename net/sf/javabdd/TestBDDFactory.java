@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TestBDDFactory.java,v 1.6 2005/04/08 05:27:52 joewhaley Exp $
+ * @version $Id: TestBDDFactory.java,v 1.7 2005/04/29 02:25:28 joewhaley Exp $
  */
 public class TestBDDFactory extends BDDFactory {
 
@@ -29,8 +29,8 @@ public class TestBDDFactory extends BDDFactory {
     }
 
     public static BDDFactory init(int nodenum, int cachesize) {
-        String bdd1 = System.getProperty("bdd1", "j");
-        String bdd2 = System.getProperty("bdd2", "micro");
+        String bdd1 = getProperty("bdd1", "j");
+        String bdd2 = getProperty("bdd2", "micro");
         BDDFactory a = BDDFactory.init(bdd1, nodenum, cachesize);
         BDDFactory b = BDDFactory.init(bdd2, nodenum, cachesize);
         return new TestBDDFactory(a, b);
@@ -996,7 +996,7 @@ public class TestBDDFactory extends BDDFactory {
         
     }
     
-    public static final String REVISION = "$Revision: 1.6 $";
+    public static final String REVISION = "$Revision: 1.7 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

@@ -23,7 +23,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.6 2005/04/08 05:27:52 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.7 2005/04/29 02:25:28 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -38,7 +38,7 @@ public class TypedBDDFactory extends BDDFactory {
     
     public static BDDFactory init(int nodenum, int cachesize) {
         BDDFactory a;
-        String factoryName = System.getProperty("bdd");
+        String factoryName = getProperty("bdd", null);
         if (factoryName != null && factoryName.equals("typed"))
             a = BuDDyFactory.init(nodenum, cachesize);
         else
@@ -473,7 +473,7 @@ public class TypedBDDFactory extends BDDFactory {
      * A BDD with types (domains) attached to it.
      * 
      * @author jwhaley
-     * @version $Id: TypedBDDFactory.java,v 1.6 2005/04/08 05:27:52 joewhaley Exp $
+     * @version $Id: TypedBDDFactory.java,v 1.7 2005/04/29 02:25:28 joewhaley Exp $
      */
     public class TypedBDD extends BDD {
         
@@ -1178,7 +1178,7 @@ public class TypedBDDFactory extends BDDFactory {
         
     }
     
-    public static final String REVISION = "$Revision: 1.6 $";
+    public static final String REVISION = "$Revision: 1.7 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

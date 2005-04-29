@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
+import java.security.AccessControlException;
 
 /**
  * <p>Interface for the creation and manipulation of BDDs.</p>
@@ -27,10 +28,18 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.9 2005/04/17 10:21:47 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
+    public static final String getProperty(String key, String def) {
+        try {
+            return System.getProperty(key, def);
+        } catch (AccessControlException _) {
+            return def;
+        }
+    }
+    
     /**
      * <p>Initializes a BDD factory with the given initial node table size
      * and operation cache size.  Tries to use the "buddy" native library;
@@ -41,7 +50,7 @@ public abstract class BDDFactory {
      * @return BDD factory object
      */
     public static BDDFactory init(int nodenum, int cachesize) {
-        String bddpackage = System.getProperty("bdd", "buddy");
+        String bddpackage = getProperty("bdd", "buddy");
         return init(bddpackage, nodenum, cachesize);
     }
 
@@ -1028,7 +1037,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.9 2005/04/17 10:21:47 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1079,7 +1088,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.9 2005/04/17 10:21:47 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1128,7 +1137,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.9 2005/04/17 10:21:47 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
@@ -1156,7 +1165,7 @@ public abstract class BDDFactory {
          */
         public String toString() {
             StringBuffer sb = new StringBuffer();
-            String newLine = System.getProperty("line.separator");
+            String newLine = getProperty("line.separator", "\n");
             sb.append(newLine);
             sb.append("Cache statistics");
             sb.append(newLine);
