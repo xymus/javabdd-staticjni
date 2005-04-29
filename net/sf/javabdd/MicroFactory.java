@@ -28,7 +28,7 @@ import java.math.BigInteger;
  * 20% less memory.</p>
  * 
  * @author jwhaley
- * @version $Id: MicroFactory.java,v 1.9 2005/04/17 10:21:46 joewhaley Exp $
+ * @version $Id: MicroFactory.java,v 1.10 2005/04/29 06:43:31 joewhaley Exp $
  */
 public class MicroFactory extends BDDFactory {
 
@@ -1224,6 +1224,11 @@ public class MicroFactory extends BDDFactory {
     }
     
     private static class JavaBDDException extends BDDException {
+        /**
+         * Version ID for serialization.
+         */
+        private static final long serialVersionUID = 3257289123604607538L;
+
         public JavaBDDException(int x) {
             super(errorstrings[-x]);
         }
@@ -6952,7 +6957,7 @@ public class MicroFactory extends BDDFactory {
         return cachestats;
     }
     
-    public static final String REVISION = "$Revision: 1.9 $";
+    public static final String REVISION = "$Revision: 1.10 $";
     
     public String getVersion() {
         return "MicroFactory "+REVISION.substring(11, REVISION.length()-2);
