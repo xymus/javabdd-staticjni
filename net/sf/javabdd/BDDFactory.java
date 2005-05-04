@@ -28,7 +28,7 @@ import java.security.AccessControlException;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -291,14 +291,6 @@ public abstract class BDDFactory {
      * <p>Compare to bdd_done.</p>
      */
     public abstract void done();
-    
-    /**
-     * @see java.lang.Object#finalize()
-     */
-    protected void finalize() throws Throwable {
-        super.finalize();
-        this.done();
-    }
     
     /**
      * <p>Sets the error condition.  This will cause the BDD package to throw an
@@ -1037,7 +1029,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1088,7 +1080,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1137,7 +1129,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.10 2005/04/29 02:25:28 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;

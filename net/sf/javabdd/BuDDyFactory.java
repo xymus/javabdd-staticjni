@@ -34,12 +34,16 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.10 2005/05/04 22:23:12 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
     public static BDDFactory init(int nodenum, int cachesize) {
-        BuDDyFactory f = new BuDDyFactory();
+        BuDDyFactory f;
+        if (USE_FINALIZER)
+            f = new BuDDyFactoryWithFinalizer();
+        else
+            f = new BuDDyFactory();
         f.initialize(nodenum, cachesize);
         return f;
     }
@@ -96,6 +100,18 @@ public class BuDDyFactory extends BDDFactory {
     private BuDDyFactory() {}
 
     private static final boolean USE_FINALIZER = false;
+    
+    private static class BuDDyFactoryWithFinalizer extends BuDDyFactory {
+        
+        /**
+         * @see java.lang.Object#finalize()
+         */
+        protected void finalize() throws Throwable {
+            super.finalize();
+            this.done();
+        }
+        
+    }
     
     private static BuDDyBDD makeBDD(int id) {
         BuDDyBDD b;
@@ -1154,7 +1170,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.10 $";
+    public static final String REVISION = "$Revision: 1.11 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
