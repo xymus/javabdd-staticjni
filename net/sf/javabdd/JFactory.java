@@ -23,12 +23,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.21 2005/04/29 06:43:31 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.22 2005/05/06 23:54:52 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.21 $";
+    public static final String REVISION = "$Revision: 1.22 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -719,7 +719,7 @@ public class JFactory extends BDDFactory {
             "Illegal shift-left/right parameter",
             "Division by zero" };
 
-    static final int DEFAULTMAXNODEINC = 50000;
+    static final int DEFAULTMAXNODEINC = 10000000;
 
     /*=== OTHER INTERNAL DEFINITIONS =======================================*/
 
