@@ -28,7 +28,7 @@ import java.security.AccessControlException;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.12 2005/05/06 23:50:47 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -1029,7 +1029,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.12 2005/05/06 23:50:47 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1080,7 +1080,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.12 2005/05/06 23:50:47 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1129,7 +1129,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.12 2005/05/06 23:50:47 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
@@ -1718,7 +1718,7 @@ public abstract class BDDFactory {
         if (reorder_callbacks == null) {
             bdd_default_reohandler(b, s);
         } else {
-            doCallbacks(reorder_callbacks, new Integer(b?1:0), s);
+            doCallbacks(reorder_callbacks, new Boolean(b), s);
         }
     }
 
