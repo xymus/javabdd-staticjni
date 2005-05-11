@@ -28,7 +28,7 @@ import java.security.AccessControlException;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.13 2005/05/10 02:56:15 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -1043,7 +1043,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.13 2005/05/10 02:56:15 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1094,7 +1094,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.13 2005/05/10 02:56:15 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1143,7 +1143,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.13 2005/05/10 02:56:15 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
@@ -1741,11 +1741,7 @@ public abstract class BDDFactory {
         if (verbose > 0) {
             if (prestate) {
                 System.out.println("Start reordering");
-                s.usednum_before = getNodeNum();
-                s.time = System.currentTimeMillis();
             } else {
-                s.time = System.currentTimeMillis() - s.time;
-                s.usednum_after = getNodeNum();
                 System.out.println("End reordering. "+s);
             }
         }
