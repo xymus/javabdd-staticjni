@@ -25,12 +25,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.25 2005/05/10 21:16:00 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.26 2005/05/11 01:24:05 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.25 $";
+    public static final String REVISION = "$Revision: 1.26 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -5317,8 +5317,9 @@ public class JFactory extends BDDFactory {
         /* Update all rename pairs */
         bdd_pairs_vardown(level);
 
-        if (resizedInMakenode)
+        if (resizedInMakenode) {
             reorder_rehashAll();
+        }
 
         return 0;
     }
@@ -5352,12 +5353,9 @@ public class JFactory extends BDDFactory {
             SETHASH(n, 0);
 
         for (n = bddnodesize - 1; n >= 2; n--) {
-
             if (HASREF(n)) {
-                int hash2;
-
-                hash2 = NODEHASH2(VARr(n), LOW(n), HIGH(n));
-                SETNEXT(n, hash2);
+                int hash2 = NODEHASH2(VARr(n), LOW(n), HIGH(n));
+                SETNEXT(n, HASH(hash2));
                 SETHASH(hash2, n);
             } else {
                 SETNEXT(n, bddfreepos);
