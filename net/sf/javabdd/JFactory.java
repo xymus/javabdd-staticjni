@@ -25,12 +25,12 @@ import java.math.BigInteger;
  * collection.</p>
  * 
  * @author John Whaley
- * @version $Id: JFactory.java,v 1.26 2005/05/11 01:24:05 joewhaley Exp $
+ * @version $Id: JFactory.java,v 1.27 2005/05/21 08:47:09 joewhaley Exp $
  */
 public class JFactory extends BDDFactory {
 
     static final boolean VERIFY_ASSERTIONS = false;
-    public static final String REVISION = "$Revision: 1.26 $";
+    public static final String REVISION = "$Revision: 1.27 $";
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -331,16 +331,6 @@ public class JFactory extends BDDFactory {
             int y = ((bdd) var)._index;
             int z = pol ? 1 : 0;
             return makeBDD(bdd_satoneset(x, y, z));
-        }
-
-        /* (non-Javadoc)
-         * @see net.sf.javabdd.BDD#allsat()
-         */
-        public List allsat() {
-            int x = _index;
-            List result = new LinkedList();
-            bdd_allsat(x, result);
-            return result;
         }
 
         /* (non-Javadoc)
@@ -2774,60 +2764,6 @@ public class JFactory extends BDDFactory {
         return size;
     }
 
-    void bdd_allsat(int r, List result) {
-        int v;
-
-        CHECK(r);
-
-        allsatProfile = new byte[bddvarnum];
-
-        for (v = LEVEL(r) - 1; v >= 0; --v)
-            allsatProfile[bddlevel2var[v]] = -1;
-
-        INITREF();
-
-        allsat_rec(r, result);
-
-        free(allsatProfile);
-        allsatProfile = null;
-    }
-
-    void allsat_rec(int r, List result) {
-        if (ISONE(r)) {
-            //allsatHandler(allsatProfile, bddvarnum);
-            byte[] b = new byte[bddvarnum];
-            System.arraycopy(allsatProfile, 0, b, 0, bddvarnum);
-            result.add(b);
-            return;
-        }
-
-        if (ISZERO(r))
-            return;
-
-        if (!ISZERO(LOW(r))) {
-            int v;
-
-            allsatProfile[bddlevel2var[LEVEL(r)]] = 0;
-
-            for (v = LEVEL(LOW(r)) - 1; v > LEVEL(r); --v) {
-                allsatProfile[bddlevel2var[v]] = -1;
-            }
-
-            allsat_rec(LOW(r), result);
-        }
-
-        if (!ISZERO(HIGH(r))) {
-            int v;
-
-            allsatProfile[bddlevel2var[LEVEL(r)]] = 1;
-
-            for (v = LEVEL(HIGH(r)) - 1; v > LEVEL(r); --v) {
-                allsatProfile[bddlevel2var[v]] = -1;
-            }
-
-            allsat_rec(HIGH(r), result);
-        }
-    }
     double bdd_satcount(int r) {
         double size = 1;
 
@@ -3302,8 +3238,6 @@ public class JFactory extends BDDFactory {
     /* Used instead of local variable in order
                    to avoid compiler warning about 'first'
                    being clobbered by setjmp */
-
-    byte[] allsatProfile; /* Variable profile for bdd_allsat() */
 
     void bdd_operator_init(int cachesize) {
         if (false) {

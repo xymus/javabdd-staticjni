@@ -4,7 +4,6 @@
 package net.sf.javabdd;
 
 import java.util.Collection;
-import java.util.List;
 import java.math.BigInteger;
 
 /**
@@ -33,7 +32,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.6 2005/04/29 02:25:28 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.7 2005/05/21 08:47:10 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -708,14 +707,6 @@ public class CUDDFactory extends BDDFactory {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDD#allsat()
-         */
-        public List allsat() {
-            // TODO Implement this.
-            throw new UnsupportedOperationException();
-        }
-
-        /* (non-Javadoc)
          * @see net.sf.javabdd.BDD#nodeCount()
          */
         public int nodeCount() {
@@ -946,7 +937,7 @@ public class CUDDFactory extends BDDFactory {
         c.printDot();
     }
 
-    public static final String REVISION = "$Revision: 1.6 $";
+    public static final String REVISION = "$Revision: 1.7 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

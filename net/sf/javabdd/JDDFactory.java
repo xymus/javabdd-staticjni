@@ -4,14 +4,13 @@
 package net.sf.javabdd;
 
 import java.util.Collection;
-import java.util.List;
 import java.math.BigInteger;
 
 /**
  * JDDFactory
  * 
  * @author John Whaley
- * @version $Id: JDDFactory.java,v 1.5 2005/04/08 05:27:52 joewhaley Exp $
+ * @version $Id: JDDFactory.java,v 1.6 2005/05/21 08:47:10 joewhaley Exp $
  */
 public class JDDFactory extends BDDFactory {
 
@@ -405,13 +404,6 @@ public class JDDFactory extends BDDFactory {
         public BDD satOne(BDD var, boolean pol) {
             // TODO Implement this.
             throw new UnsupportedOperationException();
-        }
-
-        /* (non-Javadoc)
-         * @see net.sf.javabdd.BDD#allsat()
-         */
-        public List allsat() {
-            throw new BDDException();
         }
 
         /* (non-Javadoc)
@@ -936,7 +928,7 @@ public class JDDFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.5 $";
+    public static final String REVISION = "$Revision: 1.6 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

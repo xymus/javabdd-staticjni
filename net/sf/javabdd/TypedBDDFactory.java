@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -23,7 +22,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: TypedBDDFactory.java,v 1.7 2005/04/29 02:25:28 joewhaley Exp $
+ * @version $Id: TypedBDDFactory.java,v 1.8 2005/05/21 08:47:10 joewhaley Exp $
  */
 public class TypedBDDFactory extends BDDFactory {
 
@@ -473,7 +472,7 @@ public class TypedBDDFactory extends BDDFactory {
      * A BDD with types (domains) attached to it.
      * 
      * @author jwhaley
-     * @version $Id: TypedBDDFactory.java,v 1.7 2005/04/29 02:25:28 joewhaley Exp $
+     * @version $Id: TypedBDDFactory.java,v 1.8 2005/05/21 08:47:10 joewhaley Exp $
      */
     public class TypedBDD extends BDD {
         
@@ -918,7 +917,7 @@ public class TypedBDDFactory extends BDDFactory {
         /* (non-Javadoc)
          * @see net.sf.javabdd.BDD#allsat()
          */
-        public List allsat() {
+        public AllSatIterator allsat() {
             return bdd.allsat();
         }
 
@@ -1178,7 +1177,7 @@ public class TypedBDDFactory extends BDDFactory {
         
     }
     
-    public static final String REVISION = "$Revision: 1.7 $";
+    public static final String REVISION = "$Revision: 1.8 $";
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()

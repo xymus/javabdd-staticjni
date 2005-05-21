@@ -34,7 +34,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDFactory
  * 
  * @author John Whaley
- * @version $Id: BuDDyFactory.java,v 1.11 2005/05/04 22:31:35 joewhaley Exp $
+ * @version $Id: BuDDyFactory.java,v 1.12 2005/05/21 08:46:59 joewhaley Exp $
  */
 public class BuDDyFactory extends BDDFactory {
 
@@ -883,14 +883,6 @@ public class BuDDyFactory extends BDDFactory {
         private static native int satOne1(int b, int c, int d);
         
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDD#allsat()
-         */
-        public List allsat() {
-            return Arrays.asList(allsat0(_id));
-        }
-        private static native byte[][] allsat0(int b);
-        
-        /* (non-Javadoc)
          * @see net.sf.javabdd.BDD#printSet()
          */
         public void printSet() {
@@ -1170,7 +1162,7 @@ public class BuDDyFactory extends BDDFactory {
 
     }
     
-    public static final String REVISION = "$Revision: 1.11 $";
+    public static final String REVISION = "$Revision: 1.12 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
