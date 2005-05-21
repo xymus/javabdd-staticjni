@@ -18,7 +18,7 @@ import java.math.BigInteger;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.7 2005/04/17 10:21:46 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.8 2005/05/21 04:37:24 joewhaley Exp $
  * @see net.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
@@ -381,6 +381,7 @@ public abstract class BDDDomain {
         for (int i = 0; i < n; i++) {
             BDD bi = (BDD) it.next();
             res[i] = bi.scanVar(this);
+            bi.free();
         }
         myvarset.free();
         return res;
