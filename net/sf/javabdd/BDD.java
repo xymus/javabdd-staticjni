@@ -31,7 +31,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.9 2005/05/21 09:54:46 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.10 2005/05/21 10:14:36 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -847,7 +847,7 @@ public abstract class BDD {
      * It includes the ability to check if bits are dont-cares and skip them.
      * 
      * @author jwhaley
-     * @version $Id: BDD.java,v 1.9 2005/05/21 09:54:46 joewhaley Exp $
+     * @version $Id: BDD.java,v 1.10 2005/05/21 10:14:36 joewhaley Exp $
      */
     public static class BDDIterator implements Iterator {
         final BDDFactory f;
@@ -938,6 +938,31 @@ public abstract class BDD {
          */
         public Object next() {
             return nextBDD();
+        }
+        
+        public BigInteger nextValue(BDDDomain dom) {
+            if (a == null) {
+                throw new NoSuchElementException();
+            }
+            lastReturned = null;
+            BigInteger val = BigInteger.ZERO;
+            int[] ivar = dom.vars();
+            for (int m = dom.varNum() - 1; m >= 0; m--) {
+                val = val.shiftLeft(1);
+                int level = f.var2Level(ivar[m]);
+                int k = Arrays.binarySearch(v, level);
+                if (k < 0) {
+                    val = null;
+                    break;
+                }
+                if (b[k]) {
+                    val = val.add(BigInteger.ONE);
+                }
+            }
+            if (!gotoNextA()) {
+                gotoNext();
+            }
+            return val;
         }
         
         /**
