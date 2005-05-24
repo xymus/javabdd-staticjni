@@ -28,7 +28,7 @@ import java.security.AccessControlException;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.15 2005/05/24 18:24:38 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -532,6 +532,8 @@ public abstract class BDDFactory {
             BDD b = ithVar(var);
             root = b.ite(high, low);
             b.free();
+            if (low.isZero() || low.isOne()) low.free();
+            if (high.isZero() || high.isOne()) high.free();
 
             int hash = key % lh_nodenum;
             int pos = lh_freepos;
@@ -1043,7 +1045,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.15 2005/05/24 18:24:38 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1094,7 +1096,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.15 2005/05/24 18:24:38 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1143,7 +1145,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.14 2005/05/11 01:24:54 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.15 2005/05/24 18:24:38 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;

@@ -31,7 +31,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.11 2005/05/24 00:17:42 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.12 2005/05/24 18:24:38 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -847,7 +847,7 @@ public abstract class BDD {
      * It includes the ability to check if bits are dont-cares and skip them.
      * 
      * @author jwhaley
-     * @version $Id: BDD.java,v 1.11 2005/05/24 00:17:42 joewhaley Exp $
+     * @version $Id: BDD.java,v 1.12 2005/05/24 18:24:38 joewhaley Exp $
      */
     public static class BDDIterator implements Iterator {
         final BDDFactory f;
@@ -1226,17 +1226,17 @@ public abstract class BDD {
         if (visited[r])
             return current;
         visited[r] = true;
-       
+        
         // TODO: support labelling of vars.
         out.println(r+" [label=\""+this.var()+"\"];");
-
+        
         BDD l = this.low(), h = this.high();
-        Integer li = ((Integer) map.get(l));
+        Integer li = (Integer) map.get(l);
         if (li == null) {
             map.put(l.id(), li = new Integer(++current));
         }
         int low = li.intValue();
-        Integer hi = ((Integer) map.get(h));
+        Integer hi = (Integer) map.get(h);
         if (hi == null) {
             map.put(h.id(), hi = new Integer(++current));
         }
