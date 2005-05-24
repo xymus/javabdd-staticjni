@@ -31,7 +31,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.10 2005/05/21 10:14:36 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.11 2005/05/24 00:17:42 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -847,7 +847,7 @@ public abstract class BDD {
      * It includes the ability to check if bits are dont-cares and skip them.
      * 
      * @author jwhaley
-     * @version $Id: BDD.java,v 1.10 2005/05/21 10:14:36 joewhaley Exp $
+     * @version $Id: BDD.java,v 1.11 2005/05/24 00:17:42 joewhaley Exp $
      */
     public static class BDDIterator implements Iterator {
         final BDDFactory f;
@@ -1052,7 +1052,7 @@ public abstract class BDD {
             if (a == null) {
                 throw new NoSuchElementException();
             }
-            if (lastReturned != null) lastReturned.free();
+            //if (lastReturned != null) lastReturned.free();
             lastReturned = f.one();
             //for (int i = 0; i < v.length; ++i) {
             for (int i = v.length-1; i >= 0; --i) {
