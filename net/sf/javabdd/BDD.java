@@ -31,7 +31,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BDDDomain#set()
  * 
  * @author John Whaley
- * @version $Id: BDD.java,v 1.12 2005/05/24 18:24:38 joewhaley Exp $
+ * @version $Id: BDD.java,v 1.13 2005/06/03 20:20:16 joewhaley Exp $
  */
 public abstract class BDD {
 
@@ -560,8 +560,10 @@ public abstract class BDD {
             Arrays.fill(allsatProfile, (byte) -1);
             loStack = new LinkedList();
             hiStack = new LinkedList();
-            if (!r.isOne()) loStack.addLast(r.id());
-            if (!gotoNext()) allsatProfile = null;
+            if (!r.isOne()) {
+                loStack.addLast(r.id());
+                if (!gotoNext()) allsatProfile = null;
+            }
         }
         
         private boolean gotoNext() {
@@ -847,7 +849,7 @@ public abstract class BDD {
      * It includes the ability to check if bits are dont-cares and skip them.
      * 
      * @author jwhaley
-     * @version $Id: BDD.java,v 1.12 2005/05/24 18:24:38 joewhaley Exp $
+     * @version $Id: BDD.java,v 1.13 2005/06/03 20:20:16 joewhaley Exp $
      */
     public static class BDDIterator implements Iterator {
         final BDDFactory f;
