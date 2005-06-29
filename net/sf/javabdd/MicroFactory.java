@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.io.BufferedReader;
@@ -27,7 +26,7 @@ import java.math.BigInteger;
  * 20% less memory.</p>
  * 
  * @author jwhaley
- * @version $Id: MicroFactory.java,v 1.11 2005/05/21 08:47:10 joewhaley Exp $
+ * @version $Id: MicroFactory.java,v 1.12 2005/06/29 07:54:32 joewhaley Exp $
  */
 public class MicroFactory extends BDDFactory {
 
@@ -6888,7 +6887,7 @@ public class MicroFactory extends BDDFactory {
         return cachestats;
     }
     
-    public static final String REVISION = "$Revision: 1.11 $";
+    public static final String REVISION = "$Revision: 1.12 $";
     
     public String getVersion() {
         return "MicroFactory "+REVISION.substring(11, REVISION.length()-2);
