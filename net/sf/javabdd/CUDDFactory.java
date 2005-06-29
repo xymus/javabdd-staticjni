@@ -32,7 +32,7 @@ import java.math.BigInteger;
  * @see net.sf.javabdd.BuDDyFactory
  * 
  * @author John Whaley
- * @version $Id: CUDDFactory.java,v 1.7 2005/05/21 08:47:10 joewhaley Exp $
+ * @version $Id: CUDDFactory.java,v 1.8 2005/06/29 07:52:06 joewhaley Exp $
  */
 public class CUDDFactory extends BDDFactory {
 
@@ -414,9 +414,9 @@ public class CUDDFactory extends BDDFactory {
      * @see net.sf.javabdd.BDDFactory#getCacheSize()
      */
     public int getCacheSize() {
-        // TODO Implement this.
-        throw new UnsupportedOperationException();
+        return getCacheSize0();
     }
+    private static native int getCacheSize0();
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#reorderGain()
@@ -482,6 +482,8 @@ public class CUDDFactory extends BDDFactory {
          * @see net.sf.javabdd.BDD#var()
          */
         public int var() {
+            if (isZero() || isOne())
+                throw new BDDException("cannot get var of terminal");
             return var0(_ddnode_ptr);
         }
         private static native int var0(long b);
@@ -937,7 +939,7 @@ public class CUDDFactory extends BDDFactory {
         c.printDot();
     }
 
-    public static final String REVISION = "$Revision: 1.7 $";
+    public static final String REVISION = "$Revision: 1.8 $";
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#getVersion()
