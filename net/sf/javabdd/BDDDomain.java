@@ -18,7 +18,7 @@ import net.sf.javabdd.BDD.BDDIterator;
  * a specified list of sizes.</p>
  * 
  * @author John Whaley
- * @version $Id: BDDDomain.java,v 1.9 2005/05/21 10:15:07 joewhaley Exp $
+ * @version $Id: BDDDomain.java,v 1.10 2005/07/12 01:35:30 cunkel Exp $
  * @see net.sf.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
@@ -315,6 +315,9 @@ public abstract class BDDDomain {
         }
         if (ivar.length == binsize) return binsize;
         
+        if (true) {
+            throw new BDDException("Can't add bits to domains, requested domain "+name+" upper limit "+range);
+        }
         int[] new_ivar = new int[binsize];
         System.arraycopy(ivar, 0, new_ivar, 0, ivar.length);
         BDDFactory factory = getFactory();
