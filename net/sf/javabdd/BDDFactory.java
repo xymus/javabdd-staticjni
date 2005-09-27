@@ -29,7 +29,7 @@ import java.security.AccessControlException;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.16 2005/07/11 22:48:52 cs343 Exp $
+ * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -485,6 +485,20 @@ public abstract class BDDFactory {
      * @return BDD
      */
     public BDD load(BufferedReader ifile) throws IOException {
+        return load(ifile, null);
+    }
+    
+    /**
+     * <p>Loads a BDD from the given input, translating BDD variables according
+     * to the given map.</p>
+     * 
+     * <p>Compare to bdd_load.</p>
+     * 
+     * @param ifile  reader
+     * @param translate  variable translation map
+     * @return BDD
+     */
+    public BDD load(BufferedReader ifile, int[] translate) throws IOException {
 
         tokenizer = null;
         
@@ -519,6 +533,8 @@ public abstract class BDDFactory {
         for (int n = 0; n < lh_nodenum; n++) {
             int key = Integer.parseInt(readNext(ifile));
             int var = Integer.parseInt(readNext(ifile));
+            if (translate != null)
+                var = translate[var];
             int lowi = Integer.parseInt(readNext(ifile));
             int highi = Integer.parseInt(readNext(ifile));
 
@@ -1093,7 +1109,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.16 2005/07/11 22:48:52 cs343 Exp $
+     * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1144,7 +1160,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.16 2005/07/11 22:48:52 cs343 Exp $
+     * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1193,7 +1209,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.16 2005/07/11 22:48:52 cs343 Exp $
+     * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
