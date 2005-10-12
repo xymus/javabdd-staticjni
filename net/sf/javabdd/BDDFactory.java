@@ -5,7 +5,6 @@ package net.sf.javabdd;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.security.AccessControlException;
  * @see net.sf.javabdd.BDD
  * 
  * @author John Whaley
- * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
+ * @version $Id: BDDFactory.java,v 1.18 2005/10/12 10:27:08 joewhaley Exp $
  */
 public abstract class BDDFactory {
 
@@ -1109,7 +1108,7 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.18 2005/10/12 10:27:08 joewhaley Exp $
      */
     public static class GCStats {
         public int nodes;
@@ -1160,7 +1159,7 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.18 2005/10/12 10:27:08 joewhaley Exp $
      */
     public static class ReorderStats {
         
@@ -1209,7 +1208,7 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
-     * @version $Id: BDDFactory.java,v 1.17 2005/09/27 22:56:19 joewhaley Exp $
+     * @version $Id: BDDFactory.java,v 1.18 2005/10/12 10:27:08 joewhaley Exp $
      */
     public static class CacheStats {
         public int uniqueAccess;
@@ -1575,9 +1574,13 @@ public abstract class BDDFactory {
             if (!done[i]) {
                 throw new BDDException("missing domain #"+i+": "+getDomain(i));
             }
-            doms[i] = getDomain(i);
         }
         
+        while (bitIndex < varorder.length) {
+            varorder[bitIndex] = bitIndex;
+            ++bitIndex;
+        }
+            
         int[] test = new int[varorder.length];
         System.arraycopy(varorder, 0, test, 0, varorder.length);
         Arrays.sort(test);
