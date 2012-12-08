@@ -73,8 +73,9 @@ else
     CAL_DLL_NAME = libcal.jnilib
   else
     JDK_ROOT = $(firstword $(wildcard /usr/java/j*dk*))
-    CLASSPATH = .:jdd.jar
-    CFLAGS = -DSPECIALIZE_RELPROD -DSPECIALIZE_AND -DSPECIALIZE_OR -DSMALL_NODES -O2 -fomit-frame-pointer $(EXTRA_CFLAGS)
+    STATICJNI_CLASSPATH = /home/xymus/projects/staticjni/src/share/classes/
+    CLASSPATH = .:jdd.jar:${STATICJNI_CLASSPATH}
+    CFLAGS = -DSPECIALIZE_RELPROD -DSPECIALIZE_AND -DSPECIALIZE_OR -DSMALL_NODES -O2 -fomit-frame-pointer -fPIC $(EXTRA_CFLAGS)
     CAL_CFLAGS = -O2 -DCLOCK_RESOLUTION=60 -DRLIMIT_DATA_DEFAULT=16777216 -DNDEBUG=1 -DSTDC_HEADERS=1 -DHAVE_SYS_WAIT_H=1 -DHAVE_SYS_FILE_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_ERRNO_H=1 -DHAVE_ASSERT_H=1 -DHAVE_SYS_WAIT_H=1 -DHAVE_PWD_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_TIMES_H=1 -DHAVE_SYS_TIME_H=1 -DHAVE_SYS_RESOURCE_H=1 -DHAVE_STDARG_H=1 -DHAVE_VARARGS_H=1 -DSIZEOF_VOID_P=4 -DSIZEOF_INT=4 -DHAVE_IEEE_754=1 -DPAGE_SIZE=4096 -DLG_PAGE_SIZE=12 -DRETSIGTYPE=void -DHAVE_STRCOLL=1 -DHAVE_SYSCONF=1 -DHAVE_GETHOSTNAME=1 -DHAVE_STRCSPN=1 -DHAVE_STRERROR=1 -DHAVE_STRSPN=1 -DHAVE_STRSTR=1 -DHAVE_GETENV=1 -DHAVE_STRCHR=1 -DHAVE_GETRLIMIT=1 -DHAVE_GETRUSAGE=1 -DHAVE_VALLOC=1 $(EXTRA_CFLAGS)
     OBJECT_OUTPUT_OPTION = -o$(space)
     LINK = $(CC)
@@ -107,7 +108,8 @@ endif
 # The java tools:
 JAVAC = $(JDK_ROOT)/bin/javac
 JAVA = $(JDK_ROOT)/bin/java
-JAVAH = $(JDK_ROOT)/bin/javah
+#JAVAH = $(JDK_ROOT)/bin/javah
+JAVAH = java -cp /home/xymus/projects/staticjni/dist/lib/javah.jar com.sun.tools.javah.Main -cp .
 JAVADOC = $(JDK_ROOT)/bin/javadoc
 JAR = $(JDK_ROOT)/bin/jar
 
@@ -154,7 +156,8 @@ BUDDY_SRCS = buddy_jni.c \
 	$(BUDDY_SRC)/bddio.c $(BUDDY_SRC)/bddop.c $(BUDDY_SRC)/bvec.c \
 	$(BUDDY_SRC)/cache.c $(BUDDY_SRC)/fdd.c $(BUDDY_SRC)/imatrix.c \
 	$(BUDDY_SRC)/kernel.c $(BUDDY_SRC)/pairs.c $(BUDDY_SRC)/prime.c \
-	$(BUDDY_SRC)/reorder.c $(BUDDY_SRC)/tree.c $(BUDDY_SRC)/trace.c
+	$(BUDDY_SRC)/reorder.c $(BUDDY_SRC)/tree.c $(BUDDY_SRC)/trace.c \
+	$(wildcard net_sf_javabdd_*.c)
 BUDDY_OBJS = $(BUDDY_SRCS:.c=.o)
 
 CUDD_INCLUDE = cudd_jni.h
@@ -222,7 +225,7 @@ $(CAL_OBJS): %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(OBJECT_OUTPUT_OPTION)$@ $<
 
 $(BUDDY_INCLUDE): $(BUDDY_CLASSFILE)
-	$(JAVAH) -jni -o $(BUDDY_INCLUDE) $(BUDDY_CLASSNAMES)
+	$(JAVAH) -staticjni -o $(BUDDY_INCLUDE) $(BUDDY_CLASSNAMES)
 
 $(CUDD_INCLUDE): $(CUDD_CLASSFILE)
 	$(JAVAH) -jni -o $(CUDD_INCLUDE) $(CUDD_CLASSNAMES)
