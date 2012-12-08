@@ -47,7 +47,7 @@ static void bdd_errhandler(int errcode)
   bdd_clear_error();
 }
 
-static int check_error(JNIEnv *env)
+static int check_error()
 {
   int err = bdd_error;
   char* clsname;
@@ -91,18 +91,16 @@ static int check_error(JNIEnv *env)
     break;
   }
   if (clsname != NULL) {
-    jclass cls = (*env)->FindClass(env, clsname);
+    jclass cls = (*thread_env)->FindClass(thread_env, clsname);
 #if defined(TRACE_BUDDYLIB)
     printf("bdd_errstring(%d)\n", err);
 #endif
-    (*env)->ThrowNew(env, cls, bdd_errstring(err));
-    (*env)->DeleteLocalRef(env, cls);
+    (*thread_env)->ThrowNew(thread_env, cls, bdd_errstring(err));
+    (*thread_env)->DeleteLocalRef(thread_env, cls);
   }
   bdd_error = 0;
   return err;
 }
-
-static JNIEnv *jnienv;
 
 static void bdd_gbchandler(int code, bddGbcStat *s)
 {
@@ -111,41 +109,41 @@ static void bdd_gbchandler(int code, bddGbcStat *s)
   jfieldID fid, fid2;
   jmethodID mid;
   
-  bdd_cls = (*jnienv)->FindClass(jnienv, "net/sf/javabdd/BDDFactory");
-  buddy_cls = (*jnienv)->FindClass(jnienv, "net/sf/javabdd/BuDDyFactory");
-  gc_cls = (*jnienv)->FindClass(jnienv, "net/sf/javabdd/BDDFactory$GCStats");
+  bdd_cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BDDFactory");
+  buddy_cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BuDDyFactory");
+  gc_cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BDDFactory$GCStats");
   if (!bdd_cls || !buddy_cls || !gc_cls) {
     return;
   }
   
-  mid = (*jnienv)->GetStaticMethodID(jnienv, buddy_cls, "gc_callback", "(I)V");
-  fid2 = (*jnienv)->GetStaticFieldID(jnienv, buddy_cls, "INSTANCE", "Lnet/sf/javabdd/BuDDyFactory;");
-  fid = (*jnienv)->GetFieldID(jnienv, bdd_cls, "gcstats", "Lnet/sf/javabdd/BDDFactory$GCStats;");
+  mid = (*thread_env)->GetStaticMethodID(thread_env, buddy_cls, "gc_callback", "(I)V");
+  fid2 = (*thread_env)->GetStaticFieldID(thread_env, buddy_cls, "INSTANCE", "Lnet/sf/javabdd/BuDDyFactory;");
+  fid = (*thread_env)->GetFieldID(thread_env, bdd_cls, "gcstats", "Lnet/sf/javabdd/BDDFactory$GCStats;");
   if (!mid || !fid2 || !fid) {
     return;
   }
   
-  factory_obj = (*jnienv)->GetStaticObjectField(jnienv, buddy_cls, fid2);
+  factory_obj = (*thread_env)->GetStaticObjectField(thread_env, buddy_cls, fid2);
   if (!factory_obj) {
     printf("Error: BuDDyFactory.INSTANCE is null\n");
     return;
   }
   
-  gc_obj = (*jnienv)->GetObjectField(jnienv, factory_obj, fid);
+  gc_obj = (*thread_env)->GetObjectField(thread_env, factory_obj, fid);
   if (!gc_obj) {
     printf("Error: gcstats is null\n");
     return;
   }
   
-  fid = (*jnienv)->GetFieldID(jnienv, gc_cls, "nodes", "I");
+  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "nodes", "I");
   if (fid) {
-    (*jnienv)->SetIntField(jnienv, gc_obj, fid, s->nodes);
+    (*thread_env)->SetIntField(thread_env, gc_obj, fid, s->nodes);
   }
-  fid = (*jnienv)->GetFieldID(jnienv, gc_cls, "freenodes", "I");
+  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "freenodes", "I");
   if (fid) {
-    (*jnienv)->SetIntField(jnienv, gc_obj, fid, s->freenodes);
+    (*thread_env)->SetIntField(thread_env, gc_obj, fid, s->freenodes);
   }
-  fid = (*jnienv)->GetFieldID(jnienv, gc_cls, "time", "J");
+  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "time", "J");
   if (fid) {
     long t = s->time;
     if (CLOCKS_PER_SEC < 1000) {
@@ -154,9 +152,9 @@ static void bdd_gbchandler(int code, bddGbcStat *s)
     else {
       t /= (CLOCKS_PER_SEC/1000);
     }
-    (*jnienv)->SetLongField(jnienv, gc_obj, fid, t);
+    (*thread_env)->SetLongField(thread_env, gc_obj, fid, t);
   }
-  fid = (*jnienv)->GetFieldID(jnienv, gc_cls, "sumtime", "J");
+  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "sumtime", "J");
   if (fid) {
     long t = s->sumtime;
     if (CLOCKS_PER_SEC < 1000) {
@@ -165,34 +163,34 @@ static void bdd_gbchandler(int code, bddGbcStat *s)
     else {
       t /= (CLOCKS_PER_SEC/1000);
     }
-    (*jnienv)->SetLongField(jnienv, gc_obj, fid, t);
+    (*thread_env)->SetLongField(thread_env, gc_obj, fid, t);
   }
-  fid = (*jnienv)->GetFieldID(jnienv, gc_cls, "num", "I");
+  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "num", "I");
   if (fid) {
-    (*jnienv)->SetIntField(jnienv, gc_obj, fid, s->num);
+    (*thread_env)->SetIntField(thread_env, gc_obj, fid, s->num);
   }
   
-  (*jnienv)->CallStaticVoidMethod(jnienv, buddy_cls, mid, code);
+  (*thread_env)->CallStaticVoidMethod(thread_env, buddy_cls, mid, code);
 }
 
 static void bdd_resizehandler(int a, int b)
 {
-  jclass cls = (*jnienv)->FindClass(jnienv, "net/sf/javabdd/BuDDyFactory");
-  jmethodID mid = (*jnienv)->GetStaticMethodID(jnienv, cls, "resize_callback", "(II)V");
+  jclass cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BuDDyFactory");
+  jmethodID mid = (*thread_env)->GetStaticMethodID(thread_env, cls, "resize_callback", "(II)V");
   if (mid == 0) {
     return;
   }
-  (*jnienv)->CallStaticVoidMethod(jnienv, cls, mid, a, b);
+  (*thread_env)->CallStaticVoidMethod(thread_env, cls, mid, a, b);
 }
 
 static void bdd_reorderhandler(int a)
 {
-  jclass cls = (*jnienv)->FindClass(jnienv, "net/sf/javabdd/BuDDyFactory");
-  jmethodID mid = (*jnienv)->GetStaticMethodID(jnienv, cls, "reorder_callback", "(I)V");
+  jclass cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BuDDyFactory");
+  jmethodID mid = (*thread_env)->GetStaticMethodID(thread_env, cls, "reorder_callback", "(I)V");
   if (mid == 0) {
     return;
   }
-  (*jnienv)->CallStaticVoidMethod(jnienv, cls, mid, a);
+  (*thread_env)->CallStaticVoidMethod(thread_env, cls, mid, a);
 }
 
 /**** START OF NATIVE METHOD IMPLEMENTATIONS ****/
@@ -202,32 +200,28 @@ static void bdd_reorderhandler(int a)
  * Method:    registerNatives
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_registerNatives
-  (JNIEnv *env, jclass cl)
-{
-}
+void BuDDyFactory_registerNatives__impl(){ }
 
 /*
  * Class:     net_sf_javabdd_BuDDyFactory
  * Method:    buildCube0
  * Signature: (I[I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_buildCube0
-  (JNIEnv *env, jclass cl, jint value, jintArray arr)
+jint BuDDyFactory_buildCube0__impl
+  ( jint value, jintArray arr )
 {
   jint width, r;
   jint* a;
-  jnienv = env;
 
-  width = (*env)->GetArrayLength(env, arr);
-  a = (*env)->GetIntArrayElements(env, arr, 0);
+  width = (*thread_env)->GetArrayLength(thread_env, arr); // XY
+  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0); // XY opt array access
   if (a == NULL) return -1;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_buildcube(%d, %d, %p)\n", value, width, a);
 #endif
   r = bdd_buildcube(value, width, (int*)a);
-  (*env)->ReleaseIntArrayElements(env, arr, a, 0);
-  check_error(env);
+  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0); // XY
+  check_error(); // XY
   return r;
 }
 
@@ -236,22 +230,21 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_buildCube0
  * Method:    buildCube1
  * Signature: (I[I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_buildCube1
-  (JNIEnv *env, jclass cl, jint value, jintArray arr)
+jint BuDDyFactory_buildCube1__impl
+  ( jint value, jintArray arr )
 {
   jint width, r;
   jint* a;
-  jnienv = env;
 
-  width = (*env)->GetArrayLength(env, arr);
-  a = (*env)->GetIntArrayElements(env, arr, 0);
+  width = (*thread_env)->GetArrayLength(thread_env, arr);
+  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
   if (a == NULL) return -1;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_ibuildcube(%d, %d, %p)\n", value, width, a);
 #endif
   r = bdd_ibuildcube(value, width, (int*)a);
-  (*env)->ReleaseIntArrayElements(env, arr, a, 0);
-  check_error(env);
+  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+  check_error();
   return r;
 }
 
@@ -260,22 +253,21 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_buildCube1
  * Method:    makeSet0
  * Signature: ([I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_makeSet0
-  (JNIEnv *env, jclass cl, jintArray arr)
+jint BuDDyFactory_makeSet0__impl
+  ( jintArray arr )
 {
   jint width, r;
   jint* a;
-  jnienv = env;
 
-  width = (*env)->GetArrayLength(env, arr);
-  a = (*env)->GetIntArrayElements(env, arr, 0);
+  width = (*thread_env)->GetArrayLength(thread_env, arr);
+  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
   if (a == NULL) return -1;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_makeset(%p, %d)\n", a, width);
 #endif
   r = bdd_makeset((int*)a, width);
-  (*env)->ReleaseIntArrayElements(env, arr, a, 0);
-  check_error(env);
+  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+  check_error();
   return r;
 }
 
@@ -284,8 +276,10 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_makeSet0
  * Method:    initialize0
  * Signature: (II)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_initialize0
-  (JNIEnv *env, jobject o, jint nodesize, jint cachesize)
+//JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_initialize0
+//  (JNIEnv *thread_env, jobject o, jint nodesize, jint cachesize) // XY type error, is static, not a method
+void BuDDyFactory_initialize0__impl
+  ( jint nodesize, jint cachesize )
 {
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_init(%d, %d)\n", nodesize, cachesize);
@@ -307,7 +301,7 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_initialize0
   printf("bdd_reorder_hook(%p)\n", bdd_reorderhandler);
 #endif
   bdd_reorder_hook(bdd_reorderhandler);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -315,8 +309,7 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_initialize0
  * Method:    isInitialized0
  * Signature: ()Z
  */
-JNIEXPORT jboolean JNICALL Java_net_sf_javabdd_BuDDyFactory_isInitialized0
-  (JNIEnv *env, jclass cl)
+jboolean BuDDyFactory_isInitialized0__impl( )
 {
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_isrunning()\n");
@@ -329,15 +322,13 @@ JNIEXPORT jboolean JNICALL Java_net_sf_javabdd_BuDDyFactory_isInitialized0
  * Method:    done0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_done0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_done0__impl( )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_done()\n");
 #endif
   bdd_done();
-  check_error(env);
+  check_error();
 }
 
 extern int bdderrorcond;
@@ -347,8 +338,8 @@ extern int bdderrorcond;
  * Method:    setError0
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_setError0
-  (JNIEnv *env, jclass cl, jint code)
+void BuDDyFactory_setError0__impl
+  ( jint code )
 {
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setError(%d)\n", code);
@@ -361,8 +352,8 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_setError0
  * Method:    clearError0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_clearError0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_clearError0__impl
+  (  )
 {
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_clearError()\n");
@@ -375,16 +366,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_clearError0
  * Method:    setMaxNodeNum0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setMaxNodeNum0
-  (JNIEnv *env, jclass cl, jint size)
+jint BuDDyFactory_setMaxNodeNum0__impl
+  ( jint size )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setmaxnodenum(%d)\n", size);
 #endif
   result = bdd_setmaxnodenum(size);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -393,34 +383,39 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setMaxNodeNum0
  * Method:    setNodeTableSize0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setNodeTableSize0
-  (JNIEnv *env, jclass cl, jint size)
+jint BuDDyFactory_setNodeTableSize0__impl
+  ( jint size )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setallocnum(%d)\n", size);
 #endif
   result = bdd_setallocnum(size);
-  check_error(env);
+  check_error();
   return result;
 }
+
+/* XY error not implemented
+
+jint BuDDyFactory_setCacheSize0__impl
+  ( jint size ) {
+}
+*/
 
 /*
  * Class:     net_sf_javabdd_BuDDyFactory
  * Method:    setMinFreeNodes0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setMinFreeNodes0
-  (JNIEnv *env, jclass cl, jint n)
+jint BuDDyFactory_setMinFreeNodes0__impl
+  ( jint n )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setminfreenodes(%d)\n", n);
 #endif
   result = bdd_setminfreenodes(n);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -429,16 +424,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setMinFreeNodes0
  * Method:    setMaxIncrease0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setMaxIncrease0
-  (JNIEnv *env, jclass cl, jint size)
+jint BuDDyFactory_setMaxIncrease0__impl
+  ( jint size )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setmaxincrease(%d)\n", size);
 #endif
   result = bdd_setmaxincrease(size);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -447,16 +441,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setMaxIncrease0
  * Method:    setIncreaseFactor0
  * Signature: (D)D
  */
-JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_setIncreaseFactor0
-  (JNIEnv *env, jclass cl, jdouble r)
+jdouble BuDDyFactory_setIncreaseFactor0__impl
+  ( jdouble r )
 {
   jdouble result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setincreasefactor(%lf)\n", r);
 #endif
   result = bdd_setincreasefactor(r);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -465,16 +458,15 @@ JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_setIncreaseFactor0
  * Method:    setCacheRatio0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setCacheRatio0
-  (JNIEnv *env, jclass cl, jint r)
+jint BuDDyFactory_setCacheRatio0__impl
+  ( jint r )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setcacheratio(%d)\n", r);
 #endif
   result = bdd_setcacheratio(r);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -483,16 +475,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setCacheRatio0
  * Method:    varNum0
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_varNum0
-  (JNIEnv *env, jclass cl)
+jint BuDDyFactory_varNum0__impl
+  (  )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_varnum()\n");
 #endif
   result = bdd_varnum();
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -501,16 +492,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_varNum0
  * Method:    setVarNum0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setVarNum0
-  (JNIEnv *env, jclass cl, jint num)
+jint BuDDyFactory_setVarNum0__impl
+  ( jint num )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setvarnum(%d)\n", num);
 #endif
   result = bdd_setvarnum(num);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -519,16 +509,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_setVarNum0
  * Method:    duplicateVar0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_duplicateVar0
-  (JNIEnv *env, jclass cl, jint var)
+jint BuDDyFactory_duplicateVar0__impl
+  ( jint var )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_duplicatevar(%d)\n", var);
 #endif
   result = bdd_duplicatevar(var);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -537,16 +526,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_duplicateVar0
  * Method:    extVarNum0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_extVarNum0
-  (JNIEnv *env, jclass cl, jint num)
+jint BuDDyFactory_extVarNum0__impl
+  ( jint num )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_extvarnum(%d)\n", num);
 #endif
   result = bdd_extvarnum(num);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -555,16 +543,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_extVarNum0
  * Method:    ithVar0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_ithVar0
-  (JNIEnv *env, jclass cl, jint var)
+jint BuDDyFactory_ithVar0__impl
+  ( jint var )
 {
   BDD b;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_ithvar(%d)\n", var);
 #endif
   b = bdd_ithvar(var);
-  check_error(env);
+  check_error();
   return b;
 }
 
@@ -573,16 +560,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_ithVar0
  * Method:    nithVar0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_nithVar0
-  (JNIEnv *env, jclass cl, jint var)
+jint BuDDyFactory_nithVar0__impl
+  ( jint var )
 {
   BDD b;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_nithvar(%d)\n", var);
 #endif
   b = bdd_nithvar(var);
-  check_error(env);
+  check_error();
   return b;
 }
 
@@ -591,15 +577,14 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_nithVar0
  * Method:    swapVar0
  * Signature: (II)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_swapVar0
-  (JNIEnv *env, jclass cl, jint v1, jint v2)
+void BuDDyFactory_swapVar0__impl
+  ( jint v1, jint v2 )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_swapvar(%d, %d)\n", v1, v2);
 #endif
   bdd_swapvar(v1, v2);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -607,12 +592,11 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_swapVar0
  * Method:    makePair0
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_net_sf_javabdd_BuDDyFactory_makePair0
-  (JNIEnv *env, jclass cl)
+jlong BuDDyFactory_makePair0__impl
+  (  )
 {
   bddPair* pair;
   jlong r;
-  jnienv = env;
 
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_newpair()\n");
@@ -627,16 +611,15 @@ JNIEXPORT jlong JNICALL Java_net_sf_javabdd_BuDDyFactory_makePair0
  * Method:    printAll0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printAll0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_printAll0__impl
+  (  )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_printall()\n");
 #endif
   bdd_printall();
   fflush(stdout);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -644,16 +627,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printAll0
  * Method:    printTable0
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printTable0
-  (JNIEnv *env, jclass cl, jint bdd)
+void BuDDyFactory_printTable0__impl
+  ( jint bdd )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_printtable(%d)\n", bdd);
 #endif
   bdd_printtable(bdd);
   fflush(stdout);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -661,22 +643,21 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printTable0
  * Method:    load0
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_load0
-  (JNIEnv *env, jclass cl, jstring fname)
+jint BuDDyFactory_load0__impl
+  ( jstring fname )
 {
   BDD r;
   int rc;
   char *str;
-  jnienv = env;
 
-  str = (char*) (*env)->GetStringUTFChars(env, fname, NULL);
+  str = (char*) (*thread_env)->GetStringUTFChars(thread_env, fname, NULL);
   if (str == NULL) return -1;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_fnload(%s, %p)\n", str, &r);
 #endif
   rc = bdd_fnload(str, &r);
-  (*env)->ReleaseStringUTFChars(env, fname, str);
-  check_error(env);
+  (*thread_env)->ReleaseStringUTFChars(thread_env, fname, str);
+  check_error();
   return r;
 }
 
@@ -685,21 +666,20 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_load0
  * Method:    save0
  * Signature: (Ljava/lang/String;I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_save0
-  (JNIEnv *env, jclass cl, jstring fname, jint r)
+void BuDDyFactory_save0__impl
+  ( jstring fname, jint r )
 {
   int rc;
   char *str;
-  jnienv = env;
 
-  str = (char*) (*env)->GetStringUTFChars(env, fname, NULL);
+  str = (char*) (*thread_env)->GetStringUTFChars(thread_env, fname, NULL);
   if (str == NULL) return;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_fnsave(%s, %d)\n", str, r);
 #endif
   rc = bdd_fnsave(str, r);
-  (*env)->ReleaseStringUTFChars(env, fname, str);
-  check_error(env);
+  (*thread_env)->ReleaseStringUTFChars(thread_env, fname, str);
+  check_error();
 }
 
 /*
@@ -707,16 +687,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_save0
  * Method:    level2Var0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_level2Var0
-  (JNIEnv *env, jclass cl, jint level)
+jint BuDDyFactory_level2Var0__impl
+  ( jint level )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_level2var(%d)\n", level);
 #endif
   result = bdd_level2var(level);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -725,16 +704,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_level2Var0
  * Method:    var2Level0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_var2Level0
-  (JNIEnv *env, jclass cl, jint var)
+jint BuDDyFactory_var2Level0__impl
+  ( jint var )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_var2level(%d)\n", var);
 #endif
   result = bdd_var2level(var);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -743,15 +721,14 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_var2Level0
  * Method:    reorder0
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_reorder0
-  (JNIEnv * env, jclass cl, jint method)
+void BuDDyFactory_reorder0__impl
+  ( jint method )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_reorder(%d)\n", method);
 #endif
   bdd_reorder(method);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -759,15 +736,14 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_reorder0
  * Method:    autoReorder0
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_autoReorder0
-  (JNIEnv *env, jclass cl, jint method)
+void BuDDyFactory_autoReorder0__impl
+  ( jint method )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_autoreorder(%d)\n", method);
 #endif
   bdd_autoreorder(method);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -775,15 +751,14 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_autoReorder0
  * Method:    autoReorder1
  * Signature: (II)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_autoReorder1
-  (JNIEnv *env, jclass cl, jint method, jint n)
+void BuDDyFactory_autoReorder1__impl
+  ( jint method, jint n )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_autoreorder_times(%d, %d)\n", method, n);
 #endif
   bdd_autoreorder_times(method, n);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -791,16 +766,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_autoReorder1
  * Method:    getReorderMethod0
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getReorderMethod0
-  (JNIEnv *env, jclass cl)
+jint BuDDyFactory_getReorderMethod0__impl
+  (  )
 {
   int method;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_getreorder_method()\n");
 #endif
   method = bdd_getreorder_method();
-  check_error(env);
+  check_error();
   return method;
 }
 
@@ -809,16 +783,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getReorderMethod0
  * Method:    getReorderTimes0
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getReorderTimes0
-  (JNIEnv *env, jclass cl)
+jint BuDDyFactory_getReorderTimes0__impl
+  (  )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_getreorder_times()\n");
 #endif
   result = bdd_getreorder_times();
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -827,15 +800,14 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getReorderTimes0
  * Method:    disableReorder0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_disableReorder0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_disableReorder0__impl
+  (  )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_disable_reorder()\n");
 #endif
   bdd_disable_reorder();
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -843,15 +815,14 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_disableReorder0
  * Method:    enableReorder0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_enableReorder0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_enableReorder0__impl
+  (  )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_enable_reorder()\n");
 #endif
   bdd_enable_reorder();
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -859,16 +830,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_enableReorder0
  * Method:    reorderVerbose0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_reorderVerbose0
-  (JNIEnv *env, jclass cl, jint level)
+jint BuDDyFactory_reorderVerbose0__impl
+  ( jint level )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_reorder_verbose(%d)\n", level);
 #endif
   result = bdd_reorder_verbose(level);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -877,28 +847,27 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_reorderVerbose0
  * Method:    setVarOrder0
  * Signature: ([I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_setVarOrder0
-  (JNIEnv *env, jclass cl, jintArray arr)
+void BuDDyFactory_setVarOrder0__impl
+  ( jintArray arr )
 {
   jint *a;
   jint size, varnum;
-  jnienv = env;
-  size = (*env)->GetArrayLength(env, arr);
+  size = (*thread_env)->GetArrayLength(thread_env, arr);
   varnum = bdd_varnum();
   if (size != varnum) {
-    jclass cls = (*env)->FindClass(env, "java/lang/IllegalArgumentException");
-    (*env)->ThrowNew(env, cls, "array size != number of vars");
-    (*env)->DeleteLocalRef(env, cls);
+    jclass cls = (*thread_env)->FindClass(thread_env, "java/lang/IllegalArgumentException");
+    (*thread_env)->ThrowNew(thread_env, cls, "array size != number of vars");
+    (*thread_env)->DeleteLocalRef(thread_env, cls);
     return;
   }
-  a = (*env)->GetIntArrayElements(env, arr, 0);
+  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
   if (a == NULL) return;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setvarorder(%p)\n", a);
 #endif
   bdd_setvarorder((int*)a);
-  (*env)->ReleaseIntArrayElements(env, arr, a, 0);
-  check_error(env);
+  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+  check_error();
 }
 
 /*
@@ -906,15 +875,14 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_setVarOrder0
  * Method:    addVarBlock0
  * Signature: (IZ)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_addVarBlock0
-  (JNIEnv *env, jclass cl, jint var, jboolean fixed)
+void BuDDyFactory_addVarBlock0__impl
+  ( jint var, jboolean fixed )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_addvarblock(%d, %d)\n", var , fixed);
 #endif
   bdd_addvarblock(var, fixed);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -922,15 +890,14 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_addVarBlock0
  * Method:    addVarBlock1
  * Signature: (IIZ)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_addVarBlock1
-  (JNIEnv *env, jclass cl, jint first, jint last, jboolean fixed)
+void BuDDyFactory_addVarBlock1__impl
+  ( jint first, jint last, jboolean fixed )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_intaddvarblock(%d, %d, %d)\n", first, last, fixed);
 #endif
   bdd_intaddvarblock(first, last, fixed);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -938,15 +905,14 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_addVarBlock1
  * Method:    varBlockAll0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_varBlockAll0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_varBlockAll0__impl
+  (  )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_varblockall()\n");
 #endif
   bdd_varblockall();
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -954,15 +920,14 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_varBlockAll0
  * Method:    clearVarBlocks0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_clearVarBlocks0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_clearVarBlocks0__impl
+  (  )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_clrvarblocks()\n");
 #endif
   bdd_clrvarblocks();
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -970,16 +935,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_clearVarBlocks0
  * Method:    printOrder0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printOrder0
-  (JNIEnv *env, jclass cl)
+void BuDDyFactory_printOrder0__impl
+  (  )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_printorder()\n");
 #endif
   bdd_printorder();
   fflush(stdout);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -987,22 +951,21 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printOrder0
  * Method:    nodeCount0
  * Signature: ([I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_nodeCount0
-  (JNIEnv *env, jclass cl, jintArray arr)
+jint BuDDyFactory_nodeCount0__impl
+  ( jintArray arr )
 {
   jint *a;
   jint size;
   int result;
-  jnienv = env;
-  size = (*env)->GetArrayLength(env, arr);
-  a = (*env)->GetIntArrayElements(env, arr, 0);
+  size = (*thread_env)->GetArrayLength(thread_env, arr);
+  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
   if (a == NULL) return -1;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_anodecount(%p, %d)\n", a, size);
 #endif
   result = bdd_anodecount((int*)a, size);
-  (*env)->ReleaseIntArrayElements(env, arr, a, 0);
-  check_error(env);
+  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+  check_error();
   return result;
 }
 
@@ -1011,16 +974,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_nodeCount0
  * Method:    getAllocNum0
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getAllocNum0
-  (JNIEnv *env, jclass c)
+jint BuDDyFactory_getAllocNum0__impl
+  (  )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_getallocnum()\n");
 #endif
   result = bdd_getallocnum();
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1029,8 +991,8 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getAllocNum0
  * Method:    getCacheSize0
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getCacheSize0
-  (JNIEnv *env, jclass c)
+jint BuDDyFactory_getCacheSize0__impl
+  (  )
 {
   int result;
   bddStat stats;
@@ -1047,16 +1009,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getCacheSize0
  * Method:    getNodeNum0
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getNodeNum0
-  (JNIEnv *env, jclass c)
+jint BuDDyFactory_getNodeNum0__impl
+  (  )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_getnodenum()\n");
 #endif
   result = bdd_getnodenum();
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1065,16 +1026,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_getNodeNum0
  * Method:    reorderGain0
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_reorderGain0
-  (JNIEnv *env, jclass c)
+jint BuDDyFactory_reorderGain0__impl
+  (  )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_reorder_gain()\n");
 #endif
   result = bdd_reorder_gain();
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1083,16 +1043,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_reorderGain0
  * Method:    printStat0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printStat0
-  (JNIEnv *env, jclass c)
+void BuDDyFactory_printStat0__impl
+  (  )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_printstat()\n");
 #endif
   bdd_printstat();
   fflush(stdout);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1100,18 +1059,17 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_printStat0
  * Method:    getVersion0
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_net_sf_javabdd_BuDDyFactory_getVersion0
-  (JNIEnv *env, jclass c)
+jstring BuDDyFactory_getVersion0__impl
+  (  )
 {
   char *buf;
   jstring result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_versionstr()\n");
 #endif
   buf = bdd_versionstr();
-  result = (*env)->NewStringUTF(env, buf);
-  check_error(env);
+  result = (*thread_env)->NewStringUTF(thread_env, buf);
+  check_error();
   return result;
 }
 
@@ -1120,16 +1078,15 @@ JNIEXPORT jstring JNICALL Java_net_sf_javabdd_BuDDyFactory_getVersion0
  * Method:    var0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_var0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_var0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_var(%d)\n", b);
 #endif
   result = bdd_var(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1138,16 +1095,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_var0
  * Method:    high0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_high0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_high0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_high(%d)\n", b);
 #endif
   result = bdd_high(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1156,16 +1112,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_high0
  * Method:    low0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_low0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_low0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_low(%d)\n", b);
 #endif
   result = bdd_low(b);
-  check_error(env);
+  check_error();
   return result;}
 
 /*
@@ -1173,16 +1128,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_low0
  * Method:    not0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_not0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_not0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_not(%d)\n", b);
 #endif
   result = bdd_not(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1191,16 +1145,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_not0
  * Method:    ite0
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_ite0
-  (JNIEnv *env, jclass cl, jint b, jint c, jint d)
+jint BuDDyBDD_ite0__impl
+  ( jint b, jint c, jint d )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_ite(%d, %d, %d)\n", b, c, d);
 #endif
   result = bdd_ite(b, c, d);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1209,16 +1162,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_ite0
  * Method:    relprod0
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_relprod0
-  (JNIEnv *env, jclass cl, jint b, jint c, jint d)
+jint BuDDyBDD_relprod0__impl
+  ( jint b, jint c, jint d )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_relprod(%d, %d, %d)\n", b, c, d);
 #endif
   result = bdd_relprod(b, c, d);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1227,16 +1179,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_relprod0
  * Method:    compose0
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_compose0
-  (JNIEnv *env, jclass cl, jint b, jint c, jint v)
+jint BuDDyBDD_compose0__impl
+  ( jint b, jint c, jint v )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_compose(%d, %d, %d)\n", b, c, v);
 #endif
   result = bdd_compose(b, c, v);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1245,16 +1196,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_compose0
  * Method:    constrain0
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_constrain0
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jint BuDDyBDD_constrain0__impl
+  ( jint b, jint c )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_constrain(%d, %d)\n", b, c);
 #endif
   result = bdd_constrain(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1263,16 +1213,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_constrain0
  * Method:    exist0
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_exist0
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jint BuDDyBDD_exist0__impl
+  ( jint b, jint c )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_exist(%d, %d)\n", b, c);
 #endif
   result = bdd_exist(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1281,16 +1230,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_exist0
  * Method:    forAll0
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_forAll0
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jint BuDDyBDD_forAll0__impl
+  ( jint b, jint c )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_forall(%d, %d)\n", b, c);
 #endif
   result = bdd_forall(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1299,16 +1247,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_forAll0
  * Method:    unique0
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_unique0
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jint BuDDyBDD_unique0__impl
+  ( jint b, jint c )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_unique(%d, %d)\n", b, c);
 #endif
   result = bdd_unique(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1317,16 +1264,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_unique0
  * Method:    restrict0
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_restrict0
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jint BuDDyBDD_restrict0__impl
+  ( jint b, jint c )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_restrict(%d, %d)\n", b, c);
 #endif
   result = bdd_restrict(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1335,16 +1281,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_restrict0
  * Method:    simplify0
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_simplify0
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jint BuDDyBDD_simplify0__impl
+  ( jint b, jint c )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_simplify(%d, %d)\n", b, c);
 #endif
   result = bdd_simplify(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1353,16 +1298,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_simplify0
  * Method:    support0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_support0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_support0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_support(%d)\n", b);
 #endif
   result = bdd_support(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1371,16 +1315,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_support0
  * Method:    apply0
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_apply0
-  (JNIEnv *env, jclass cl, jint b, jint c, jint operation)
+jint BuDDyBDD_apply0__impl
+  ( jint b, jint c, jint operation )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_apply(%d, %d, %d)\n", b, c, operation);
 #endif
   result = bdd_apply(b, c, operation);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1389,16 +1332,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_apply0
  * Method:    applyAll0
  * Signature: (IIII)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_applyAll0
-  (JNIEnv *env, jclass cl, jint b, jint c, jint operation, jint d)
+jint BuDDyBDD_applyAll0__impl
+  ( jint b, jint c, jint operation, jint d )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_appall(%d, %d, %d, %d)\n", b, c, operation, d);
 #endif
   result = bdd_appall(b, c, operation, d);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1407,16 +1349,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_applyAll0
  * Method:    applyEx0
  * Signature: (IIII)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_applyEx0
-  (JNIEnv *env, jclass cl, jint b, jint c, jint operation, jint d)
+jint BuDDyBDD_applyEx0__impl
+  ( jint b, jint c, jint operation, jint d )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_appex(%d, %d, %d, %d)\n", b, c, operation, d);
 #endif
   result = bdd_appex(b, c, operation, d);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1425,16 +1366,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_applyEx0
  * Method:    applyUni0
  * Signature: (IIII)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_applyUni0
-  (JNIEnv *env, jclass cl, jint b, jint c, jint operation, jint d)
+jint BuDDyBDD_applyUni0__impl
+  ( jint b, jint c, jint operation, jint d )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_appuni(%d, %d, %d, %d)\n", b, c, operation, d);
 #endif
   result = bdd_appuni(b, c, operation, d);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1443,16 +1383,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_applyUni0
  * Method:    satOne0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satOne0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_satOne0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_satone(%d)\n", b);
 #endif
   result = bdd_satone(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1461,16 +1400,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satOne0
  * Method:    fullSatOne0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_fullSatOne0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_fullSatOne0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_fullsatone(%d)\n", b);
 #endif
   result = bdd_fullsatone(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1479,16 +1417,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_fullSatOne
  * Method:    satOne1
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satOne1
-  (JNIEnv *env, jclass cl, jint b, jint c, jint d)
+jint BuDDyBDD_satOne1__impl
+  ( jint b, jint c, jint d )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_satoneset(%d, %d, %d)\n", b, c, d);
 #endif
   result = bdd_satoneset(b, c, d);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1497,16 +1434,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satOne1
  * Method:    printSet0
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_printSet0
-  (JNIEnv *env, jclass cl, jint b)
+void BuDDyBDD_printSet0__impl
+  ( jint b )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_printset(%d)\n", b);
 #endif
   bdd_printset(b);
   fflush(stdout);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1514,16 +1450,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_printSet0
  * Method:    printDot0
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_printDot0
-  (JNIEnv *env, jclass cl, jint b)
+void BuDDyBDD_printDot0__impl
+  ( jint b )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_printdot(%d)\n", b);
 #endif
   bdd_printdot(b);
   fflush(stdout);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1531,16 +1466,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_printDot0
  * Method:    nodeCount0
  * Signature: (I)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_nodeCount0
-  (JNIEnv *env, jclass cl, jint b)
+jint BuDDyBDD_nodeCount0__impl
+  ( jint b )
 {
   int result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_nodecount(%d)\n", b);
 #endif
   result = bdd_nodecount(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1549,16 +1483,15 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_nodeCount0
  * Method:    pathCount0
  * Signature: (I)D
  */
-JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_pathCount0
-  (JNIEnv *env, jclass cl, jint b)
+jdouble BuDDyBDD_pathCount0__impl
+  ( jint b )
 {
   double result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_pathcount(%d)\n", b);
 #endif
   result = bdd_pathcount(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1567,16 +1500,15 @@ JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_pathCou
  * Method:    satCount0
  * Signature: (I)D
  */
-JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satCount0
-  (JNIEnv *env, jclass cl, jint b)
+jdouble BuDDyBDD_satCount0__impl
+  ( jint b )
 {
   double result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_satcount(%d)\n", b);
 #endif
   result = bdd_satcount(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1585,16 +1517,15 @@ JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satCoun
  * Method:    satCount1
  * Signature: (II)D
  */
-JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satCount1
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jdouble BuDDyBDD_satCount1__impl
+  ( jint b, jint c )
 {
   double result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_satcountset(%d, %d)\n", b, c);
 #endif
   result = bdd_satcountset(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1603,16 +1534,15 @@ JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_satCoun
  * Method:    logSatCount0
  * Signature: (I)D
  */
-JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_logSatCount0
-  (JNIEnv *env, jclass cl, jint b)
+jdouble BuDDyBDD_logSatCount0__impl
+  ( jint b )
 {
   double result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_satcountln(%d)\n", b);
 #endif
   result = bdd_satcountln(b);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1621,16 +1551,15 @@ JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_logSatC
  * Method:    logSatCount1
  * Signature: (II)D
  */
-JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_logSatCount1
-  (JNIEnv *env, jclass cl, jint b, jint c)
+jdouble BuDDyBDD_logSatCount1__impl
+  ( jint b, jint c )
 {
   double result;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_satcountlnset(%d, %d)\n", b, c);
 #endif
   result = bdd_satcountlnset(b, c);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1639,13 +1568,12 @@ JNIEXPORT jdouble JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_logSatC
  * Method:    varProfile0
  * Signature: (I)[I
  */
-JNIEXPORT jintArray JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_varProfile0
-  (JNIEnv *env, jclass cl, jint b)
+jintArray BuDDyBDD_varProfile0__impl
+  ( jint b )
 {
   jintArray result;
   int size;
   int* arr;
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_varnum()\n");
 #endif
@@ -1654,11 +1582,11 @@ JNIEXPORT jintArray JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_varPr
   printf("bdd_varprofile(%d)\n", b);
 #endif
   arr = bdd_varprofile(b);
-  if (check_error(env)) return NULL;
+  if (check_error()) return NULL;
   if (arr == NULL) return NULL;
-  result = (*env)->NewIntArray(env, size);
+  result = (*thread_env)->NewIntArray(thread_env, size);
   if (result == NULL) return NULL;
-  (*env)->SetIntArrayRegion(env, result, 0, size, (jint*) arr);
+  (*thread_env)->SetIntArrayRegion(thread_env, result, 0, size, (jint*) arr);
   free(arr);
   return result;
 }
@@ -1668,15 +1596,14 @@ JNIEXPORT jintArray JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_varPr
  * Method:    addRef
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_addRef
-  (JNIEnv *env, jclass cl, jint b)
+void BuDDyBDD_addRef__impl
+  ( jint b )
 {
-  jnienv = env;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_addref(%d)\n", b);
 #endif
   bdd_addref(b);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1684,16 +1611,15 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_addRef
  * Method:    delRef
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_delRef
-  (JNIEnv *env, jclass cl, jint b)
+void BuDDyBDD_delRef__impl
+  ( jint b )
 {
-  jnienv = env;
   if (b != INVALID_BDD) {
 #if defined(TRACE_BUDDYLIB)
     printf("bdd_delref(%d)\n", b);
 #endif
     bdd_delref(b);
-    check_error(env);
+    check_error();
   }
 }
 
@@ -1702,18 +1628,17 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_delRef
  * Method:    veccompose0
  * Signature: (IJ)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_veccompose0
-  (JNIEnv *env, jclass cl, jint b, jlong pair)
+jint BuDDyBDD_veccompose0__impl
+  ( jint b, jlong pair )
 {
   int result;
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_veccompose(%d, %p)\n", b, p);
 #endif
   result = bdd_veccompose(b, p);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1722,18 +1647,17 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_veccompose
  * Method:    replace0
  * Signature: (IJ)I
  */
-JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_replace0
-  (JNIEnv *env, jclass cl, jint b, jlong pair)
+jint BuDDyBDD_replace0__impl
+  ( jint b, jlong pair )
 {
   int result;
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_replace(%d, %p)\n", b, p);
 #endif
   result = bdd_replace(b, p);
-  check_error(env);
+  check_error();
   return result;
 }
 
@@ -1744,17 +1668,16 @@ JNIEXPORT jint JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDD_replace0
  * Method:    set0
  * Signature: (JII)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set0
-  (JNIEnv *env, jclass cl, jlong pair, jint i, jint j)
+void BuDDyBDDPairing_set0__impl
+  ( jlong pair, jint i, jint j )
 {
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setpair(%p, %d, %d)\n", p, i, j);
 #endif
   bdd_setpair(p, i, j);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1762,36 +1685,35 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set
  * Method:    set1
  * Signature: (J[I[I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set1
-  (JNIEnv *env, jclass cl, jlong pair, jintArray arr1, jintArray arr2)
+void BuDDyBDDPairing_set1__impl
+  ( jlong pair, jintArray arr1, jintArray arr2 )
 {
   jint size1, size2;
   jint *a1;
   jint *a2;
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
-  size1 = (*env)->GetArrayLength(env, arr1);
-  size2 = (*env)->GetArrayLength(env, arr2);
+  size1 = (*thread_env)->GetArrayLength(thread_env, arr1);
+  size2 = (*thread_env)->GetArrayLength(thread_env, arr2);
   if (size1 != size2) {
-    jclass cls = (*env)->FindClass(env, "java/lang/IllegalArgumentException");
-    (*env)->ThrowNew(env, cls, "array sizes do not match");
-    (*env)->DeleteLocalRef(env, cls);
+    jclass cls = (*thread_env)->FindClass(thread_env, "java/lang/IllegalArgumentException");
+    (*thread_env)->ThrowNew(thread_env, cls, "array sizes do not match");
+    (*thread_env)->DeleteLocalRef(thread_env, cls);
     return;
   }
-  a1 = (*env)->GetPrimitiveArrayCritical(env, arr1, NULL);
+  a1 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr1, NULL);
   if (a1 != NULL) {
-    a2 = (*env)->GetPrimitiveArrayCritical(env, arr2, NULL);
+    a2 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr2, NULL);
     if (a2 != NULL) {
 #if defined(TRACE_BUDDYLIB)
       printf("bdd_setpairs(%p, %p, %p, %d)\n", p, a1, a2, size1);
 #endif
       bdd_setpairs(p, (int*)a1, (int*)a2, size1);
-      (*env)->ReleasePrimitiveArrayCritical(env, arr2, a2, JNI_ABORT);
+      (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr2, a2, JNI_ABORT);
     }
-    (*env)->ReleasePrimitiveArrayCritical(env, arr1, a1, JNI_ABORT);
+    (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr1, a1, JNI_ABORT);
   }
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1799,17 +1721,16 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set
  * Method:    set2
  * Signature: (JII)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set2
-  (JNIEnv *env, jclass cl, jlong pair, jint b, jint c)
+void BuDDyBDDPairing_set2__impl
+  ( jlong pair, jint b, jint c )
 {
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setbddpair(%p, %d, %d)\n", p, b, c);
 #endif
   bdd_setbddpair(p, b, c);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1817,36 +1738,35 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set
  * Method:    set3
  * Signature: (J[I[I)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set3
-  (JNIEnv *env, jclass cl, jlong pair, jintArray arr1, jintArray arr2)
+void BuDDyBDDPairing_set3__impl
+  ( jlong pair, jintArray arr1, jintArray arr2 )
 {
   jint size1, size2;
   bdd *a1;
   bdd *a2;
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
-  size1 = (*env)->GetArrayLength(env, arr1);
-  size2 = (*env)->GetArrayLength(env, arr2);
+  size1 = (*thread_env)->GetArrayLength(thread_env, arr1);
+  size2 = (*thread_env)->GetArrayLength(thread_env, arr2);
   if (size1 != size2) {
-    jclass cls = (*env)->FindClass(env, "java/lang/IllegalArgumentException");
-    (*env)->ThrowNew(env, cls, "array sizes do not match");
-    (*env)->DeleteLocalRef(env, cls);
+    jclass cls = (*thread_env)->FindClass(thread_env, "java/lang/IllegalArgumentException");
+    (*thread_env)->ThrowNew(thread_env, cls, "array sizes do not match");
+    (*thread_env)->DeleteLocalRef(thread_env, cls);
     return;
   }
-  a1 = (*env)->GetPrimitiveArrayCritical(env, arr1, NULL);
+  a1 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr1, NULL);
   if (a1 != NULL) {
-    a2 = (*env)->GetPrimitiveArrayCritical(env, arr2, NULL);
+    a2 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr2, NULL);
     if (a2 != NULL) {
 #if defined(TRACE_BUDDYLIB)
       printf("bdd_setbddpairs(%p, %p, %p, %d)\n", p, a1, a2, size1);
 #endif
       bdd_setbddpairs(p, (int*)a1, (int*)a2, size1);
-      (*env)->ReleasePrimitiveArrayCritical(env, arr2, a2, JNI_ABORT);
+      (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr2, a2, JNI_ABORT);
     }
-    (*env)->ReleasePrimitiveArrayCritical(env, arr1, a1, JNI_ABORT);
+    (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr1, a1, JNI_ABORT);
   }
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1854,17 +1774,16 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_set
  * Method:    reset0
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_reset0
-  (JNIEnv *env, jclass cl, jlong pair)
+void BuDDyBDDPairing_reset0__impl
+  ( jlong pair )
 {
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_resetpair(%p)\n", p);
 #endif
   bdd_resetpair(p);
-  check_error(env);
+  check_error();
 }
 
 /*
@@ -1872,11 +1791,10 @@ JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_res
  * Method:    free0
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_net_sf_javabdd_BuDDyFactory_00024BuDDyBDDPairing_free0
-  (JNIEnv *env, jclass cl, jlong pair)
+void BuDDyBDDPairing_free0__impl
+  ( jlong pair )
 {
   bddPair* p;
-  jnienv = env;
   p = (bddPair*) (intptr_cast_type) pair;
   if (p) {
 #if defined(TRACE_BUDDYLIB)
