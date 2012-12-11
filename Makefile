@@ -108,8 +108,7 @@ endif
 # The java tools:
 JAVAC = $(JDK_ROOT)/bin/javac
 JAVA = $(JDK_ROOT)/bin/java
-#JAVAH = $(JDK_ROOT)/bin/javah
-JAVAH = java -cp /home/xymus/projects/staticjni/dist/lib/javah.jar com.sun.tools.javah.Main -cp .
+JAVAH = $(JDK_ROOT)/bin/javah
 JAVADOC = $(JDK_ROOT)/bin/javadoc
 JAR = $(JDK_ROOT)/bin/jar
 

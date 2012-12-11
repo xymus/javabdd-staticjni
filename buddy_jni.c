@@ -104,73 +104,50 @@ static int check_error()
 
 static void bdd_gbchandler(int code, bddGbcStat *s)
 {
-  jclass bdd_cls, buddy_cls, gc_cls;
-  jobject factory_obj, gc_obj;
-  jfieldID fid, fid2;
-  jmethodID mid;
-  
-  bdd_cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BDDFactory");
-  buddy_cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BuDDyFactory");
-  gc_cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BDDFactory$GCStats");
-  if (!bdd_cls || !buddy_cls || !gc_cls) {
-    return;
-  }
-  
-  mid = (*thread_env)->GetStaticMethodID(thread_env, buddy_cls, "gc_callback", "(I)V");
-  fid2 = (*thread_env)->GetStaticFieldID(thread_env, buddy_cls, "INSTANCE", "Lnet/sf/javabdd/BuDDyFactory;");
-  fid = (*thread_env)->GetFieldID(thread_env, bdd_cls, "gcstats", "Lnet/sf/javabdd/BDDFactory$GCStats;");
-  if (!mid || !fid2 || !fid) {
-    return;
-  }
-  
-  factory_obj = (*thread_env)->GetStaticObjectField(thread_env, buddy_cls, fid2);
+  BuDDyFactory factory_obj;
+  GCStats gc_obj;
+
+  factory_obj = get_BuDDyFactory_INSTANCE();
   if (!factory_obj) {
     printf("Error: BuDDyFactory.INSTANCE is null\n");
     return;
   }
-  
-  gc_obj = (*thread_env)->GetObjectField(thread_env, factory_obj, fid);
+
+  gc_obj = get_BDDFactory_gcstats( (BDDFactory)factory_obj ); // XY TODO real cast
   if (!gc_obj) {
     printf("Error: gcstats is null\n");
     return;
   }
-  
-  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "nodes", "I");
-  if (fid) {
-    (*thread_env)->SetIntField(thread_env, gc_obj, fid, s->nodes);
+
+  set_GCStats_nodes( gc_obj, s->nodes );
+  //if ( staticjni_errno ) {
+    //printf("Error: setting nodes failed\n");
+	//return;
+  //}
+
+  set_GCStats_freenodes( gc_obj, s->freenodes );
+
+  long t = s->time;
+  if (CLOCKS_PER_SEC < 1000) {
+    t = t * 1000 / CLOCKS_PER_SEC;
   }
-  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "freenodes", "I");
-  if (fid) {
-    (*thread_env)->SetIntField(thread_env, gc_obj, fid, s->freenodes);
+  else {
+    t /= (CLOCKS_PER_SEC/1000);
   }
-  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "time", "J");
-  if (fid) {
-    long t = s->time;
-    if (CLOCKS_PER_SEC < 1000) {
-      t = t * 1000 / CLOCKS_PER_SEC;
-    }
-    else {
-      t /= (CLOCKS_PER_SEC/1000);
-    }
-    (*thread_env)->SetLongField(thread_env, gc_obj, fid, t);
+  set_GCStats_time( gc_obj, t );
+
+  t = s->sumtime;
+  if (CLOCKS_PER_SEC < 1000) {
+    t = t * 1000 / CLOCKS_PER_SEC;
   }
-  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "sumtime", "J");
-  if (fid) {
-    long t = s->sumtime;
-    if (CLOCKS_PER_SEC < 1000) {
-      t = t * 1000 / CLOCKS_PER_SEC;
-    }
-    else {
-      t /= (CLOCKS_PER_SEC/1000);
-    }
-    (*thread_env)->SetLongField(thread_env, gc_obj, fid, t);
+  else {
+    t /= (CLOCKS_PER_SEC/1000);
   }
-  fid = (*thread_env)->GetFieldID(thread_env, gc_cls, "num", "I");
-  if (fid) {
-    (*thread_env)->SetIntField(thread_env, gc_obj, fid, s->num);
-  }
-  
-  (*thread_env)->CallStaticVoidMethod(thread_env, buddy_cls, mid, code);
+  set_GCStats_sumtime( gc_obj, t );
+
+  set_GCStats_num( gc_obj, t );
+
+  BuDDyFactory_gc_callback( code );
 }
 
 static void bdd_resizehandler(int a, int b)
