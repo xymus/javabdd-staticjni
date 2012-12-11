@@ -164,7 +164,8 @@ public class BuDDyFactory extends BDDFactory {
         int id = buildCube0(value, a);
         return makeBDD(id);
     }
-    private static native int buildCube0(int value, int[] var);
+
+    private static native int buildCube0(int value, int[] var) throws OutOfMemoryError, BDDException, InternalError; // IOException
 
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#buildCube(int, int[])
