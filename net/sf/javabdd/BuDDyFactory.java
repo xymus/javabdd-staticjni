@@ -197,7 +197,7 @@ public class BuDDyFactory extends BDDFactory {
     @NativeCalls({"INSTANCE","net.sf.javabdd.BDDFactory gcstats","net.sf.javabdd.BDDFactory.GCStats nodes",
                   "net.sf.javabdd.BDDFactory.GCStats freenodes","net.sf.javabdd.BDDFactory.GCStats time",
                   "net.sf.javabdd.BDDFactory.GCStats sumtime","net.sf.javabdd.BDDFactory.GCStats num",
-                  "gc_callback"})
+                  "gc_callback", "resize_callback", "reorder_callback"})
     private static native void initialize0(int nodenum, int cachesize);
 
     /* (non-Javadoc)

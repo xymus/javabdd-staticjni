@@ -150,26 +150,6 @@ static void bdd_gbchandler(int code, bddGbcStat *s)
   BuDDyFactory_gc_callback( code );
 }
 
-static void bdd_resizehandler(int a, int b)
-{
-  jclass cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BuDDyFactory");
-  jmethodID mid = (*thread_env)->GetStaticMethodID(thread_env, cls, "resize_callback", "(II)V");
-  if (mid == 0) {
-    return;
-  }
-  (*thread_env)->CallStaticVoidMethod(thread_env, cls, mid, a, b);
-}
-
-static void bdd_reorderhandler(int a)
-{
-  jclass cls = (*thread_env)->FindClass(thread_env, "net/sf/javabdd/BuDDyFactory");
-  jmethodID mid = (*thread_env)->GetStaticMethodID(thread_env, cls, "reorder_callback", "(I)V");
-  if (mid == 0) {
-    return;
-  }
-  (*thread_env)->CallStaticVoidMethod(thread_env, cls, mid, a);
-}
-
 /**** START OF NATIVE METHOD IMPLEMENTATIONS ****/
 
 /*
@@ -267,17 +247,17 @@ void BuDDyFactory_initialize0__impl
 #endif
   bdd_error_hook(bdd_errhandler);
 #if defined(TRACE_BUDDYLIB)
-  printf("bdd_resize_hook(%p)\n", bdd_resizehandler);
+  printf("bdd_resize_hook(%p)\n", BuDDyFactory_resize_callback);
 #endif
-  bdd_resize_hook(bdd_resizehandler);
+  bdd_resize_hook(BuDDyFactory_resize_callback);
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_gbc_hook(%p)\n", bdd_gbchandler);
 #endif
   bdd_gbc_hook(bdd_gbchandler);
 #if defined(TRACE_BUDDYLIB)
-  printf("bdd_reorder_hook(%p)\n", bdd_reorderhandler);
+  printf("bdd_reorder_hook(%p)\n", BuDDyFactory_reorder_callback);
 #endif
-  bdd_reorder_hook(bdd_reorderhandler);
+  bdd_reorder_hook(BuDDyFactory_reorder_callback);
   check_error();
 }
 
