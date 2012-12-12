@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 
+import net.xymus.staticjni.NativeCalls;
+
 /**
  * <p>An implementation of BDDFactory that relies on the BuDDy library through a
  * native interface.  You can use this by calling the "BuDDyFactory.init()"
@@ -191,6 +193,11 @@ public class BuDDyFactory extends BDDFactory {
         INSTANCE = this;
         initialize0(nodenum, cachesize);
     }
+
+    @NativeCalls({"INSTANCE","net.sf.javabdd.BDDFactory gcstats","net.sf.javabdd.BDDFactory.GCStats nodes",
+                  "net.sf.javabdd.BDDFactory.GCStats freenodes","net.sf.javabdd.BDDFactory.GCStats time",
+                  "net.sf.javabdd.BDDFactory.GCStats sumtime","net.sf.javabdd.BDDFactory.GCStats num",
+                  "gc_callback"})
     private static native void initialize0(int nodenum, int cachesize);
 
     /* (non-Javadoc)
