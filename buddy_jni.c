@@ -791,21 +791,20 @@ void BuDDyFactory_setVarOrder0__impl
 {
   jint *a;
   jint size, varnum;
-  size = (*thread_env)->GetArrayLength(thread_env, arr);
+
+  size = get_length_jintArray(arr);
   varnum = bdd_varnum();
   if (size != varnum) {
-    jclass cls = (*thread_env)->FindClass(thread_env, "java/lang/IllegalArgumentException");
-    (*thread_env)->ThrowNew(thread_env, cls, "array size != number of vars");
-    (*thread_env)->DeleteLocalRef(thread_env, cls);
+    throw_new_IllegalArgumentException("array size != number of vars");
     return;
   }
-  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
-  if (a == NULL) return;
+  a = get_access_jintArray(arr);
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_setvarorder(%p)\n", a);
 #endif
   bdd_setvarorder((int*)a);
-  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+  release_access_jintArray(arr, a);
+
   check_error();
 }
 

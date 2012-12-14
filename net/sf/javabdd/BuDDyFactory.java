@@ -512,7 +512,8 @@ public class BuDDyFactory extends BDDFactory {
     public void setVarOrder(int[] neworder) {
         setVarOrder0(neworder);
     }
-    private static native void setVarOrder0(int[] neworder);
+    @NativeArrayAccessCritical( "int[]" )
+    private static native void setVarOrder0(int[] neworder) throws IllegalArgumentException;
     
     /* (non-Javadoc)
      * @see net.sf.javabdd.BDDFactory#addVarBlock(net.sf.javabdd.BDD, boolean)
