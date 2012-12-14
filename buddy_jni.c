@@ -53,7 +53,7 @@ static int check_error()
   if (!err) return 0; // fast path
   switch (err) {
   case BDD_MEMORY:   /* Out of memory */
-	throw_new_OutOfMemoryError( bdd_errstring(err) );
+    throw_new_OutOfMemoryError( bdd_errstring(err) );
     break;
   case BDD_VAR:      /* Unknown variable */
   case BDD_RANGE:    /* Variable value out of range (not in domain) */
@@ -70,21 +70,21 @@ static int check_error()
   case BDD_NODENUM: /* Number of nodes reached user defined maximum */
   case BVEC_SIZE:    /* Mismatch in bitvector size */
   case BVEC_DIVZERO: /* Division by zero */
-	throw_new_BDDException( bdd_errstring(err) );
+    throw_new_BDDException( bdd_errstring(err) );
     break;
   case BDD_FILE:     /* Some file operation failed */
   case BDD_FORMAT:   /* Incorrect file format */
-	throw_new_IOException( bdd_errstring(err) );
+    throw_new_IOException( bdd_errstring(err) );
     break;
   case BDD_NODES:   /* Tried to set max. number of nodes to be fewer */
                     /* than there already has been allocated */
   case BDD_ILLBDD:  /* Illegal bdd argument */
   case BDD_SIZE:    /* Illegal size argument */
   case BVEC_SHIFT:   /* Illegal shift-left/right parameter */
-	throw_new_BDDException( bdd_errstring(err) );
+    throw_new_BDDException( bdd_errstring(err) );
     break;
   default:
-	throw_new_InternalError( bdd_errstring(err) );
+    throw_new_InternalError( bdd_errstring(err) );
     break;
   }
   return err;
