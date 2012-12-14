@@ -1630,25 +1630,23 @@ void BuDDyBDDPairing_set1__impl
   jint *a2;
   bddPair* p;
   p = (bddPair*) (intptr_cast_type) pair;
-  size1 = (*thread_env)->GetArrayLength(thread_env, arr1);
-  size2 = (*thread_env)->GetArrayLength(thread_env, arr2);
+  size1 = get_length_jintArray(arr1);
+  size2 = get_length_jintArray(arr2);
   if (size1 != size2) {
-    jclass cls = (*thread_env)->FindClass(thread_env, "java/lang/IllegalArgumentException");
-    (*thread_env)->ThrowNew(thread_env, cls, "array sizes do not match");
-    (*thread_env)->DeleteLocalRef(thread_env, cls);
+    throw_new_IllegalArgumentException("array sizes do not match");
     return;
   }
-  a1 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr1, NULL);
+  a1 = get_critical_access_jintArray(arr1);
   if (a1 != NULL) {
-    a2 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr2, NULL);
+    a2 = get_critical_access_jintArray(arr2);
     if (a2 != NULL) {
 #if defined(TRACE_BUDDYLIB)
       printf("bdd_setpairs(%p, %p, %p, %d)\n", p, a1, a2, size1);
 #endif
       bdd_setpairs(p, (int*)a1, (int*)a2, size1);
-      (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr2, a2, JNI_ABORT);
+      release_critical_access_jintArray(arr2, a2);
     }
-    (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr1, a1, JNI_ABORT);
+    release_critical_access_jintArray(arr1, a1);
   }
   check_error();
 }
@@ -1683,25 +1681,23 @@ void BuDDyBDDPairing_set3__impl
   bdd *a2;
   bddPair* p;
   p = (bddPair*) (intptr_cast_type) pair;
-  size1 = (*thread_env)->GetArrayLength(thread_env, arr1);
-  size2 = (*thread_env)->GetArrayLength(thread_env, arr2);
+  size1 = get_length_jintArray(arr1);
+  size2 = get_length_jintArray(arr2);
   if (size1 != size2) {
-    jclass cls = (*thread_env)->FindClass(thread_env, "java/lang/IllegalArgumentException");
-    (*thread_env)->ThrowNew(thread_env, cls, "array sizes do not match");
-    (*thread_env)->DeleteLocalRef(thread_env, cls);
+    throw_new_IllegalArgumentException("array sizes do not match");
     return;
   }
-  a1 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr1, NULL);
+  a1 = get_critical_access_jintArray(arr1);
   if (a1 != NULL) {
-    a2 = (*thread_env)->GetPrimitiveArrayCritical(thread_env, arr2, NULL);
+    a2 = get_critical_access_jintArray(arr2);
     if (a2 != NULL) {
 #if defined(TRACE_BUDDYLIB)
       printf("bdd_setbddpairs(%p, %p, %p, %d)\n", p, a1, a2, size1);
 #endif
       bdd_setbddpairs(p, (int*)a1, (int*)a2, size1);
-      (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr2, a2, JNI_ABORT);
+      release_critical_access_jintArray(arr2, a2);
     }
-    (*thread_env)->ReleasePrimitiveArrayCritical(thread_env, arr1, a1, JNI_ABORT);
+    release_critical_access_jintArray(arr1, a1);
   }
   check_error();
 }

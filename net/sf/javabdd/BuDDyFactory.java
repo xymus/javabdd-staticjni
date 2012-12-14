@@ -15,6 +15,7 @@ import java.math.BigInteger;
 
 import net.xymus.staticjni.NativeCalls;
 import net.xymus.staticjni.NativeArrayAccess;
+import net.xymus.staticjni.NativeArrayAccessCritical;
 
 /**
  * <p>An implementation of BDDFactory that relies on the BuDDy library through a
@@ -1098,6 +1099,7 @@ public class BuDDyFactory extends BDDFactory {
         public void set(int[] oldvar, int[] newvar) {
             set1(_ptr, oldvar, newvar);
         }
+        @NativeArrayAccessCritical( "int[]" )
         private static native void set1(long p, int[] oldvar, int[] newvar);
         
         /* (non-Javadoc)
@@ -1116,6 +1118,7 @@ public class BuDDyFactory extends BDDFactory {
             int[] a = toBuDDyArray(Arrays.asList(newvar));
             set3(_ptr, oldvar, a);
         }
+        @NativeArrayAccessCritical( "int[]" )
         private static native void set3(long p, int[] oldvar, int[] newbdds);
         
         /* (non-Javadoc)
