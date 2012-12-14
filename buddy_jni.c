@@ -158,14 +158,12 @@ jint BuDDyFactory_buildCube0__impl
   jint width, r;
   jint* a;
 
-  width = (*thread_env)->GetArrayLength(thread_env, arr); // XY
-  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0); // XY opt array access
-  if (a == NULL) return -1;
+  access_jintArray( arr, a, width ) {
 #if defined(TRACE_BUDDYLIB)
-  printf("bdd_buildcube(%d, %d, %p)\n", value, width, a);
+    printf("bdd_buildcube(%d, %d, %p)\n", value, width, a);
 #endif
-  r = bdd_buildcube(value, width, (int*)a);
-  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0); // XY
+    r = bdd_buildcube(value, width, (int*)a);
+  }
   check_error(); // XY
   return r;
 }
@@ -181,14 +179,12 @@ jint BuDDyFactory_buildCube1__impl
   jint width, r;
   jint* a;
 
-  width = (*thread_env)->GetArrayLength(thread_env, arr);
-  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
-  if (a == NULL) return -1;
+  access_jintArray( arr, a, width ) {
 #if defined(TRACE_BUDDYLIB)
-  printf("bdd_ibuildcube(%d, %d, %p)\n", value, width, a);
+    printf("bdd_ibuildcube(%d, %d, %p)\n", value, width, a);
 #endif
-  r = bdd_ibuildcube(value, width, (int*)a);
-  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+    r = bdd_ibuildcube(value, width, (int*)a);
+  }
   check_error();
   return r;
 }
@@ -204,14 +200,12 @@ jint BuDDyFactory_makeSet0__impl
   jint width, r;
   jint* a;
 
-  width = (*thread_env)->GetArrayLength(thread_env, arr);
-  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
-  if (a == NULL) return -1;
+  access_jintArray( arr, a, width ) {
 #if defined(TRACE_BUDDYLIB)
-  printf("bdd_makeset(%p, %d)\n", a, width);
+    printf("bdd_makeset(%p, %d)\n", a, width);
 #endif
-  r = bdd_makeset((int*)a, width);
-  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+    r = bdd_makeset((int*)a, width);
+  }
   check_error();
   return r;
 }
@@ -902,14 +896,13 @@ jint BuDDyFactory_nodeCount0__impl
   jint *a;
   jint size;
   int result;
-  size = (*thread_env)->GetArrayLength(thread_env, arr);
-  a = (*thread_env)->GetIntArrayElements(thread_env, arr, 0);
-  if (a == NULL) return -1;
+
+  access_jintArray( arr, a, size ) {
 #if defined(TRACE_BUDDYLIB)
-  printf("bdd_anodecount(%p, %d)\n", a, size);
+    printf("bdd_anodecount(%p, %d)\n", a, size);
 #endif
-  result = bdd_anodecount((int*)a, size);
-  (*thread_env)->ReleaseIntArrayElements(thread_env, arr, a, 0);
+    result = bdd_anodecount((int*)a, size);
+  }
   check_error();
   return result;
 }
