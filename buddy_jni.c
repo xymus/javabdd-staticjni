@@ -589,13 +589,13 @@ jint BuDDyFactory_load0__impl
   int rc;
   char *str;
 
-  str = (char*) (*thread_env)->GetStringUTFChars(thread_env, fname, NULL);
-  if (str == NULL) return -1;
+  str = (char*)get_jstring_utf8( fname );
+  if (str == NULL) return;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_fnload(%s, %p)\n", str, &r);
 #endif
   rc = bdd_fnload(str, &r);
-  (*thread_env)->ReleaseStringUTFChars(thread_env, fname, str);
+  release_jstring_utf8( fname, (jchar*)str );
   check_error();
   return r;
 }
@@ -611,13 +611,13 @@ void BuDDyFactory_save0__impl
   int rc;
   char *str;
 
-  str = (char*) (*thread_env)->GetStringUTFChars(thread_env, fname, NULL);
+  str = (char*)get_jstring_utf8( fname );
   if (str == NULL) return;
 #if defined(TRACE_BUDDYLIB)
   printf("bdd_fnsave(%s, %d)\n", str, r);
 #endif
   rc = bdd_fnsave(str, r);
-  (*thread_env)->ReleaseStringUTFChars(thread_env, fname, str);
+  release_jstring_utf8( fname, (jchar*)str );
   check_error();
 }
 
