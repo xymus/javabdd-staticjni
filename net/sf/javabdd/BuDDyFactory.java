@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 import net.xymus.staticjni.NativeCalls;
-import net.xymus.staticjni.NativeArrayAccess;
-import net.xymus.staticjni.NativeArrayAccessCritical;
 
 /**
  * <p>An implementation of BDDFactory that relies on the BuDDy library through a
@@ -167,7 +165,6 @@ public class BuDDyFactory extends BDDFactory {
         return makeBDD(id);
     }
 
-    @NativeArrayAccess("int[]")
     private static native int buildCube0(int value, int[] var) throws OutOfMemoryError, BDDException, InternalError; // IOException
 
     /* (non-Javadoc)
@@ -177,7 +174,6 @@ public class BuDDyFactory extends BDDFactory {
         int id = buildCube1(value, var);
         return makeBDD(id);
     }
-    @NativeArrayAccess("int[]")
     private static native int buildCube1(int value, int[] var);
 
     /* (non-Javadoc)
@@ -187,7 +183,6 @@ public class BuDDyFactory extends BDDFactory {
         int id = makeSet0(v);
         return makeBDD(id);
     }
-    @NativeArrayAccess("int[]")
     private static native int makeSet0(int[] var);
     
     /* (non-Javadoc)
@@ -513,7 +508,6 @@ public class BuDDyFactory extends BDDFactory {
     public void setVarOrder(int[] neworder) {
         setVarOrder0(neworder);
     }
-    @NativeArrayAccessCritical( "int[]" )
     private static native void setVarOrder0(int[] neworder) throws IllegalArgumentException;
     
     /* (non-Javadoc)
@@ -564,7 +558,6 @@ public class BuDDyFactory extends BDDFactory {
         int[] a = toBuDDyArray(r);
         return nodeCount0(a);
     }
-    @NativeArrayAccess("int[]")
     private static native int nodeCount0(int[] a);
 
     /* (non-Javadoc)
@@ -1099,7 +1092,6 @@ public class BuDDyFactory extends BDDFactory {
         public void set(int[] oldvar, int[] newvar) {
             set1(_ptr, oldvar, newvar);
         }
-        @NativeArrayAccessCritical( "int[]" )
         private static native void set1(long p, int[] oldvar, int[] newvar);
         
         /* (non-Javadoc)
@@ -1118,7 +1110,6 @@ public class BuDDyFactory extends BDDFactory {
             int[] a = toBuDDyArray(Arrays.asList(newvar));
             set3(_ptr, oldvar, a);
         }
-        @NativeArrayAccessCritical( "int[]" )
         private static native void set3(long p, int[] oldvar, int[] newbdds);
         
         /* (non-Javadoc)
