@@ -1005,7 +1005,7 @@ jstring BuDDyFactory_getVersion0__impl
   printf("bdd_versionstr()\n");
 #endif
   buf = bdd_versionstr();
-  result = (*thread_env)->NewStringUTF(thread_env, buf);
+  result = new_jsing_utf8(buf);
   check_error();
   return result;
 }
@@ -1521,9 +1521,9 @@ jintArray BuDDyBDD_varProfile0__impl
   arr = bdd_varprofile(b);
   if (check_error()) return NULL;
   if (arr == NULL) return NULL;
-  result = (*thread_env)->NewIntArray(thread_env, size);
+  result = new_jintArray( size );
   if (result == NULL) return NULL;
-  (*thread_env)->SetIntArrayRegion(thread_env, result, 0, size, (jint*) arr);
+  set_jintArray_region( result, 0, size, (jint*)arr);
   free(arr);
   return result;
 }
